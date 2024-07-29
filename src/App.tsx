@@ -1,9 +1,7 @@
-import { useEffect, useState } from 'react'
-import './App.css'
-import { db } from './firebase';
-import { addDoc, collection, deleteDoc, doc, onSnapshot } from 'firebase/firestore';
-import { v4 as uuidv4 } from 'uuid';
-
+import { collection, deleteDoc, doc, onSnapshot, setDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { db } from "./firebase";
+import { v4 as uuidv4 } from "uuid"
 
 interface Anime {
   id: string,
@@ -15,11 +13,10 @@ interface Anime {
   my_score: number
 }
 
-function App() {
+const App = () => {
+  const collectionsRef = collection(db, 'animes');
   const [animes, setAnimes] = useState<Anime[]>([]);
-
   const [newAnime, setNewAnime] = useState<any>({
-    id: '',
     title: '',
     cover: '',
     comment: '',
@@ -38,23 +35,19 @@ function App() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    const addAnime = {
+      title: newAnime.title,
+      comment: newAnime.comment,
+      cover: newAnime.cover,
+      episodes: newAnime.episodes,
+      release_year: newAnime.release_year,
+      my_score: newAnime.my_score,
+      id: uuidv4()
+    }
     try {
+      const aniRef = doc(collectionsRef, addAnime.id);
+      await setDoc(aniRef, addAnime);
 
-      const animeCollection = collection(db, 'animes');
-
-
-      await addDoc(animeCollection, {
-        id: uuidv4(),
-        title: newAnime.title,
-        cover: newAnime.cover,
-        comment: newAnime.comment,
-        episodes: newAnime.episodes,
-        release_year: newAnime.release_year,
-        my_score: newAnime.my_score,
-      });
-
-
-      
       setNewAnime({
         title: '',
         cover: '',
@@ -62,7 +55,7 @@ function App() {
         episodes: '',
         release_year: '',
         my_score: '',
-      });
+      })
     } catch (e) {
       console.error('Error adding document: ', e);
     }
@@ -70,38 +63,32 @@ function App() {
 
   const handleDelete = async (id: string) => {
     try {
-      // Reference to the specific document to be deleted
-      const docRef = doc(db, 'animes', id);
-      
-      // Delete the document
-      await deleteDoc(docRef);
-      
-      // Update local state to remove the deleted document
-      setAnimes(animes.filter(anime => anime.id !== id));
-    } catch (e) {
-      console.error('Error deleting document: ', e);
+      const animeRef = doc(collectionsRef, id);
+      await deleteDoc(animeRef);
+    } catch (error) {
+      console.log(error);
     }
-  };
-
+  }
 
   useEffect(() => {
-    const getAnimes = onSnapshot(collection(db, "animes"), (QuerySnapshot) => {
-      const items: any = []
-      QuerySnapshot.forEach((doc) => {
-        items.push(doc.data())
+
+    const unsub = onSnapshot(collectionsRef, (querySnapshot) => {
+      const items : any = [];
+      querySnapshot.forEach((doc) => {
+        items.push(doc.data());
+
       })
-
       setAnimes(items);
+      return () => {unsub()}
     })
-
-    return () => { getAnimes() }
-  }, [])
+  }, []);
 
   return (
-    <>
+    <div className="p-5">
       <p>this is the home page</p>
       <div>
-        <form action="" className='flex flex-col gap-4 w-[50%]' onSubmit={handleSubmit}>
+        <div className="flex items-center justify-center">
+        <form action="" className='flex flex-col gap-4 w-[50%]' onSubmit={handleSubmit} >
           <input className='border-2 border-gray-400'
             type="text" name="title" value={newAnime.title} placeholder="title"
             onChange={handleInput}
@@ -127,21 +114,28 @@ function App() {
           />
           <button type="submit" className='bg-black rounded text-white py-2'>Add </button>
         </form>
+        </div>
+
+        <div className="flex gap-5">
+          {
+            animes && animes.map((anime, index) => (
+              <div key={index} className='bg-gray-500 rounded flex items-center flex-col my-4 relative w-[250px] pb-3'>
+                <img src={anime.cover} alt="the cover" className='rounded' />
+                <p>{anime.title}</p>
+                <p>{anime.comment}</p>
+                <p>{anime.my_score}</p>
+                <p>{anime.release_year}</p>
+                <p>{anime.id}</p>
+                <button onClick={() => handleDelete(anime.id)} className='bg-red-500 text-white px-2 py-1 rounded absolute top-[5px] right-[5px]'>
+                  Delete
+                </button>
+              </div>
+            ))
+          }
+        </div>
       </div>
-      {
-        animes && animes.map((anime, index) => (
-          <div key={index}>
-            <p>{anime.title}</p>
-            <p>{anime.comment}</p>
-            <p>{anime.my_score}</p>
-            <button onClick={() => handleDelete(anime.id)} className='bg-red-500 text-white px-2 py-1 rounded'>
-              Delete
-            </button>
-          </div>
-        ))
-      }
-    </>
+    </div>
   )
 }
 
-export default App
+export default App;
