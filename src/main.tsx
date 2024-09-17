@@ -8,29 +8,39 @@ import AniList from './pages/AniList.tsx';
 import SingleAnime from './pages/SingleAnime.tsx';
 import Singers from './pages/Singers.tsx';
 import AniMovies from './pages/AniMovies.tsx';
+import Root from './routes/root.tsx';
+import InfoProvider from './context/InfoProviders.tsx';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <AniList />,
+    element: <Root />,
     errorElement: <ErrorPage />,
-  },
-  {
-    path: "anime/:id",
-    element: <SingleAnime />,
-  },
-  {
-    path: "/singers",
-    element: <Singers />,
-  },
-  {
-    path: "/animeMovies",
-    element: <AniMovies />
+    children: [
+      {
+        path: "/animes",
+        element: <AniList />,
+      },
+      {
+        path: "anime/:id",
+        element: <SingleAnime />,
+      },
+      {
+        path: "/singers",
+        element: <Singers />,
+      },
+      {
+        path: "/animeMovies",
+        element: <AniMovies />
+      },
+    ]
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <InfoProvider>
+      <RouterProvider router={router} />
+    </InfoProvider>
   </React.StrictMode>,
 )

@@ -86,7 +86,6 @@ const App = () => {
 
   return (
     <div className="p-5">
-      <Navbar />
       <div>
         <div className="flex items-center justify-center">
           <form action="" className='flex flex-col gap-4 w-[50%]' onSubmit={handleSubmit} >
