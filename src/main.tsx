@@ -22,7 +22,7 @@ const router = createBrowserRouter([
         element: <AniList />,
       },
       {
-        path: "anime/:id",
+        path: "animes/:id",
         element: <SingleAnime />,
       },
       {

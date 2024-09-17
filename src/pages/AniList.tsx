@@ -2,6 +2,7 @@
 // import { db } from "../firebase";
 // import { useEffect, useState } from "react";
 
+import { Link } from "react-router-dom";
 import { useInfo } from "../context/InfoProviders";
 
 // import { v4 as uuidv4 } from "uuid"
@@ -307,32 +308,61 @@ import { useInfo } from "../context/InfoProviders";
 const AniList = () => {
     const { allAnimes, pagination, currentPage, handlePageChange } = useInfo();
 
+    const totalPages = pagination ? pagination.last_visible_page : 1;
+    const maxPagesToShow = 3;
+
+    // Generate page numbers to display
+    const getPageNumbers = () => {
+        const pageNumbers = [];
+        const startPage = Math.max(1, currentPage - maxPagesToShow);
+        const endPage = Math.min(totalPages, currentPage + maxPagesToShow);
+
+        for (let i = startPage; i <= endPage; i++) {
+            pageNumbers.push(i);
+        }
+
+        return pageNumbers;
+    };
+    const pageNumbers = getPageNumbers();
+
     return (
         <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                 {allAnimes?.map((anime, index) => (
-                    <div key={index} className="border rounded-lg overflow-hidden shadow-lg">
-                        <img src={anime.images?.webp?.large_image_url} alt={anime.title} className="w-full h-64 object-cover" />
+                    <Link
+                        to={`/animes/${anime.mal_id}`}
+                        key={index} className="border rounded-lg overflow-hidden shadow-lg">
+                        <img src={anime.images?.webp?.large_image_url} alt={anime.title} className="w-full h-32 object-cover aspect-square" />
                         <div className="p-4">
-                            <h3 className="text-xl font-semibold mb-2">{anime.title}</h3>
+                            <h3 className="text-xl font-semibold mb-2">{anime.title_english ?? anime.title}</h3>
                             <p className="text-sm text-gray-500 mb-1">Episodes: {anime.episodes}</p>
                             <p className="text-sm text-gray-500 mb-2">Release Year: {anime.year}</p>
                         </div>
-                    </div>
+                    </Link>
                 ))}
             </div>
 
-            <div className="flex items-center justify-center gap-5 font-bold text-xl h-[50px] sticky bottom-0">
+            <div className="flex items-center bg-black justify-center gap-5 font-bold text-xl h-[30px] sticky bottom-0">
                 <button
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage <= 1}
                 >
                     Previous
                 </button>
-                <span>Page {currentPage}</span>
+
+                {pageNumbers.map(pageNumber => (
+                    <button
+                        key={pageNumber}
+                        onClick={() => handlePageChange(pageNumber)}
+                        className={`px-2 ${pageNumber === currentPage ? 'bg-gray-600' : ''}`}
+                    >
+                        {pageNumber}
+                    </button>
+                ))}
+
                 <button
                     onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={pagination ? currentPage >= pagination.last_visible_page : true}
+                    disabled={pagination ? currentPage >= totalPages : true}
                 >
                     Next
                 </button>

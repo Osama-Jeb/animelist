@@ -1,17 +1,17 @@
 import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react"
 
-interface AnimeImage {
+interface ImageUrls {
     image_url: string;
     small_image_url: string;
     large_image_url: string;
 }
 
-interface AnimeImages {
-    jpg: AnimeImage;
-    webp: AnimeImage;
+interface Images {
+    jpg: ImageUrls;
+    webp: ImageUrls;
 }
 
-interface AnimeTrailerImages {
+interface TrailerImages {
     image_url: string;
     small_image_url: string;
     medium_image_url: string;
@@ -19,66 +19,82 @@ interface AnimeTrailerImages {
     maximum_image_url: string;
 }
 
-interface AnimeTrailer {
+interface Trailer {
     youtube_id: string;
     url: string;
     embed_url: string;
-    images: AnimeTrailerImages;
+    images: TrailerImages;
 }
 
-interface AnimeTitle {
+interface Title {
     type: string;
     title: string;
 }
 
-interface AnimeAiredProp {
-    from: {
-        day: number;
-        month: number;
-        year: number;
+interface Aired {
+    from: string; // ISO 8601 date format
+    to: string;   // ISO 8601 date format
+    prop: {
+        from: DateProp;
+        to: DateProp;
     };
-    to: {
-        day: number;
-        month: number;
-        year: number;
-    };
-}
-
-interface AnimeAired {
-    from: string;
-    to: string;
-    prop: AnimeAiredProp;
     string: string;
 }
 
-interface AnimeProducer {
+interface DateProp {
+    day: number;
+    month: number;
+    year: number;
+}
+
+interface Producer {
     mal_id: number;
     type: string;
     name: string;
     url: string;
 }
 
-interface AnimeGenre {
+interface Genre {
     mal_id: number;
     type: string;
     name: string;
     url: string;
 }
 
-interface AnimeTheme {
+interface Theme {
+    openings: string[];
+    endings: string[];
+}
+
+interface ExternalLink {
+    name: string;
+    url: string;
+}
+
+interface StreamingService {
+    name: string;
+    url: string;
+}
+
+interface RelationEntry {
     mal_id: number;
     type: string;
     name: string;
     url: string;
 }
 
-interface Anime {
+interface Relation {
+    relation: string;
+    entry: RelationEntry[];
+}
+
+export interface Anime {
     mal_id: number;
     url: string;
-    images: AnimeImages;
-    trailer: AnimeTrailer;
+    images: Images;
+    trailer: Trailer;
     approved: boolean;
-    titles: AnimeTitle[];
+    titles: Title[];
     title: string;
     title_english: string;
     title_japanese: string;
@@ -88,7 +104,7 @@ interface Anime {
     episodes: number;
     status: string;
     airing: boolean;
-    aired: AnimeAired;
+    aired: Aired;
     duration: string;
     rating: string;
     score: number;
@@ -107,14 +123,19 @@ interface Anime {
         timezone: string;
         string: string;
     };
-    producers: AnimeProducer[];
-    licensors: AnimeProducer[];
-    studios: AnimeProducer[];
-    genres: AnimeGenre[];
-    explicit_genres: any[];
-    themes: AnimeTheme[];
-    demographics: any[];
+    producers: Producer[];
+    licensors: Producer[];
+    studios: Producer[];
+    genres: Genre[];
+    explicit_genres: any[]; // Empty array in this case
+    themes: Genre[];
+    demographics: Genre[];
+    relations: Relation[];
+    theme: Theme;
+    external: ExternalLink[];
+    streaming: StreamingService[];
 }
+
 
 interface Pagination {
     last_visible_page: number,
@@ -165,7 +186,7 @@ export default function InfoProvider({ children }: PropsWithChildren) {
                 const data = await response.json();
 
                 // Update the state with the fetched data
-                setAllAnimes(data.data); 
+                setAllAnimes(data.data);
                 setPagination(data.pagination)
             } catch (error) {
                 console.error('err brr:', error);

@@ -10,18 +10,6 @@ const Navbar = () => {
         setIsMenuOpen(!isMenuOpen)
     }
     return (
-        // <nav className="flex items-center justify-between p-5 bg-black/80 text-white sticky top-0 z-10 ">
-        //     <div>
-        //         <NavLink to={'/'} className="font-bold text-lg">The Anime Repo</NavLink>
-        //     </div>
-
-        //     <div className="flex items-center gap-3 bg-transparent">
-        //         <NavLink className="hover:bg-white hover:text-black p-3 rounded-xl bg-transparent" to={'/animes'}>Anime Series</NavLink>
-        //         <NavLink className="hover:bg-white hover:text-black p-3 rounded-xl bg-transparent" to={'/animeMovies'}>Anime Movies</NavLink>
-        //         <NavLink className="hover:bg-white hover:text-black p-3 rounded-xl bg-transparent" to={'/singers'}>Singers</NavLink>
-        //     </div>
-        // </nav>
-
         <nav className="sticky top-0 z-10 bg-black/80">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 bg-transparent">
                 <div className="flex items-center justify-between h-16 bg-transparent">
@@ -33,16 +21,16 @@ const Navbar = () => {
                     {/* Desktop Menu */}
                     <div className="hidden md:block bg-transparent">
                         <div className="ml-10 flex items-baseline space-x-4 bg-transparent" >
-                            <Link to="/animes" className="bg-blue-700  px-3 py-2 rounded-md text-sm font-medium">
+                            <Link to="/animes" className="bg-alpha  px-3 py-2 rounded-md text-sm font-medium">
                                 Animes List
                             </Link>
-                            <Link to="/animeMovies" className="bg-blue-700  px-3 py-2 rounded-md text-sm font-medium">
+                            <Link to="/animeMovies" className="bg-alpha  px-3 py-2 rounded-md text-sm font-medium">
                                 Anime Movies
                             </Link>
-                            <Link to="/singers" className="bg-blue-700  px-3 py-2 rounded-md text-sm font-medium">
+                            <Link to="/singers" className="bg-alpha  px-3 py-2 rounded-md text-sm font-medium">
                                 Singers
                             </Link>
-                            {/* <Link to="/voice-actors" className="bg-blue-700  px-3 py-2 rounded-md text-sm font-medium">
+                            {/* <Link to="/voice-actors" className="bg-alpha  px-3 py-2 rounded-md text-sm font-medium">
                                 Voice Actors
                             </Link> */}
                         </div>

@@ -25,7 +25,7 @@ const Root = () => {
                                     </p>
                                 </div>
                                 <div className="space-x-4">
-                                    <button className="px-8 font-bold py-3 bg-blue-700 rounded-xl">Explore Now</button>
+                                    <button className="px-8 font-bold py-3 bg-alpha rounded-xl">Explore Now</button>
                                     <button className="px-8 font-bold py-3 bg-white text-black rounded-xl">Learn More</button>
                                 </div>
                             </div>
@@ -34,7 +34,7 @@ const Root = () => {
                     {/* About Section */}
                     <section className="w-full py-12 md:py-24 lg:py-32">
                         <div className="container px-4 md:px-6">
-                            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">About <span className="text-blue-700">AnimeRepo</span></h2>
+                            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">About <span className="text-alpha">AnimeRepo</span></h2>
                             <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center px-6">
                                 <div className="space-y-4 text-xl">
                                     <p>
@@ -70,7 +70,7 @@ const Root = () => {
                                     { title: "Singers", icon: Mic, description: "Learn about the talented artists behind your favorite anime songs." },
                                     { title: "Voice Actors", icon: Users, description: "Explore profiles of voice actors who bring anime characters to life." },
                                 ].map((item, index) => (
-                                    <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden">
+                                    <div key={index} className="rounded-lg shadow-md overflow-hidden border border-gray-800 hover:scale-105 translate-all duration-200">
                                         <div className="p-6">
                                             <div className="flex items-center mb-4">
                                                 <item.icon size={24} color="#1d4ed8" className="mr-3"/>

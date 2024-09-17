@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-    background-color: rgb(0, 0, 0);
+body {
+    background-color: black;
     color: white;
     font-family: monospace;
 }
@@ -15,10 +15,10 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: black;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #1d4ed8;
+    background: black;
 }
