@@ -2,7 +2,6 @@ import { collection, deleteDoc, doc, onSnapshot, setDoc } from "firebase/firesto
 import { useEffect, useState } from "react";
 import { db } from "./firebase";
 import { v4 as uuidv4 } from "uuid"
-import Navbar from "./components/Navbar";
 
 interface Anime {
   id: string,
