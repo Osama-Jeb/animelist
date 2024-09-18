@@ -8,6 +8,31 @@ body {
     font-family: monospace;
 }
 
+.hero {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("./assets/images/hero.png") center / contain no-repeat;
+    opacity: 0.25;
+    z-index: 0;
+}
+
+.hero>* {
+    position: relative;
+    /* To keep the content above the background */
+    z-index: 1;
+    /* Make sure the content is above the pseudo-element */
+}
+
+
 /* width */
 ::-webkit-scrollbar {
     width: 0.5vw;

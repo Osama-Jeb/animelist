@@ -10,6 +10,9 @@ import Singers from './pages/Singers.tsx';
 import AniMovies from './pages/AniMovies.tsx';
 import Root from './routes/root.tsx';
 import InfoProvider from './context/InfoProviders.tsx';
+import AuthProvider from './context/AuthContext.tsx';
+import Register from './pages/Register.tsx';
+import Login from './pages/Login.tsx';
 
 const router = createBrowserRouter([
   {
@@ -33,14 +36,24 @@ const router = createBrowserRouter([
         path: "/animeMovies",
         element: <AniMovies />
       },
+      {
+        path: "/register",
+        element: <Register />
+      },
+      {
+        path: "/login",
+        element: <Login />
+      }
     ]
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <InfoProvider>
-      <RouterProvider router={router} />
-    </InfoProvider>
+    <AuthProvider>
+      <InfoProvider>
+        <RouterProvider router={router} />
+      </InfoProvider>
+    </AuthProvider>
   </React.StrictMode>,
 )

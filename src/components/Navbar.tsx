@@ -1,13 +1,25 @@
-import { Menu, X } from "lucide-react";
+import { Bookmark, Menu, User, X } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { auth } from "../firebase";
 
 const Navbar = () => {
 
-    const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const { currentUser } = useAuth();
 
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen)
+    }
+
+    const [profileMenu, setProfileMenu] = useState(false);
+    const toggleProfileMenu = () => {
+        setProfileMenu(!profileMenu);
+    }
+
+    const doSignOut = () => {
+        auth.signOut();
     }
     return (
         <nav className="sticky top-0 z-10 bg-black/80">
@@ -20,7 +32,7 @@ const Navbar = () => {
 
                     {/* Desktop Menu */}
                     <div className="hidden md:block bg-transparent">
-                        <div className="ml-10 flex items-baseline space-x-4 bg-transparent" >
+                        <div className="ml-10 flex items-center space-x-4 bg-transparent" >
                             <Link to="/animes" className="bg-alpha  px-3 py-2 rounded-md text-sm font-medium">
                                 Animes List
                             </Link>
@@ -33,7 +45,41 @@ const Navbar = () => {
                             {/* <Link to="/voice-actors" className="bg-alpha  px-3 py-2 rounded-md text-sm font-medium">
                                 Voice Actors
                             </Link> */}
+                            {
+                                currentUser ?
+                                    <div className="relative">
+
+                                        <button
+                                            onClick={toggleProfileMenu}
+                                        >
+                                            <User size={24} />
+                                        </button>
+                                        {
+                                            profileMenu && <div className="absolute top-[150%] -left-[100px] w-[150px] bg-black">
+                                                <div className="px-3 py-2 flex gap-2 items-center"><Bookmark/> <p>Saved Anime</p></div>
+                                                <div className="px-3 py-2 flex gap-2 items-center"><Bookmark/> <p>Second Page</p></div>
+                                                <button className="bg-red-600 px-3 py-2 rounded-md w-full"
+                                                    onClick={doSignOut}
+                                                >
+                                                    Log Out
+                                                </button>
+                                            </div>
+                                        }
+                                    </div>
+
+                                    :
+                                    <>
+                                        <Link to={"/register"}>
+                                            Register
+                                        </Link>
+                                        <Link to={"/login"}>
+                                            Login
+                                        </Link>
+                                    </>
+                            }
+
                         </div>
+
                     </div>
 
                     {/* Mobile menu button */}
