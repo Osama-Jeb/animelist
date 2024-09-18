@@ -1,19 +1,19 @@
 import { useState } from "react";
-import { auth, db } from "../firebase";
+import { auth } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
+// import { collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [username, setUsername] = useState('');
+    // const [username, setUsername] = useState('');
     const navigate = useNavigate();
 
     const register = (e: any) => {
         e.preventDefault()
         createUserWithEmailAndPassword(auth, email, password)
-            .then(async (userCredential) => {
+            .then(async () => {
                 // const user = userCredential.user;
 
                 // const newUser = {
