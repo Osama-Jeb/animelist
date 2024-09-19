@@ -13,6 +13,7 @@ import InfoProvider from './context/InfoProviders.tsx';
 import AuthProvider from './context/AuthContext.tsx';
 import Register from './pages/Register.tsx';
 import Login from './pages/Login.tsx';
+import BookmarkedAnime from './pages/BookmarkedAnimes.tsx';
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />
+      },
+      {
+        path: "/bookmarkedAnime",
+        element: <BookmarkedAnime />
       }
     ]
   },

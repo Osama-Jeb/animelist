@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Anime, useInfo } from "../context/InfoProviders";
 import { Grid, List, TableIcon } from "lucide-react";
+import Loading from "../components/Loading";
 
 
 type DisplayMode = 'grid' | 'list' | 'masonry' | 'table'
@@ -42,9 +43,9 @@ const AniList = () => {
     const pageNumbers = getPageNumbers();
 
     const renderGrid = (animes: Anime[] | null) => (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
             {animes?.map((anime, index) => (
-                <Link to={`/animes/${anime.mal_id}`} key={index} className="border rounded-lg overflow-hidden shadow-lg">
+                <Link to={`/animes/${anime.mal_id}`} key={index} className="border rounded-lg overflow-hidden hover:bg-gray-900">
                     <img src={anime.images?.webp?.large_image_url} alt={anime.title} className="w-full h-64 object-cover" />
                     <div className="p-4">
                         <h3 className="text-xl font-semibold mb-2">{anime.title}</h3>
@@ -60,7 +61,7 @@ const AniList = () => {
     const renderList = (animes: Anime[] | null) => (
         <div className="space-y-4">
             {animes?.map((anime, index) => (
-                <Link to={`/animes/${anime.mal_id}`} key={index} className="flex border rounded-lg overflow-hidden shadow-lg">
+                <Link to={`/animes/${anime.mal_id}`} key={index} className="flex border rounded-lg overflow-hidden hover:bg-gray-900">
                     <img src={anime.images?.webp?.large_image_url} alt={anime.title} className="w-48 h-48 object-cover" />
                     <div className="p-4 flex-grow">
                         <h3 className="text-xl font-semibold mb-2">{anime.title}</h3>
@@ -74,21 +75,6 @@ const AniList = () => {
         </div>
     )
 
-    const renderMasonry = (animes: Anime[] | null) => (
-        <div className="columns-1 md:columns-2 lg:columns-3 gap-4">
-            {animes?.map((anime, index) => (
-                <Link to={`/animes/${anime.mal_id}`} key={index} className="break-inside-avoid mb-4 border rounded-lg overflow-hidden shadow-lg">
-                    <img src={anime.images?.webp?.large_image_url} alt={anime.title} className="w-full object-cover" />
-                    <div className="p-4">
-                        <h3 className="text-xl font-semibold mb-2">{anime.title}</h3>
-                        <p className="text-gray-600 mb-2">{anime.score}</p>
-                        <p className="text-sm text-gray-500 mb-1">Episodes: {anime.episodes}</p>
-                        <p className="text-sm text-gray-500 mb-2">Release Year: {anime.year}</p>
-                    </div>
-                </Link>
-            ))}
-        </div>
-    )
 
     const renderTable = (animes: Anime[] | null) => (
         <div className="overflow-x-auto">
@@ -137,99 +123,92 @@ const AniList = () => {
     const [inputValue, setInputValue] = useState('')
     return (
         <>
-            <div>
-                {/* Display Mode Selector */}
-                <div className="mb-4 flex space-x-2 items-center">
-                    <button
-                        onClick={() => setDisplayMode('grid')}
-                        className={`p-2 ${displayMode === 'grid' ? 'bg-blue-500 text-white' : 'bg-gray-200'} rounded`}
-                    >
-                        <Grid size={20} />
-                    </button>
-                    <button
-                        onClick={() => setDisplayMode('list')}
-                        className={`p-2 ${displayMode === 'list' ? 'bg-blue-500 text-white' : 'bg-gray-200'} rounded`}
-                    >
-                        <List size={20} />
-                    </button>
-                    <button
-                        onClick={() => setDisplayMode('masonry')}
-                        className={`p-2 ${displayMode === 'masonry' ? 'bg-blue-500 text-white' : 'bg-gray-200'} rounded`}
-                    >
-                        <Grid size={20} />
-                    </button>
-                    <button
-                        onClick={() => setDisplayMode('table')}
-                        className={`p-2 ${displayMode === 'table' ? 'bg-blue-500 text-white' : 'bg-gray-200'} rounded`}
-                    >
-                        <TableIcon size={20} />
-                    </button>
+            {
+                animeTV ?
+                    <>
+                        <div className="mt-5">
+                            {/* Display Mode Selector */}
+                            <div className="mb-4 flex space-x-2 items-center">
+                                <button
+                                    onClick={() => setDisplayMode('grid')}
+                                    className={`p-2 ${displayMode === 'grid' ? 'bg-blue-500 text-white' : 'bg-gray-800'} rounded`}
+                                >
+                                    <Grid size={20} />
+                                </button>
+                                <button
+                                    onClick={() => setDisplayMode('list')}
+                                    className={`p-2 ${displayMode === 'list' ? 'bg-blue-500 text-white' : 'bg-gray-800'} rounded`}
+                                >
+                                    <List size={20} />
+                                </button>
+                                <button
+                                    onClick={() => setDisplayMode('table')}
+                                    className={`p-2 ${displayMode === 'table' ? 'bg-blue-500 text-white' : 'bg-gray-800'} rounded`}
+                                >
+                                    <TableIcon size={20} />
+                                </button>
 
-                    <div>
-                        <input type="text" placeholder="Search" className="text-black p-2 rounded"
-                            value={inputValue}
-                            onChange={(e) => { setInputValue(e.target.value.toLowerCase()) }}
-                            onKeyDown={(e) => {
-                                if (e.key == "Enter") {
-                                    onSearch(inputValue)
-                                }
-                            }}
+                                <div>
+                                    <input type="text" placeholder="Search" className="p-2 rounded bg-gray-800"
+                                        value={inputValue}
+                                        onChange={(e) => {
+                                            setInputValue(e.target.value.toLowerCase())
+                                            if (!e.target.value) {
+                                                setSearchedAnimes(null)
+                                            }
+                                        }}
+                                        onKeyDown={(e) => {
+                                            if (e.key == "Enter") {
+                                                onSearch(inputValue)
+                                            }
+                                        }}
 
-                        />
-                    </div>
-                </div>
+                                    />
+                                </div>
+                            </div>
 
-                {/* Anime Display Section */}
-                <div>
-                    <h2 className="text-2xl font-semibold mb-4">My Anime List</h2>
-
-
-                    {
-                        searchedAnimes ?
-                            <>
-                                {displayMode === 'grid' && renderGrid(searchedAnimes)}
-                                {displayMode === 'list' && renderList(searchedAnimes)}
-                                {displayMode === 'masonry' && renderMasonry(searchedAnimes)}
-                                {displayMode === 'table' && renderTable(searchedAnimes)}
-                            </>
-                            :
-                            <>
-                                {displayMode === 'grid' && renderGrid(animeTV)}
-                                {displayMode === 'list' && renderList(animeTV)}
-                                {displayMode === 'masonry' && renderMasonry(animeTV)}
-                                {displayMode === 'table' && renderTable(animeTV)}
-                            </>
-                    }
-                </div>
-            </div>
+                            {/* Anime Display Section */}
+                            <div>
+                                <h2 className="text-2xl font-semibold mb-4">My Anime List</h2>
 
 
-            {/* Pagination */}
-            <div className="flex items-center bg-black justify-center gap-5 font-bold text-xl h-[30px] sticky bottom-0">
-                <button
-                    onClick={() => handlePageChange(currPage - 1)}
-                    disabled={currPage <= 1}
-                >
-                    Previous
-                </button>
+                                {displayMode === 'grid' && renderGrid(searchedAnimes || animeTV)}
+                                {displayMode === 'list' && renderList(searchedAnimes || animeTV)}
+                                {displayMode === 'table' && renderTable(searchedAnimes || animeTV)}
+                            </div>
+                        </div>
 
-                {pageNumbers.map(pageNumber => (
-                    <button
-                        key={pageNumber}
-                        onClick={() => handlePageChange(pageNumber)}
-                        className={`px-2 ${pageNumber === currPage ? 'bg-gray-600' : ''}`}
-                    >
-                        {pageNumber}
-                    </button>
-                ))}
 
-                <button
-                    onClick={() => handlePageChange(currPage + 1)}
-                    disabled={pagination ? currPage >= totalPages : true}
-                >
-                    Next
-                </button>
-            </div>
+                        {/* Pagination */}
+                        <div className="flex items-center bg-black justify-center gap-5 font-bold text-xl h-[30px] sticky bottom-0">
+                            <button
+                                onClick={() => handlePageChange(currPage - 1)}
+                                disabled={currPage <= 1}
+                            >
+                                Previous
+                            </button>
+
+                            {pageNumbers.map(pageNumber => (
+                                <button
+                                    key={pageNumber}
+                                    onClick={() => handlePageChange(pageNumber)}
+                                    className={`px-2 ${pageNumber === currPage ? 'bg-gray-600' : ''}`}
+                                >
+                                    {pageNumber}
+                                </button>
+                            ))}
+
+                            <button
+                                onClick={() => handlePageChange(currPage + 1)}
+                                disabled={pagination ? currPage >= totalPages : true}
+                            >
+                                Next
+                            </button>
+                        </div>
+                    </>
+                    :
+                    <Loading />
+            }
         </>
     )
 }

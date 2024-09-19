@@ -1,12 +1,13 @@
 import { Bookmark, Menu, User, X } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { auth } from "../firebase";
 
 const Navbar = () => {
 
     const { currentUser } = useAuth();
+    const navigate = useNavigate();
 
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const toggleMenu = () => {
@@ -20,7 +21,23 @@ const Navbar = () => {
 
     const doSignOut = () => {
         auth.signOut();
+        navigate("/")
     }
+
+    const links = [
+        {
+            link: "/animes",
+            name: "Animes List"
+        },
+        {
+            link: "/animeMovies",
+            name: "Animes Movies"
+        },
+        {
+            link: "/singers",
+            name: "Singers"
+        },
+    ]
     return (
         <nav className="sticky top-0 z-10 bg-black/80">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 bg-transparent">
@@ -33,18 +50,17 @@ const Navbar = () => {
                     {/* Desktop Menu */}
                     <div className="hidden md:block bg-transparent">
                         <div className="ml-10 flex items-center space-x-4 bg-transparent" >
-                            <Link to="/animes" className="bg-alpha  px-3 py-2 rounded-md text-sm font-medium">
-                                Animes List
-                            </Link>
-                            <Link to="/animeMovies" className="bg-alpha  px-3 py-2 rounded-md text-sm font-medium">
-                                Anime Movies
-                            </Link>
-                            <Link to="/singers" className="bg-alpha  px-3 py-2 rounded-md text-sm font-medium">
-                                Singers
-                            </Link>
-                            {/* <Link to="/voice-actors" className="bg-alpha  px-3 py-2 rounded-md text-sm font-medium">
+                            {
+                                links.map((link, index) => (
+                                    <NavLink key={index} to={link.link} className={({ isActive, isPending }) =>
+                                        isPending ? "pending" : isActive ? "bg-alpha px-3 py-2 rounded-md text-sm font-medium" : "px-3 py-2 border-2 border-alpha/50 rounded-md"}>
+                                        {link.name}
+                                    </NavLink>
+                                ))
+                            }
+                            {/* <NavLink to="/voice-actors" className="bg-alpha  px-3 py-2 rounded-md text-sm font-medium">
                                 Voice Actors
-                            </Link> */}
+                            </NavLink> */}
                             {
                                 currentUser ?
                                     <div className="relative">
@@ -56,8 +72,8 @@ const Navbar = () => {
                                         </button>
                                         {
                                             profileMenu && <div className="absolute top-[150%] -left-[100px] w-[150px] bg-black">
-                                                <div className="px-3 py-2 flex gap-2 items-center"><Bookmark/> <p>Saved Anime</p></div>
-                                                <div className="px-3 py-2 flex gap-2 items-center"><Bookmark/> <p>Second Page</p></div>
+                                                <Link to={"/bookmarkedAnime"} className="px-3 py-2 flex gap-2 items-center"><Bookmark /> <p>Saved Anime</p></Link>
+                                                <div className="px-3 py-2 flex gap-2 items-center"><Bookmark /> <p>Second Page</p></div>
                                                 <button className="bg-red-600 px-3 py-2 rounded-md w-full"
                                                     onClick={doSignOut}
                                                 >
@@ -68,14 +84,11 @@ const Navbar = () => {
                                     </div>
 
                                     :
-                                    <>
-                                        <Link to={"/register"}>
-                                            Register
-                                        </Link>
-                                        <Link to={"/login"}>
-                                            Login
-                                        </Link>
-                                    </>
+
+                                    <Link to={"/register"}>
+                                        Register/Login
+                                    </Link>
+
                             }
 
                         </div>
