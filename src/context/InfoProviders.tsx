@@ -1,4 +1,4 @@
-import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react"
+import { PropsWithChildren, createContext, useContext, useState } from "react"
 
 interface ImageUrls {
     image_url: string;
@@ -150,61 +150,43 @@ interface Pagination {
 }
 
 interface InfoContextType {
-    allAnimes: Anime[] | null;
     pagination: Pagination | null,
-    currentPage: number,
-    handlePageChange: (newPage: number) => void;
+    fetchAnimes: (page: number, type: string, setAnime: (arg: any) => void) => void;
 }
 
 
 const InfoContext = createContext<InfoContextType>({
-    allAnimes: null,
     pagination: null,
-    currentPage: 1,
-    handlePageChange: () => { },
+    fetchAnimes: () => {},
 });
 
 export default function InfoProvider({ children }: PropsWithChildren) {
 
-    const [allAnimes, setAllAnimes] = useState<Anime[] | null>(null);
     const [pagination, setPagination] = useState<Pagination | null>(null)
-    const [currentPage, setCurrentPage] = useState<number>(1);
 
 
-    useEffect(() => {
-        const fetchAnimes = async (page: number) => {
-            try {
-                // Fetch data from the Jikan API
-                const response = await fetch(`https://api.jikan.moe/v4/anime?page=${page}&type=TV`);
+    const fetchAnimes = async (page: number, type: string, setAnime: (arg: any) => void) => {
+        try {
+            // Fetch data from the Jikan API
+            const response = await fetch(`https://api.jikan.moe/v4/anime?page=${page}&type=${type}`);
 
-                // Check if the response is OK
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                // Parse the JSON from the response
-                const data = await response.json();
-
-                // Update the state with the fetched data
-                setAllAnimes(data.data);
-                setPagination(data.pagination)
-            } catch (error) {
-                console.error('err brr:', error);
+            // Check if the response is OK
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
-        };
 
-        fetchAnimes(currentPage);
+            // Parse the JSON from the response
+            const data = await response.json();
 
-    }, [currentPage])
-
-    // Handle page change
-    const handlePageChange = (newPage: number) => {
-        if (newPage > 0 && (!pagination || newPage <= pagination.last_visible_page)) {
-            setCurrentPage(newPage);
+            // Update the state with the fetched data
+            setAnime(data.data);
+            setPagination(data.pagination)
+        } catch (error) {
+            console.error('err brr:', error);
         }
     };
 
-    return <InfoContext.Provider value={{ allAnimes, pagination, currentPage, handlePageChange }}>
+    return <InfoContext.Provider value={{ pagination, fetchAnimes }}>
         {children}
     </InfoContext.Provider >
 }
