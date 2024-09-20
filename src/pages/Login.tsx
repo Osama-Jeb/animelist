@@ -25,10 +25,10 @@ const Login = () => {
                 onSubmit={signIn}
                 className="flex flex-col gap-5 w-[50%]">
                 <input
-                    className="w-full rounded px-4 py-3" placeholder="Email" type="email"
+                    className="w-full rounded px-4 py-3 text-black" placeholder="Email" type="email"
                     onChange={(e) => { setEmail(e.target.value) }} value={email} />
                 <input
-                    className="w-full rounded px-4 py-3" placeholder="Password" type="password"
+                    className="w-full rounded px-4 py-3 text-black" placeholder="Password" type="password"
                     onChange={(e) => { setPassword(e.target.value) }} value={password} />
 
                 <button

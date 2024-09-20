@@ -3,10 +3,12 @@ import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { auth } from "../firebase";
+import { useInfo } from "../context/InfoProviders";
 
 const Navbar = () => {
 
     const { currentUser } = useAuth();
+    const { user } = useInfo();
     const navigate = useNavigate();
 
     const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -67,8 +69,10 @@ const Navbar = () => {
 
                                         <button
                                             onClick={toggleProfileMenu}
+                                            className="flex items-center gap-1"
                                         >
                                             <User size={24} />
+                                            <p>{user?.username}</p>
                                         </button>
                                         {
                                             profileMenu && <div className="absolute top-[150%] -left-[100px] w-[150px] bg-black">

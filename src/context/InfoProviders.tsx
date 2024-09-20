@@ -1,4 +1,7 @@
-import { PropsWithChildren, createContext, useContext, useState } from "react"
+import { onAuthStateChanged } from "firebase/auth";
+import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react"
+import { auth, db } from "../firebase";
+import { doc, DocumentData, getDoc } from "firebase/firestore";
 
 interface ImageUrls {
     image_url: string;
@@ -149,15 +152,23 @@ interface Pagination {
 
 }
 
+
+interface User {
+    username: string,
+    bookmarkedAnime: string[],
+    bookmarkedMovies: string[]
+}
 interface InfoContextType {
     pagination: Pagination | null,
     fetchAnimes: (page: number, type: string, setAnime: (arg: any) => void) => void;
+    user: User | null | DocumentData,
 }
 
 
 const InfoContext = createContext<InfoContextType>({
     pagination: null,
-    fetchAnimes: () => {},
+    fetchAnimes: () => { },
+    user: null,
 });
 
 export default function InfoProvider({ children }: PropsWithChildren) {
@@ -186,7 +197,23 @@ export default function InfoProvider({ children }: PropsWithChildren) {
         }
     };
 
-    return <InfoContext.Provider value={{ pagination, fetchAnimes }}>
+    const [user, setUser] = useState<User | null | DocumentData>(null)
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userId = user.uid;
+                const userDoc = await getDoc(doc(db, 'users', userId));
+                if (userDoc.exists()) {
+                    setUser(userDoc.data());
+                }
+            } else {
+                setUser(null); // User is signed out
+            }
+        });
+
+        return () => unsubscribe(); // Clean up subscription on unmount
+    }, []);
+    return <InfoContext.Provider value={{ pagination, fetchAnimes, user }}>
         {children}
     </InfoContext.Provider >
 }

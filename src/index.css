@@ -25,7 +25,7 @@ body {
     z-index: 0;
 }
 
-.reg>*{
+.reg>* {
     position: relative;
     z-index: 1;
 }
@@ -52,6 +52,22 @@ body {
     z-index: 1;
 }
 
+/* .heroBg {
+    background-image: #000;
+    background-image:
+        radial-gradient(at 40% 20%, rgb(59, 59, 236) 0, transparent 50%),
+        radial-gradient(at 80% 0%, rgba(172, 172, 172, 0.401) 0, transparent 50%),
+        radial-gradient(at 0% 50%, rgb(0, 0, 0) 0, transparent 50%),
+        radial-gradient(at 58% 46%, rgb(87, 80, 82) 0, transparent 50%),
+        radial-gradient(at 0% 100%, rgba(107, 105, 104, 0.518) 0, transparent 50%),
+        radial-gradient(at 80% 100%, rgb(0, 0, 0) 0, transparent 50%),
+        radial-gradient(at 0% 0%, rgba(55, 39, 222, 0.51) 0, transparent 50%);
+    height: 80%;
+    width: 100%;
+    position: absolute;
+    margin: 0;
+    z-index: -1;
+} */
 
 /* width */
 ::-webkit-scrollbar {
