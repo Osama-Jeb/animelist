@@ -1,7 +1,8 @@
 import { onAuthStateChanged } from "firebase/auth";
 import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react"
 import { auth, db } from "../firebase";
-import { doc, DocumentData, getDoc } from "firebase/firestore";
+import { arrayRemove, arrayUnion, doc, DocumentData, getDoc, updateDoc } from "firebase/firestore";
+import { useAuth } from "./AuthContext";
 
 interface ImageUrls {
     image_url: string;
@@ -162,6 +163,9 @@ interface InfoContextType {
     pagination: Pagination | null,
     fetchAnimes: (page: number, type: string, setAnime: (arg: any) => void) => void;
     user: User | null | DocumentData,
+    bookmarkedAnimes: string[] | null,
+    onBookmarkClick: (animeData: Anime) => void,
+    loading: boolean,
 }
 
 
@@ -169,6 +173,9 @@ const InfoContext = createContext<InfoContextType>({
     pagination: null,
     fetchAnimes: () => { },
     user: null,
+    bookmarkedAnimes: null,
+    onBookmarkClick: () => { },
+    loading: false,
 });
 
 export default function InfoProvider({ children }: PropsWithChildren) {
@@ -213,7 +220,71 @@ export default function InfoProvider({ children }: PropsWithChildren) {
 
         return () => unsubscribe(); // Clean up subscription on unmount
     }, []);
-    return <InfoContext.Provider value={{ pagination, fetchAnimes, user }}>
+
+    const { currentUser } = useAuth();
+    const [bookmarkedAnimes, setBookmarkedAnimes] = useState<any>()
+    const [loading, setLoading] = useState(false);
+    const onBookmarkClick = async (animeData: Anime) => {
+        const userRef = doc(db, 'users', currentUser.uid);
+
+        setLoading(true);
+        try {
+            // Fetch the user's current data
+            const userDoc = await getDoc(userRef);
+            if (userDoc.exists()) {
+                const userData = userDoc.data();
+                const isBookmarked = userData.bookmarkedAnime.some((anime: any) => anime.mal_id === animeData.mal_id);
+
+                // Update the local state immediately based on whether it's bookmarked or not
+                const updatedBookmarks = isBookmarked
+                    ? userData.bookmarkedAnime.filter((anime: any) => anime.mal_id !== animeData.mal_id)
+                    : [...userData.bookmarkedAnime, animeData];
+
+                setBookmarkedAnimes(updatedBookmarks); // Update local state immediately
+
+                if (isBookmarked) {
+                    await updateDoc(userRef, {
+                        bookmarkedAnime: arrayRemove(animeData)
+                    });
+                    console.log(`${animeData.mal_id} removed from bookmarks`);
+                } else {
+                    await updateDoc(userRef, {
+                        bookmarkedAnime: arrayUnion(animeData)
+                    });
+                    console.log(`${animeData.mal_id} added to bookmarks`);
+                }
+            } else {
+                console.error("User not found");
+            }
+        } catch (error) {
+            console.error("Error updating bookmarks: ", error);
+        }
+        setLoading(false)
+    };
+
+
+    useEffect(() => {
+        const fetchBookmarks = async () => {
+            const userRef = doc(db, 'users', currentUser.uid);
+            try {
+                const userDoc = await getDoc(userRef);
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    setBookmarkedAnimes(userData.bookmarkedAnime || []);
+                } else {
+                    console.error("User not found");
+                }
+            } catch (error) {
+                console.error("Error fetching bookmarks: ", error);
+            }
+        };
+
+        if (currentUser) {
+            fetchBookmarks();
+        }
+    }, [bookmarkedAnimes, currentUser]);
+
+    return <InfoContext.Provider value={{ pagination, fetchAnimes, user, bookmarkedAnimes, onBookmarkClick, loading }}>
         {children}
     </InfoContext.Provider >
 }

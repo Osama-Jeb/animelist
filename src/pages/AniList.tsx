@@ -1,21 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Anime, useInfo } from "../context/InfoProviders";
-import { Bookmark, Grid, List, TableIcon } from "lucide-react";
+import { Bookmark, Circle, Grid, List, TableIcon } from "lucide-react";
 import Loading from "../components/Loading";
-import { arrayRemove, arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase";
-import { useAuth } from "../context/AuthContext";
 
 
 type DisplayMode = 'grid' | 'list' | 'masonry' | 'table'
 
 
 const AniList = () => {
+    const { pagination, fetchAnimes, bookmarkedAnimes, onBookmarkClick, loading } = useInfo();
+
     const goto = useNavigate()
     const [displayMode, setDisplayMode] = useState<DisplayMode>('grid')
-    const { pagination, fetchAnimes } = useInfo();
-    const { currentUser } = useAuth();
 
     const [animeTV, setAnimeTV] = useState<Anime[] | null>(null);
     const [currPage, setCurrPage] = useState(1);
@@ -32,7 +29,6 @@ const AniList = () => {
         }
     };
 
-    // Generate page numbers to display
     const getPageNumbers = () => {
         const pageNumbers = [];
         const startPage = Math.max(1, currPage - maxPagesToShow);
@@ -46,79 +42,22 @@ const AniList = () => {
     };
     const pageNumbers = getPageNumbers();
 
-    const [bookmarked, setBookmarked] = useState<any>();
-
-    // TODO: left it here: find a way to get the bookmarks
-    useEffect(() => {
-        const fetchBookmarks = async () => {
-            const userRef = doc(db, 'users', currentUser.uid);
-            try {
-                const userDoc = await getDoc(userRef);
-                if (userDoc.exists()) {
-                    const userData = userDoc.data();
-                    setBookmarked(userData.bookmarkedAnime || []);
-                } else {
-                    console.error("User not found");
-                }
-            } catch (error) {
-                console.error("Error fetching bookmarks: ", error);
-            }
-        };
-
-        if (currentUser) {
-            fetchBookmarks();
-        }
-    }, []);
-
-    const onBookmarkClick = async (animeData: Anime) => {
-        const userRef = doc(db, 'users', currentUser.uid);
-
-        try {
-            // Fetch the user's current data
-            const userDoc = await getDoc(userRef);
-            if (userDoc.exists()) {
-                const userData = userDoc.data();
-                const isBookmarked = userData.bookmarkedAnime.some((anime: any) => anime.mal_id === animeData.mal_id);
-
-                // Update the local state immediately based on whether it's bookmarked or not
-                const updatedBookmarks = isBookmarked
-                    ? userData.bookmarkedAnime.filter((anime: any) => anime.mal_id !== animeData.mal_id)
-                    : [...userData.bookmarkedAnime, animeData];
-
-                setBookmarked(updatedBookmarks); // Update local state immediately
-
-                if (isBookmarked) {
-                    await updateDoc(userRef, {
-                        bookmarkedAnime: arrayRemove(animeData)
-                    });
-                    console.log(`${animeData.mal_id} removed from bookmarks`);
-                } else {
-                    await updateDoc(userRef, {
-                        bookmarkedAnime: arrayUnion(animeData)
-                    });
-                    console.log(`${animeData.mal_id} added to bookmarks`);
-                }
-            } else {
-                console.error("User not found");
-            }
-        } catch (error) {
-            console.error("Error updating bookmarks: ", error);
-        }
-    };
-
-
-
 
     const renderGrid = (animes: Anime[] | null) => (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
             {animes?.map((anime, index) => (
                 <div className="relative border rounded-lg overflow-hidden hover:bg-gray-900">
-                    <button className="absolute top-[10%] right-[10%] bg-alpha rounded p-1 z-10"
+                    <button className="absolute top-[10%] right-[10%] bg-alpha rounded p-1 z-1"
                         onClick={() => { onBookmarkClick(anime) }}
                     >
-                        <Bookmark fill={`${bookmarked?.some((anm: any) => anm.mal_id === anime.mal_id) ? "white" : "#1d4ed8"}`} />
+                        {
+                            loading ?
+                                <Circle />
+                                :
+                                <Bookmark fill={`${bookmarkedAnimes?.some((anm: any) => anm.mal_id === anime.mal_id) ? "white" : "#1d4ed8"}`} />
+                        }
                     </button>
-                    <Link to={`/animes/${anime.mal_id}`} key={index}>
+                    <Link to={`/animes/${anime.mal_id}`} key={index} className="cursor-default">
                         <img src={anime.images?.webp?.large_image_url} alt={anime.title} className="w-full h-64 object-cover" />
                         <div className="p-4">
                             <h3 className="text-xl font-semibold mb-2">{anime.title_english ?? anime.title}</h3>
@@ -148,7 +87,6 @@ const AniList = () => {
             ))}
         </div>
     )
-
 
     const renderTable = (animes: Anime[] | null) => (
         <div className="overflow-x-auto">
@@ -180,6 +118,8 @@ const AniList = () => {
     )
 
     const [searchedAnimes, setSearchedAnimes] = useState<Anime[] | null>(null);
+    const [inputValue, setInputValue] = useState('')
+
     const onSearch = async (term: string) => {
         try {
             const res = await fetch(`https://api.jikan.moe/v4/anime?q=${term}&type=TV`)
@@ -194,7 +134,6 @@ const AniList = () => {
         }
     }
 
-    const [inputValue, setInputValue] = useState('')
     return (
         <>
             {

@@ -1,5 +1,5 @@
-import { Bookmark, Menu, User, X } from "lucide-react";
-import { useState } from "react";
+import { Bookmark, ChartPie, Menu, User, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { auth } from "../firebase";
@@ -20,6 +20,24 @@ const Navbar = () => {
     const toggleProfileMenu = () => {
         setProfileMenu(!profileMenu);
     }
+    const settingsRef = useRef<HTMLDivElement>(null);
+    const handleClickOutside = (event: MouseEvent) => {
+        if (settingsRef.current && !settingsRef.current.contains(event.target as Node)) {
+            setProfileMenu(false);
+        }
+    };
+
+    useEffect(() => {
+        if (profileMenu) {
+            document.addEventListener("mousedown", handleClickOutside);
+        } else {
+            document.removeEventListener("mousedown", handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [profileMenu]);
 
     const doSignOut = () => {
         auth.signOut();
@@ -65,7 +83,7 @@ const Navbar = () => {
                             </NavLink> */}
                             {
                                 currentUser ?
-                                    <div className="relative">
+                                    <div className="relative" ref={settingsRef}>
 
                                         <button
                                             onClick={toggleProfileMenu}
@@ -75,9 +93,9 @@ const Navbar = () => {
                                             <p>{user?.username}</p>
                                         </button>
                                         {
-                                            profileMenu && <div className="absolute top-[150%] -left-[100px] w-[150px] bg-black">
-                                                <Link to={"/bookmarkedAnime"} className="px-3 py-2 flex gap-2 items-center"><Bookmark /> <p>Saved Anime</p></Link>
-                                                <div className="px-3 py-2 flex gap-2 items-center"><Bookmark /> <p>Second Page</p></div>
+                                            profileMenu && <div className="absolute top-[150%] -left-[100px] w-[200px] z-20 bg-black">
+                                                <Link to={"/bookmarkedAnime"} onClick={() => { setProfileMenu(false) }} className="px-3 py-2 flex gap-2 items-center"><Bookmark /> <p>Bookmarked Anime</p></Link>
+                                                <Link to={"/statistics"} onClick={() => { setProfileMenu(false) }} className="px-3 py-2 flex gap-2 items-center my-4"><ChartPie /> <p>Statistics</p></Link>
                                                 <button className="bg-red-600 px-3 py-2 rounded-md w-full"
                                                     onClick={doSignOut}
                                                 >
