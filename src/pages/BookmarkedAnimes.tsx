@@ -1,36 +1,36 @@
 import { useState } from "react";
-import { Anime, useInfo } from "../context/InfoProviders"
+import { useInfo } from "../context/InfoProviders"
 import { Bookmark } from "lucide-react";
 import { Link } from "react-router-dom";
 
 
 const BookmarkedAnime = () => {
-    const { bookmarkedAnimes, onBookmarkClick, loading } = useInfo();
+    const { bookmarkedAnimes, onBookmarkClick } = useInfo();
 
     // TODO* Implement Reverse Sorting
 
     const [searchTerm, setSearchTerm] = useState('')
-    const [sortCriteria, setSortCriteria] = useState<keyof Anime>('title')
+    // const [sortCriteria, setSortCriteria] = useState<keyof Anime>('title')
 
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value)
     }
 
-    const handleSort = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSortCriteria(event.target.value as keyof Anime)
-    }
+    // const handleSort = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    //     setSortCriteria(event.target.value as keyof Anime)
+    // }
 
-    const filteredAndSortedAnimes = bookmarkedAnimes?.filter((anime: any) => anime.title.toLowerCase().includes(searchTerm.toLowerCase()))
-        .sort((a: any, b: any) => {
-            if (sortCriteria == "score") {
-                if (a[sortCriteria] < b[sortCriteria]) return 1
-                if (a[sortCriteria] > b[sortCriteria]) return -1
-            } else {
-                if (a[sortCriteria] < b[sortCriteria]) return -1
-                if (a[sortCriteria] > b[sortCriteria]) return 1
-            }
-            return 0
-        })
+    // const filteredAndSortedAnimes = bookmarkedAnimes?.filter((anime: any) => anime.title.toLowerCase().includes(searchTerm.toLowerCase()))
+    //     .sort((a: any, b: any) => {
+    //         if (sortCriteria == "score") {
+    //             if (a[sortCriteria] < b[sortCriteria]) return 1
+    //             if (a[sortCriteria] > b[sortCriteria]) return -1
+    //         } else {
+    //             if (a[sortCriteria] < b[sortCriteria]) return -1
+    //             if (a[sortCriteria] > b[sortCriteria]) return 1
+    //         }
+    //         return 0
+    //     })
 
 
     
