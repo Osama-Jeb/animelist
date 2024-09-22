@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Anime, useInfo } from "../context/InfoProviders";
-import { Bookmark, Circle, Grid, List, TableIcon } from "lucide-react";
+import { Bookmark, Grid, List, TableIcon } from "lucide-react";
 import Loading from "../components/Loading";
 
 
@@ -9,7 +9,10 @@ type DisplayMode = 'grid' | 'list' | 'masonry' | 'table'
 
 
 const AniList = () => {
-    const { pagination, fetchAnimes, bookmarkedAnimes, onBookmarkClick, loading } = useInfo();
+
+    // TODO* add criteria when fetching/radio https://docs.api.jikan.moe/#tag/anime/operation/getAnimeSearch
+    const { pagination, fetchAnimes, bookmarkedAnimes, onBookmarkClick } = useInfo();
+    const [type, setType] = useState('TV');
 
     const goto = useNavigate()
     const [displayMode, setDisplayMode] = useState<DisplayMode>('grid')
@@ -20,8 +23,8 @@ const AniList = () => {
     const maxPagesToShow = 3;
 
     useEffect(() => {
-        fetchAnimes(currPage, "TV", setAnimeTV)
-    }, [currPage])
+        fetchAnimes(currPage, type, setAnimeTV)
+    }, [currPage, type])
 
     const handlePageChange = (newPage: number) => {
         if (newPage > 0 && (!pagination || newPage <= pagination.last_visible_page)) {
@@ -46,16 +49,12 @@ const AniList = () => {
     const renderGrid = (animes: Anime[] | null) => (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
             {animes?.map((anime, index) => (
-                <div className="relative border rounded-lg overflow-hidden hover:bg-gray-900">
+                <div className="relative border border-alpha rounded-lg overflow-hidden hover:bg-gray-900">
                     <button className="absolute top-[10%] right-[10%] bg-alpha rounded p-1 z-1"
                         onClick={() => { onBookmarkClick(anime) }}
                     >
-                        {
-                            loading ?
-                                <Circle />
-                                :
-                                <Bookmark fill={`${bookmarkedAnimes?.some((anm: any) => anm.mal_id === anime.mal_id) ? "white" : "#1d4ed8"}`} />
-                        }
+
+                        <Bookmark fill={`${bookmarkedAnimes?.some((anm: any) => anm.mal_id === anime.mal_id) ? "white" : "#1d4ed8"}`} />
                     </button>
                     <Link to={`/animes/${anime.mal_id}`} key={index} className="cursor-default">
                         <img src={anime.images?.webp?.large_image_url} alt={anime.title} className="w-full h-64 object-cover" />
@@ -63,7 +62,8 @@ const AniList = () => {
                             <h3 className="text-xl font-semibold mb-2">{anime.title_english ?? anime.title}</h3>
                             <p className="text-gray-600 mb-2">{anime.score}</p>
                             <p className="text-sm text-gray-500 mb-1">Episodes: {anime.episodes}</p>
-                            <p className="text-sm text-gray-500 mb-2">Release Year: {anime.year}</p>
+                            <p className="text-sm text-gray-500 mb-1">Release Year: {anime.year}</p>
+                            <p className="text-sm text-gray-500 mb-2">Genres: {anime.genres.map((genre) => genre.name).join(', ')}</p>
                         </div>
                     </Link>
                 </div>
@@ -122,7 +122,7 @@ const AniList = () => {
 
     const onSearch = async (term: string) => {
         try {
-            const res = await fetch(`https://api.jikan.moe/v4/anime?q=${term}&type=TV`)
+            const res = await fetch(`https://api.jikan.moe/v4/anime?q=${term}`)
             if (!res.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -134,6 +134,14 @@ const AniList = () => {
         }
     }
 
+
+    const radioOptions = [
+        { id: "TV", label: "TV" },
+        { id: "movie", label: "Movie" },
+        { id: "OVA", label: "OVA" },
+        { id: "ONA", label: "ONA" },
+        { id: "special", label: "Special" },
+    ];
     return (
         <>
             {
@@ -177,6 +185,22 @@ const AniList = () => {
                                         }}
 
                                     />
+                                </div>
+
+                                <div className="flex items-center gap-2">
+                                    {radioOptions.map((option, index) => (
+                                        <div className="flex items-center gap-1" key={index}>
+                                            <input
+                                                type="radio"
+                                                name="type"
+                                                id={option.id}
+                                                checked={type === option.label}
+                                                value={option.label}
+                                                onChange={() => setType(option.label)}
+                                            />
+                                            <label htmlFor={option.id}>{option.label}</label>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
 

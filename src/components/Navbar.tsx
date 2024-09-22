@@ -1,14 +1,12 @@
-import { Bookmark, ChartPie, Menu, User, X } from "lucide-react";
+import { Bookmark, ChartPie, Menu, UserCog, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { auth } from "../firebase";
-import { useInfo } from "../context/InfoProviders";
 
 const Navbar = () => {
 
     const { currentUser } = useAuth();
-    const { user } = useInfo();
     const navigate = useNavigate();
 
     const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -41,21 +39,18 @@ const Navbar = () => {
 
     const doSignOut = () => {
         auth.signOut();
+        setProfileMenu(false)
         navigate("/")
     }
 
     const links = [
         {
             link: "/animes",
-            name: "Animes List"
+            name: "Anime List"
         },
         {
-            link: "/animeMovies",
-            name: "Animes Movies"
-        },
-        {
-            link: "/singers",
-            name: "Singers"
+            link: "/manga",
+            name: "Manga List"
         },
     ]
     return (
@@ -87,15 +82,22 @@ const Navbar = () => {
 
                                         <button
                                             onClick={toggleProfileMenu}
-                                            className="flex items-center gap-1"
+                                            className="flex items-center gap-2"
                                         >
-                                            <User size={24} />
-                                            <p>{user?.username}</p>
+                                            <img src={currentUser?.photoURL} className="w-[40px] rounded-full" alt="" />
+                                            <p>{currentUser?.displayName}</p>
                                         </button>
                                         {
                                             profileMenu && <div className="absolute top-[150%] -left-[100px] w-[200px] z-20 bg-black">
-                                                <Link to={"/bookmarkedAnime"} onClick={() => { setProfileMenu(false) }} className="px-3 py-2 flex gap-2 items-center"><Bookmark /> <p>Bookmarked Anime</p></Link>
-                                                <Link to={"/statistics"} onClick={() => { setProfileMenu(false) }} className="px-3 py-2 flex gap-2 items-center my-4"><ChartPie /> <p>Statistics</p></Link>
+                                                <Link to={"/bookmarkedAnime"} onClick={() => { setProfileMenu(false) }} className="px-3 py-2 flex gap-2 items-center">
+                                                    <Bookmark /> <p>Bookmarked Anime</p>
+                                                </Link>
+                                                <Link to={"/statistics"} onClick={() => { setProfileMenu(false) }} className="px-3 py-2 flex gap-2 items-center my-4">
+                                                    <ChartPie /> <p>Statistics</p>
+                                                </Link>
+                                                <Link to={"/profile"} onClick={() => { setProfileMenu(false) }} className="px-3 py-2 flex gap-2 items-center my-4">
+                                                    <UserCog /> <p>Profile</p>
+                                                </Link>
                                                 <button className="bg-red-600 px-3 py-2 rounded-md w-full"
                                                     onClick={doSignOut}
                                                 >
@@ -107,7 +109,7 @@ const Navbar = () => {
 
                                     :
 
-                                    <Link to={"/register"}>
+                                    <Link to={"/login"}>
                                         Register/Login
                                     </Link>
 
@@ -137,12 +139,25 @@ const Navbar = () => {
                         <Link to="/animes" className="hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">
                             Animes List
                         </Link>
-                        <Link to="/animeMovies" className="hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">
-                            Anime Movies
+
+                        <Link to="/manga" className="hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">
+                            Manga List
                         </Link>
-                        <Link to="/singers" className="hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">
-                            Singers
+
+                        <Link to={"/bookmarkedAnime"} onClick={() => { setProfileMenu(false) }} className="px-3 py-2 flex gap-2 items-center">
+                            <Bookmark /> <p>Bookmarked Anime</p>
                         </Link>
+                        <Link to={"/statistics"} onClick={() => { setProfileMenu(false) }} className="px-3 py-2 flex gap-2 items-center my-4">
+                            <ChartPie /> <p>Statistics</p>
+                        </Link>
+                        <Link to={"/profile"} onClick={() => { setProfileMenu(false) }} className="px-3 py-2 flex gap-2 items-center my-4">
+                            <UserCog /> <p>Profile</p>
+                        </Link>
+                        <button className="bg-red-600 px-3 py-2 rounded-md w-full"
+                            onClick={doSignOut}
+                        >
+                            Log Out
+                        </button>
                         {/* <Link to="/voice-actors" className="hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">
                             Voice Actors
                         </Link> */}

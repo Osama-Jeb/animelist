@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useInfo } from "../context/InfoProviders"
+import { Anime, useInfo } from "../context/InfoProviders"
 import { Bookmark } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -10,30 +10,34 @@ const BookmarkedAnime = () => {
     // TODO* Implement Reverse Sorting
 
     const [searchTerm, setSearchTerm] = useState('')
-    // const [sortCriteria, setSortCriteria] = useState<keyof Anime>('title')
+    const [sortCriteria, setSortCriteria] = useState<keyof Anime>('title')
+    const [isAscending, setIsAscending] = useState(true);
 
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value)
     }
 
-    // const handleSort = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    //     setSortCriteria(event.target.value as keyof Anime)
-    // }
-
-    // const filteredAndSortedAnimes = bookmarkedAnimes?.filter((anime: any) => anime.title.toLowerCase().includes(searchTerm.toLowerCase()))
-    //     .sort((a: any, b: any) => {
-    //         if (sortCriteria == "score") {
-    //             if (a[sortCriteria] < b[sortCriteria]) return 1
-    //             if (a[sortCriteria] > b[sortCriteria]) return -1
-    //         } else {
-    //             if (a[sortCriteria] < b[sortCriteria]) return -1
-    //             if (a[sortCriteria] > b[sortCriteria]) return 1
-    //         }
-    //         return 0
-    //     })
+    const handleSortClick = (criteria: any) => {
+        if (sortCriteria === criteria.toLowerCase()) {
+            setIsAscending(!isAscending);
+        } else {
+            setSortCriteria(criteria.toLowerCase());
+            setIsAscending(true);
+        }
+    };
 
 
-    
+    const filteredAndSortedAnimes  = bookmarkedAnimes
+        ?.filter((anime) => anime.title.toLowerCase().includes(searchTerm.toLowerCase()))
+        .sort((a, b) => {
+            const order = isAscending ? 1 : -1;
+            if (a[sortCriteria] < b[sortCriteria]) return -1 * order;
+            if (a[sortCriteria] > b[sortCriteria]) return 1 * order;
+            return 0;
+        });
+
+
+
     return (
         <>
             <div className="container mx-auto p-4 mt-4">
@@ -46,18 +50,20 @@ const BookmarkedAnime = () => {
                         value={searchTerm}
                         onChange={handleSearch}
                     />
-                    {/* <select
-                        className="p-2 border rounded text-black"
-                        value={sortCriteria}
-                        onChange={handleSort}
-                    >
-                        <option value="title">Sort by Title</option>
-                        <option value="score">Sort by Rating</option>
-                        <option value="year">Sort by Release Year</option>
-                    </select> */}
+
+                    {['Title', 'Score', 'Year'].map((criteria, index) => (
+                        <button
+                            key={index}
+                            className={`px-3 py-1 rounded-lg ${criteria.toLowerCase() === sortCriteria ? 'bg-alpha' : 'bg-white text-black'}`}
+                            onClick={() => handleSortClick(criteria)}
+                        >
+                            {criteria}
+                        </button>
+                    ))}
+
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                    {bookmarkedAnimes?.map((anime: any) => (
+                    {filteredAndSortedAnimes?.map((anime: any) => (
                         <div key={anime.mal_id} className="border rounded-lg shadow overflow-hidden relative">
 
                             <button className="absolute top-[10%] right-[10%] bg-alpha rounded p-1 z-1"

@@ -163,7 +163,7 @@ interface InfoContextType {
     pagination: Pagination | null,
     fetchAnimes: (page: number, type: string, setAnime: (arg: any) => void) => void;
     user: User | null | DocumentData,
-    bookmarkedAnimes: string[] | null,
+    bookmarkedAnimes: Anime[] | null,
     onBookmarkClick: (animeData: Anime) => void,
     loading: boolean,
 }
@@ -186,7 +186,7 @@ export default function InfoProvider({ children }: PropsWithChildren) {
     const fetchAnimes = async (page: number, type: string, setAnime: (arg: any) => void) => {
         try {
             // Fetch data from the Jikan API
-            const response = await fetch(`https://api.jikan.moe/v4/anime?page=${page}&type=${type}`);
+            const response = await fetch(`https://api.jikan.moe/v4/top/anime?page=${page}&type=${type}`);
 
             // Check if the response is OK
             if (!response.ok) {

@@ -2,25 +2,40 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Anime } from "../context/InfoProviders";
 
+import { Autoplay, Navigation } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import Loading from "../components/Loading";
+
+
 const SingleAnime = () => {
+
     const { id } = useParams();
     const [animeInfo, setAnimeInfo] = useState<Anime>();
+    const [animeImages, setAnimeImages] = useState<any>();
+    const [animeChara, setAnimeChara] = useState<any>();
 
     useEffect(() => {
         const fetchAnimes = async () => {
             try {
-                // Fetch data from the Jikan API
-                const response = await fetch(`https://api.jikan.moe/v4/anime/${id}/full`);
 
-                // Check if the response is OK
-                if (!response.ok) {
+                const response = await fetch(`https://api.jikan.moe/v4/anime/${id}/full`);
+                const res = await fetch(`https://api.jikan.moe/v4/anime/${id}/pictures`);
+                const resp = await fetch(`https://api.jikan.moe/v4/anime/${id}/characters`)
+
+                if (!response.ok || !res.ok || !response.ok) {
                     throw new Error('Network response was not ok');
                 }
 
-                // Parse the JSON from the response
-                const data = await response.json();
 
-                setAnimeInfo(data.data)
+                const data = await response.json();
+                const imgs = await res.json();
+                const chars = await resp.json();
+
+                setAnimeInfo(data.data);
+                setAnimeImages(imgs.data);
+                setAnimeChara(chars.data);
             } catch (error) {
                 console.error('err brr:', error);
             }
@@ -29,19 +44,47 @@ const SingleAnime = () => {
         fetchAnimes();
     }, [id]);
 
+
+    const formatName = (name: string) => {
+        if (name.includes(",")) {
+            const [lastname, firstname] = name.split(', ');
+            return `${firstname} ${lastname}`;
+        } else {
+            return name;
+        }
+    };
     return (
 
-        animeInfo && <section className="px-12 text-lg tracking-wider">
+        animeInfo ? <section className="px-12 text-lg tracking-wider">
 
             <div className="container mx-auto px-4 py-8">
                 <div className="flex flex-col md:flex-row gap-8">
                     <div className="md:w-1/3 flex items-center justify-center">
-                        <img
-                            src={animeInfo.images?.webp?.large_image_url}
-                            alt={animeInfo.title_english ?? animeInfo.title}
-                            width={400}
-                            className=" rounded-lg shadow-lg"
-                        />
+
+                        <Swiper
+                            slidesPerView={1}
+                            modules={[Navigation, Autoplay]}
+                            navigation
+                            loop={true}
+                            autoplay={{
+                                delay: 2000,
+                                disableOnInteraction: false,
+                            }}
+
+                        >
+                            {
+                                animeImages?.map((img: any, index: number) => (
+                                    <SwiperSlide key={index} className="w-full">
+                                        <img
+                                            src={img.webp?.large_image_url}
+                                            alt={animeInfo.title_english ?? animeInfo.title}
+                                            className=" rounded-lg w-full"
+                                        />
+                                    </SwiperSlide>
+                                ))
+                            }
+
+                        </Swiper>
                     </div>
                     <div className="md:w-2/3">
                         <h1 className="text-4xl font-bold mb-4">{animeInfo.title_english}</h1>
@@ -54,12 +97,11 @@ const SingleAnime = () => {
                             <div>
                                 <p className="font-semibold">Studio: {animeInfo.studios[0].name}</p>
                                 <p className="font-semibold">Rating: {animeInfo.score}/10</p>
-                                <p className="font-semibold">Genres: {animeInfo.themes.map((theme) => theme.name).join(', ')}</p>
+                                <p className="font-semibold">Genres: {animeInfo.genres.map((theme) => theme.name).join(', ')}</p>
                             </div>
                         </div>
                         <h2 className="text-4xl font-semibold mb-2">Synopsis</h2>
-                        <p className="mb-6">{animeInfo.synopsis}</p>
-                        {animeInfo.relations.length && <p className="text-3xl font-bold">Related Shows</p>}
+                        <article className="mb-6">{animeInfo.synopsis}</article>
                         <ul className="list-disc">
 
                             {
@@ -79,7 +121,39 @@ const SingleAnime = () => {
                     </div>
                 </div>
             </div>
+
+            <div>
+                <h1 className="text-4xl my-2">More Details: </h1>
+
+                <p>Characters: </p>
+                <div className="overflow-x-auto my-4">
+                    <div className="flex gap-7 w-fit">
+                        {animeChara
+                        ?.sort((a:any, b:any) => b.favorites - a.favorites)
+                        .map((chara: any, index: number) => (
+                            <div key={index} className="shadow-alpha shadow-sm rounded-xl ">
+                                <img src={chara.character.images.webp.image_url}
+                                    className="w-full rounded-xl"
+                                    alt="" />
+                                <div className="p-3 flex flex-col gap-2 w-[300px]">
+                                    <p>Name: {formatName(chara.character.name)}</p>
+                                    <p>Role: {chara.role}</p>
+                                    <p>Voice Actor: {chara.voice_actors.map((human: any, ind: number) => (
+                                        <span key={ind}>
+                                            {human.language === "Japanese" && human.person.name.replace(",", "")}
+                                        </span>
+                                    ))}</p>
+                                    <p>Liked by {chara.favorites} person</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+            </div>
         </section>
+        :
+        <Loading />
 
     )
 }

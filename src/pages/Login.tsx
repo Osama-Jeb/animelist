@@ -19,17 +19,25 @@ const Login = () => {
     }
 
     return (
-        <div className="h-screen flex flex-col items-center justify-center reg">
+        <div className="h-screen flex flex-col items-center justify-center">
 
             <form
                 onSubmit={signIn}
                 className="flex flex-col gap-5 w-[50%]">
-                <input
-                    className="w-full rounded px-4 py-3 text-black" placeholder="Email" type="email"
-                    onChange={(e) => { setEmail(e.target.value) }} value={email} />
-                <input
-                    className="w-full rounded px-4 py-3 text-black" placeholder="Password" type="password"
-                    onChange={(e) => { setPassword(e.target.value) }} value={password} />
+
+                <div>
+                    <label htmlFor="username">Username: </label>
+                    <input
+                        className="w-full rounded px-4 py-3 text-black mt-2" placeholder="Email" type="email"
+                        onChange={(e) => { setEmail(e.target.value) }} value={email} />
+                </div>
+
+                <div>
+                    <label htmlFor="password">Password: </label>
+                    <input
+                        className="w-full rounded px-4 py-3 text-black mt-2" placeholder="Password" type="password"
+                        onChange={(e) => { setPassword(e.target.value) }} value={password} />
+                </div>
 
                 <button
                     className="w-full bg-alpha text-white px-4 py-2 rounded"

@@ -6,8 +6,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import ErrorPage from './pages/error-page.tsx';
 import AniList from './pages/AniList.tsx';
 import SingleAnime from './pages/SingleAnime.tsx';
-import Singers from './pages/Singers.tsx';
-import AniMovies from './pages/AniMovies.tsx';
 import Root from './routes/root.tsx';
 import InfoProvider from './context/InfoProviders.tsx';
 import AuthProvider from './context/AuthContext.tsx';
@@ -15,6 +13,8 @@ import Register from './pages/Register.tsx';
 import Login from './pages/Login.tsx';
 import BookmarkedAnime from './pages/BookmarkedAnimes.tsx';
 import Statistics from './pages/Statistics.tsx';
+import Profile from './pages/Profile.tsx';
+import MangaList from './pages/MangaList.tsx';
 
 const router = createBrowserRouter([
   {
@@ -31,14 +31,6 @@ const router = createBrowserRouter([
         element: <SingleAnime />,
       },
       {
-        path: "/singers",
-        element: <Singers />,
-      },
-      {
-        path: "/animeMovies",
-        element: <AniMovies />
-      },
-      {
         path: "/register",
         element: <Register />
       },
@@ -53,6 +45,14 @@ const router = createBrowserRouter([
       {
         path: "/statistics",
         element: <Statistics />
+      },
+      {
+        path: "/profile",
+        element: <Profile />
+      },
+      {
+        path: "/manga",
+        element: <MangaList />
       }
     ]
   },

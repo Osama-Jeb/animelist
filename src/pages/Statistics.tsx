@@ -101,7 +101,7 @@ const Statistics = () => {
                 {/* Charts */}
                 <div className="flex items-center justify-between mt-3">
 
-                    <div className="w-[40vw]">
+                    <div className="w-full lg:w-[40vw]">
                         <ChartComponent />
                     </div>
 

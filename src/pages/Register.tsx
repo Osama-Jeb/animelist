@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { auth, db } from "../firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-// import { collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
 
@@ -9,6 +8,7 @@ const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
+    const [userImage, setUserImage] = useState('');
     const navigate = useNavigate();
 
     const register = (e: any) => {
@@ -19,13 +19,15 @@ const Register = () => {
 
                 const newUser = {
                     id: user.uid,
-                    email: user.email,
-                    username: username,
                     bookmarkedAnime: [],
-                    bookmarkedMovies: [],
                     created_at: serverTimestamp(),
                     updated_at: serverTimestamp(),
                 };
+
+                await updateProfile(user, {
+                    displayName: username,
+                    photoURL: userImage ?? "https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png"
+                })
 
                 const userRef = doc(collection(db, 'users'), newUser.id);
                 await setDoc(userRef, newUser);
@@ -42,11 +44,28 @@ const Register = () => {
             <form
                 onSubmit={register}
                 className="flex flex-col gap-5 w-[50%]">
+                <div>
+                    <label htmlFor="username">Username: <span className="font-bold text-red-600 underline">*</span></label>
+                    <input className="w-full rounded px-4 py-3 text-black mt-2" type="text" placeholder="Username" onChange={(e) => setUsername(e.target.value)} value={username} required />
+                </div>
 
-                <input className="w-full rounded px-4 py-3 text-black" type="text" placeholder="Username" onChange={(e) => setUsername(e.target.value)} value={username} required />
-                <input className="w-full rounded px-4 py-3 text-black" placeholder="example@email.com" type="email" onChange={(e) => setEmail(e.target.value)} value={email} required />
-                <input className="w-full rounded px-4 py-3 text-black" placeholder="Password" type="password" onChange={(e) => setPassword(e.target.value)} value={password} required />
+                <div>
+                    <label htmlFor="photourl">Photo URL:</label>
+                    <input className="w-full rounded px-4 py-3 text-black mt-2" type="url" placeholder="Photo URL" onChange={(e) => setUserImage(e.target.value)} value={userImage} />
+                </div>
 
+                {/* TODO: waaay later, email verification */}
+                <div>
+                    <label htmlFor="email">Email: <span className="font-bold text-red-600 underline">*</span></label> <span>(can be fake for now, idc)</span>
+                    <input className="w-full rounded px-4 py-3 text-black mt-2" placeholder="example@email.com" type="email" onChange={(e) => setEmail(e.target.value)} value={email} required />
+                </div>
+
+                <div>
+                    <label htmlFor="password">Password: <span className="font-bold text-red-600 underline">*</span></label>
+                    <input className="w-full rounded px-4 py-3 text-black mt-2" placeholder="Password" type="password" onChange={(e) => setPassword(e.target.value)} value={password} required />
+                </div>
+
+                {/* TODO: Add Password Verification */}
                 <button className="w-full bg-alpha text-white px-4 py-2 rounded"
                     type="submit"
                 >
