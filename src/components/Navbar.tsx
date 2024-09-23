@@ -46,12 +46,20 @@ const Navbar = () => {
     const links = [
         {
             link: "/animes",
-            name: "Anime List"
+            name: "Anime"
         },
         {
             link: "/manga",
-            name: "Manga List"
+            name: "Manga"
         },
+        {
+            link: "/characters",
+            name: "Characters",
+        },
+        {
+            link: "/va",
+            name: "Voice Actors"
+        }
     ]
     return (
         <nav className="sticky top-0 z-10 bg-black/80">

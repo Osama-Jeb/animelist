@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-// import App from './App.tsx'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import ErrorPage from './pages/error-page.tsx';
@@ -15,6 +14,9 @@ import BookmarkedAnime from './pages/BookmarkedAnimes.tsx';
 import Statistics from './pages/Statistics.tsx';
 import Profile from './pages/Profile.tsx';
 import MangaList from './pages/MangaList.tsx';
+import VoiceActors from './pages/VoiceActors.tsx';
+import SingleVoiceActor from './pages/SingleVoiceActors.tsx';
+import Characters from './pages/Characters.tsx';
 
 const router = createBrowserRouter([
   {
@@ -27,7 +29,7 @@ const router = createBrowserRouter([
         element: <AniList />,
       },
       {
-        path: "animes/:id",
+        path: "/animes/:id",
         element: <SingleAnime />,
       },
       {
@@ -53,6 +55,18 @@ const router = createBrowserRouter([
       {
         path: "/manga",
         element: <MangaList />
+      },
+      {
+        path: "/va",
+        element: <VoiceActors />
+      },
+      {
+        path: "/va/:id",
+        element: <SingleVoiceActor />
+      },
+      {
+        path : "/characters",
+        element: <Characters />
       }
     ]
   },
