@@ -90,7 +90,7 @@ const SingleAnime = () => {
                         <h1 className="text-4xl font-bold mb-4">{animeInfo.title_english}</h1>
                         <div className="grid grid-cols-2 gap-4 mb-6">
                             <div>
-                                <p className="font-semibold text-xl">Episodes: <span className="font-light">{animeInfo.episodes}</span></p>
+                                <p className="font-semibold text-xl">Episodes: <span className="font-light">{animeInfo.episodes ?? 'Still Airing'}</span></p>
                                 <p className="font-semibold text-xl">Release Year: <span className="font-light">{animeInfo.year}</span></p>
                                 <p className="font-semibold text-xl">Season: <span className="font-light">{animeInfo.season}</span></p>
                             </div>
@@ -109,7 +109,7 @@ const SingleAnime = () => {
                                     rel.relation == "Sequel" || rel.relation == "Prequel" ?
                                         <li key={rel.entry[0].mal_id}>
                                             <Link
-                                                to={`/animes/${rel.entry[0].mal_id}`}
+                                                to={`/anime/${rel.entry[0].mal_id}`}
                                             >{rel.relation} : {rel.entry[0].name}
                                             </Link>
                                         </li>
@@ -129,31 +129,33 @@ const SingleAnime = () => {
                 <div className="overflow-x-auto my-4">
                     <div className="flex gap-7 w-fit">
                         {animeChara
-                        ?.sort((a:any, b:any) => b.favorites - a.favorites)
-                        .map((chara: any, index: number) => (
-                            <div key={index} className="shadow-alpha shadow-sm rounded-xl ">
-                                <img src={chara.character.images.webp.image_url}
-                                    className="w-full rounded-xl"
-                                    alt="" />
-                                <div className="p-3 flex flex-col gap-2 w-[300px]">
-                                    <p>Name: {formatName(chara.character.name)}</p>
-                                    <p>Role: {chara.role}</p>
-                                    <p>Voice Actor: {chara.voice_actors.map((human: any, ind: number) => (
-                                        <span key={ind}>
-                                            {human.language === "Japanese" && human.person.name.replace(",", "")}
-                                        </span>
-                                    ))}</p>
-                                    <p>Liked by {chara.favorites} person</p>
+                            ?.sort((a: any, b: any) => b.favorites - a.favorites)
+                            .map((chara: any, index: number) => (
+                                <div key={index} className="shadow-alpha shadow-sm rounded-xl ">
+                                    <Link to={`/characters/${chara.character.mal_id}`}>
+                                        <img src={chara.character.images.webp.image_url}
+                                            className="w-full rounded-xl"
+                                            alt="" />
+                                        <div className="p-3 flex flex-col gap-2 w-[300px]">
+                                            <p>Name: {formatName(chara.character.name)}</p>
+                                            <p>Role: {chara.role}</p>
+                                            <p>Voice Actor: {chara.voice_actors.map((human: any, ind: number) => (
+                                                <span key={ind}>
+                                                    {human.language === "Japanese" && human.person.name.replace(",", "")}
+                                                </span>
+                                            ))}</p>
+                                            <p>Liked by {chara.favorites} person</p>
+                                        </div>
+                                    </Link>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
                     </div>
                 </div>
 
             </div>
         </section>
-        :
-        <Loading />
+            :
+            <Loading />
 
     )
 }

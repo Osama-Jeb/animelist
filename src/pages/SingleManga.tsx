@@ -6,28 +6,16 @@ import { Autoplay, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
+import { useInfo } from "../context/InfoProviders";
 
 const SingleManga = () => {
     const { id } = useParams();
+    const {fetchSingle} = useInfo();
     const [manga, setManga] = useState<any>();
     const [pics, setPics] = useState<any>();
 
-    const fetchSingleManga = async () => {
-        const response = await fetch(`https://api.jikan.moe/v4/manga/${id}/full`);
-        const res = await fetch(`https://api.jikan.moe/v4/manga/${id}/pictures`);
-
-        if (!response.ok || !res.ok) {
-            throw new Error('Network response was not ok');
-        }
-
-        const data = await response.json();
-        const img = await res.json();
-        setManga(data.data);
-        setPics(img.data);
-    }
-
     useEffect(() => {
-        fetchSingleManga();
+        fetchSingle(id, "manga", setManga, setPics)
     }, [id])
 
 
@@ -73,7 +61,7 @@ const SingleManga = () => {
                                 </Swiper>
                             </div>
                             <div className="md:w-2/3">
-                                <h1 className="text-4xl font-bold mb-4">{manga.title_english}</h1>
+                                <h1 className="text-4xl font-bold mb-4">{manga.title_english ?? manga.title}</h1>
                                 <div className="grid grid-cols-2 gap-4 mb-6">
                                     <div>
                                         <p className="font-semibold text-xl">Author: <span className="font-light">{formatName(manga.authors[0].name)}</span></p>
@@ -95,7 +83,7 @@ const SingleManga = () => {
                                             rel.relation == "Sequel" || rel.relation == "Prequel" ?
                                                 <li key={rel.entry[0].mal_id}>
                                                     <Link
-                                                        to={`/animes/${rel.entry[0].mal_id}`}
+                                                        to={`/anime/${rel.entry[0].mal_id}`}
                                                     >{rel.relation} : {rel.entry[0].name}
                                                     </Link>
                                                 </li>

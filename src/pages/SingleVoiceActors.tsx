@@ -1,27 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useInfo } from "../context/InfoProviders";
 
 const SingleVoiceActor = () => {
-    const { id } = useParams()
+    const { id } = useParams();
+    const {fetchSingle} = useInfo();
     const [actor, setActor] = useState<any>();
 
-    const fetchActor = async () => {
-        try {
-            const response = await fetch(`https://api.jikan.moe/v4/people/${id}/full`)
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json();
-            setActor(data.data);
-        } catch (error) {
-            console.error('err brr:', error);
-        }
-    }
-
     useEffect(() => {
-        fetchActor()
+        fetchSingle(id, "people", setActor)
     }, [id])
 
     return (

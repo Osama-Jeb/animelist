@@ -8,7 +8,7 @@ Chart.register(CategoryScale);
 
 const ChartComponent = () => {
     const { user } = useInfo();
-    const bookmarkedAnimes = user?.bookmarkedAnime;
+    const bookmarkedAnimes = user?.bookmarkedAnimes;
 
     const [chartData, setChartData] = useState<any>({
         labels: [],
@@ -38,10 +38,9 @@ const ChartComponent = () => {
             // genreCount[anime.genres[0].name] = (genreCount[anime.genres[0].name] || 0) + 1;
         });
 
-        // Prepare data for the chart
+
         const dataEntries = Object.entries(genreCount);
         
-        // Sort entries by count (small to large)
         const sortedEntries = dataEntries.sort((a, b) => b[1] - a[1]);
 
         const labels: string[] = [];

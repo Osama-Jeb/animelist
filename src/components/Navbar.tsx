@@ -45,7 +45,7 @@ const Navbar = () => {
 
     const links = [
         {
-            link: "/animes",
+            link: "/anime",
             name: "Anime"
         },
         {
@@ -144,7 +144,7 @@ const Navbar = () => {
             {isMenuOpen && (
                 <div className="md:hidden">
                     <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                        <Link to="/animes" className="hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">
+                        <Link to="/anime" className="hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">
                             Animes List
                         </Link>
 

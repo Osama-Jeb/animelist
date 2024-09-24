@@ -6,10 +6,11 @@ import ChartComponent from "../components/ChartComponent";
 
 const Statistics = () => {
     const [timeFormat, setTimeFormat] = useState('Min'); // Default format
+    const {bookmarkedAnimes} = useInfo();
 
-    const { user } = useInfo();
+    // const { user } = useInfo();
 
-    const bookmarkedAnimes = user?.bookmarkedAnime;
+    // const bookmarkedAnimes = user?.bookmarkedAnime;
 
     const [total, setTotal] = useState(0)
     const animeTotalEpisodes = () => {

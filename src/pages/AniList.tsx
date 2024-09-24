@@ -56,7 +56,7 @@ const AniList = () => {
 
                         <Bookmark fill={`${bookmarkedAnimes?.some((anm: any) => anm.mal_id === anime.mal_id) ? "white" : "#1d4ed8"}`} />
                     </button>
-                    <Link to={`/animes/${anime.mal_id}`} key={index} className="cursor-default">
+                    <Link to={`/anime/${anime.mal_id}`} key={index} className="cursor-default">
                         <img src={anime.images?.webp?.large_image_url} alt={anime.title} className="w-full h-64 object-cover" />
                         <div className="p-4">
                             <h3 className="text-xl font-semibold mb-2">{anime.title_english ?? anime.title}</h3>
@@ -74,7 +74,7 @@ const AniList = () => {
     const renderList = (animes: Anime[] | null) => (
         <div className="space-y-4">
             {animes?.map((anime, index) => (
-                <Link to={`/animes/${anime.mal_id}`} key={index} className="flex border rounded-lg overflow-hidden hover:bg-gray-900">
+                <Link to={`/anime/${anime.mal_id}`} key={index} className="flex border rounded-lg overflow-hidden hover:bg-gray-900">
                     <img src={anime.images?.webp?.large_image_url} alt={anime.title} className="w-48 h-48 object-cover" />
                     <div className="p-4 flex-grow">
                         <h3 className="text-xl font-semibold mb-2">{anime.title_english ?? anime.title}</h3>
@@ -102,7 +102,7 @@ const AniList = () => {
                 </thead>
                 <tbody>
                     {animes?.map((anime, index) => (
-                        <tr onClick={() => { goto(`/animes/${anime.mal_id}`) }} key={index} className="border-b cursor-pointer hover:bg-gray-700">
+                        <tr onClick={() => { goto(`/anime/${anime.mal_id}`) }} key={index} className="border-b cursor-pointer hover:bg-gray-700">
                             <td className="px-4 py-2">{anime.title_english ?? anime.title}</td>
                             <td className="px-4 py-2">
                                 <img src={anime.images?.webp?.large_image_url} alt={anime.title} className="w-16 h-16 object-cover" />

@@ -28,7 +28,7 @@ const BookmarkedAnime = () => {
 
 
     const filteredAndSortedAnimes  = bookmarkedAnimes
-        ?.filter((anime) => anime.title.toLowerCase().includes(searchTerm.toLowerCase()))
+        ?.filter((anime) => anime.titles[0].title.toLowerCase().includes(searchTerm.toLowerCase()))
         .sort((a, b) => {
             const order = isAscending ? 1 : -1;
             if (a[sortCriteria] < b[sortCriteria]) return -1 * order;
@@ -51,7 +51,7 @@ const BookmarkedAnime = () => {
                         onChange={handleSearch}
                     />
 
-                    {['Title', 'Score', 'Year'].map((criteria, index) => (
+                    {['Score', 'Year'].map((criteria, index) => (
                         <button
                             key={index}
                             className={`px-3 py-1 rounded-lg ${criteria.toLowerCase() === sortCriteria ? 'bg-alpha' : 'bg-white text-black'}`}
@@ -72,10 +72,10 @@ const BookmarkedAnime = () => {
                                 <Bookmark fill={`${bookmarkedAnimes?.some((anm: any) => anm.mal_id === anime.mal_id) ? "white" : "#1d4ed8"}`} />
                             </button>
 
-                            <Link to={`/animes/${anime.mal_id}`} className="cursor-default">
-                                <img src={anime.images?.webp?.large_image_url} alt={anime.title} className="w-full aspect-square" />
+                            <Link to={`/anime/${anime.mal_id}`} className="cursor-default">
+                                <img src={anime.images?.webp?.large_image_url} alt={anime.titles[0].title} className="w-full aspect-square" />
                                 <div className="p-4">
-                                    <h3 className="text-xl font-semibold mb-2">{anime.title_english ?? anime.title}</h3>
+                                    <h3 className="text-xl font-semibold mb-2">{anime.titles[0].title ?? anime.title}</h3>
                                     <p className="text-gray-600 mb-2">{anime.score}</p>
                                     <p className="text-sm text-gray-500 mb-1">Episodes: {anime.episodes}</p>
                                     <p className="text-sm text-gray-500 mb-2">Release Year: {anime.year}</p>

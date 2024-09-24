@@ -26,6 +26,7 @@ const Characters = () => {
     return (
         <>
             <p>page to show anime characters</p>
+            <p>IN PROGRESS</p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                 {characters?.map((chara: any, index: number) => (
                     <div key={index} className="relative border border-alpha rounded-lg overflow-hidden hover:bg-gray-900">

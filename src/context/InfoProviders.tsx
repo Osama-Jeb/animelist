@@ -1,8 +1,9 @@
-import { onAuthStateChanged } from "firebase/auth";
+// import { onAuthStateChanged } from "firebase/auth";
 import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react"
-import { auth, db } from "../firebase";
+import {  auth, db } from "../firebase";
 import { arrayRemove, arrayUnion, doc, DocumentData, getDoc, updateDoc } from "firebase/firestore";
 import { useAuth } from "./AuthContext";
+import { onAuthStateChanged } from "firebase/auth";
 
 interface ImageUrls {
     image_url: string;
@@ -156,31 +157,39 @@ interface Pagination {
 
 interface User {
     username: string,
-    bookmarkedAnime: string[],
+    bookmarkedAnimes: string[],
     bookmarkedMovies: string[]
 }
 interface InfoContextType {
     pagination: Pagination | null,
-    fetchAnimes: (page: number, type: string, setAnime: (arg: any) => void) => void;
+    fetchAnimes: (page: number, type: string, setAnime: (arg: any) => void) => void,
+    fetchSingle: (id: string | undefined, type: string, setSingle : (arg: any) => void, setPic? : (arg: any) => void) => void,
     user: User | null | DocumentData,
     bookmarkedAnimes: Anime[] | null,
     onBookmarkClick: (animeData: Anime) => void,
     loading: boolean,
+    formatName: (name: string) => string,
 }
 
 
 const InfoContext = createContext<InfoContextType>({
     pagination: null,
     fetchAnimes: () => { },
+    fetchSingle: () => { },
     user: null,
     bookmarkedAnimes: null,
     onBookmarkClick: () => { },
     loading: false,
+    formatName: () => '',
+
 });
 
 export default function InfoProvider({ children }: PropsWithChildren) {
-
+    const { currentUser } = useAuth();
+    const [bookmarkedAnimes, setBookmarkedAnimes] = useState<any>()
+    const [loading, setLoading] = useState(false);
     const [pagination, setPagination] = useState<Pagination | null>(null)
+    const [user, setUser] = useState<User | null | DocumentData>(null)
 
 
     const fetchAnimes = async (page: number, type: string, setAnime: (arg: any) => void) => {
@@ -204,7 +213,30 @@ export default function InfoProvider({ children }: PropsWithChildren) {
         }
     };
 
-    const [user, setUser] = useState<User | null | DocumentData>(null)
+    const fetchSingle = async(id: string | undefined, type: string, setSingle: (data: any) => void, setPic?: (data:any) => void) => {
+        try {
+            const response = await fetch(`https://api.jikan.moe/v4/${type}/${id}/full`)
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            setSingle(data.data);
+
+            if (setPic) {
+                const res = await fetch(`https://api.jikan.moe/v4/${type}/${id}/pictures`);
+                if (!res.ok) {
+                    throw new Error('Network response not OKIE DOKIE');
+                }
+                const imgs = await res.json();
+                setPic(imgs.data);
+            }
+        } catch (error) {
+            console.error('err brr:', error);
+        }
+    }
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -221,37 +253,47 @@ export default function InfoProvider({ children }: PropsWithChildren) {
         return () => unsubscribe(); // Clean up subscription on unmount
     }, []);
 
-    const { currentUser } = useAuth();
-    const [bookmarkedAnimes, setBookmarkedAnimes] = useState<any>()
-    const [loading, setLoading] = useState(false);
+
     const onBookmarkClick = async (animeData: Anime) => {
         const userRef = doc(db, 'users', currentUser.uid);
-
         setLoading(true);
+    
+        const ani = {
+            mal_id: animeData.mal_id,
+            genres: animeData.genres,
+            titles: animeData.titles,
+            type: animeData.type,
+            source: animeData.source,
+            episodes: animeData.episodes,
+            year: animeData.year,
+            season: animeData.season,
+            studios: animeData.studios,
+            score: animeData.score,
+            images: animeData.images
+        };
+    
         try {
-            // Fetch the user's current data
             const userDoc = await getDoc(userRef);
             if (userDoc.exists()) {
                 const userData = userDoc.data();
-                const isBookmarked = userData.bookmarkedAnime.some((anime: any) => anime.mal_id === animeData.mal_id);
-
-                // Update the local state immediately based on whether it's bookmarked or not
+                const isBookmarked = userData.bookmarkedAnimes.some((anime: any) => anime.mal_id === animeData.mal_id);
+    
                 const updatedBookmarks = isBookmarked
-                    ? userData.bookmarkedAnime.filter((anime: any) => anime.mal_id !== animeData.mal_id)
-                    : [...userData.bookmarkedAnime, animeData];
-
-                setBookmarkedAnimes(updatedBookmarks); // Update local state immediately
-
+                    ? userData.bookmarkedAnimes.filter((anime: any) => anime.mal_id !== animeData.mal_id)
+                    : [...userData.bookmarkedAnimes, ani];
+    
+                setBookmarkedAnimes(updatedBookmarks);
+    
                 if (isBookmarked) {
                     await updateDoc(userRef, {
-                        bookmarkedAnime: arrayRemove(animeData)
+                        bookmarkedAnimes: arrayRemove(ani)
                     });
-                    console.log(`${animeData.mal_id} removed from bookmarks`);
+                    console.log(`${ani.mal_id} removed from bookmarks`);
                 } else {
                     await updateDoc(userRef, {
-                        bookmarkedAnime: arrayUnion(animeData)
+                        bookmarkedAnimes: arrayUnion(ani)
                     });
-                    console.log(`${animeData.mal_id} added to bookmarks`);
+                    console.log(`${ani.mal_id} added to bookmarks`);
                 }
             } else {
                 console.error("User not found");
@@ -259,8 +301,9 @@ export default function InfoProvider({ children }: PropsWithChildren) {
         } catch (error) {
             console.error("Error updating bookmarks: ", error);
         }
-        setLoading(false)
+        setLoading(false);
     };
+    
 
 
     useEffect(() => {
@@ -270,7 +313,7 @@ export default function InfoProvider({ children }: PropsWithChildren) {
                 const userDoc = await getDoc(userRef);
                 if (userDoc.exists()) {
                     const userData = userDoc.data();
-                    setBookmarkedAnimes(userData.bookmarkedAnime || []);
+                    setBookmarkedAnimes(userData.bookmarkedAnimes || []);
                 } else {
                     console.error("User not found");
                 }
@@ -284,7 +327,16 @@ export default function InfoProvider({ children }: PropsWithChildren) {
         }
     }, [bookmarkedAnimes, currentUser]);
 
-    return <InfoContext.Provider value={{ pagination, fetchAnimes, user, bookmarkedAnimes, onBookmarkClick, loading }}>
+    const formatName = (name: string) => {
+        if (name.includes(",")) {
+            const [lastname, firstname] = name.split(', ');
+            return `${firstname} ${lastname}`;
+        } else {
+            return name;
+        }
+    };
+
+    return <InfoContext.Provider value={{ pagination, user, fetchAnimes, bookmarkedAnimes, onBookmarkClick, loading, fetchSingle,formatName }}>
         {children}
     </InfoContext.Provider >
 }

@@ -27,11 +27,11 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "/animes",
+        path: "/anime",
         element: <AniList />,
       },
       {
-        path: "/animes/:id",
+        path: "/anime/:id",
         element: <SingleAnime />,
       },
       {
