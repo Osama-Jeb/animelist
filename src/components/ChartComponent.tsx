@@ -35,6 +35,7 @@ const ChartComponent = () => {
             anime.genres.forEach((genre) => {
                 genreCount[genre.name] = (genreCount[genre.name] || 0) + 1;
             });
+            // genreCount[anime.genres[0].name] = (genreCount[anime.genres[0].name] || 0) + 1;
         });
 
         // Prepare data for the chart

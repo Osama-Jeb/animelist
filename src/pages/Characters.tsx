@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Characters = () => {
 
@@ -28,13 +29,13 @@ const Characters = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                 {characters?.map((chara: any, index: number) => (
                     <div key={index} className="relative border border-alpha rounded-lg overflow-hidden hover:bg-gray-900">
-                        {/* <Link to={`/animes/${chara.mal_id}`} key={index} className="cursor-default"> */}
+                        <Link to={`/characters/${chara.mal_id}`} key={index} className="cursor-default">
                         <img src={chara.images?.jpg?.image_url} alt={chara.title} className="w-full h-64 object-cover" />
                         <div className="p-4">
                             <p>Name: {chara.name}</p>
 
                         </div>
-                        {/* </Link> */}
+                        </Link>
                     </div>
                 ))}
             </div>

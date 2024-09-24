@@ -10,7 +10,7 @@ const Root = () => {
     return (
         <>
             <Navbar />
-            {!isRootPath && <Outlet />}
+            {!isRootPath && <div className="px-6"><Outlet /></div>}
 
             {isRootPath &&
                 <>

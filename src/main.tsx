@@ -17,6 +17,8 @@ import MangaList from './pages/MangaList.tsx';
 import VoiceActors from './pages/VoiceActors.tsx';
 import SingleVoiceActor from './pages/SingleVoiceActors.tsx';
 import Characters from './pages/Characters.tsx';
+import SingleManga from './pages/SingleManga.tsx';
+import SingleCharacter from './pages/SingleCharacter.tsx';
 
 const router = createBrowserRouter([
   {
@@ -57,6 +59,10 @@ const router = createBrowserRouter([
         element: <MangaList />
       },
       {
+        path: "/manga/:id",
+        element: <SingleManga />
+      },
+      {
         path: "/va",
         element: <VoiceActors />
       },
@@ -67,6 +73,10 @@ const router = createBrowserRouter([
       {
         path : "/characters",
         element: <Characters />
+      },
+      {
+        path:"/characters/:id",
+        element: <SingleCharacter />
       }
     ]
   },

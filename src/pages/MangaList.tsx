@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const MangaList = () => {
     const [manga, setManga] = useState<any>();
@@ -29,7 +30,7 @@ const MangaList = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                 {manga?.map((mng:any, index : number) => (
                     <div key={index} className="relative border border-alpha rounded-lg overflow-hidden hover:bg-gray-900">
-                        {/* <Link to={`/animes/${mng.mal_id}`} key={index} className="cursor-default"> */}
+                        <Link to={`/manga/${mng.mal_id}`} key={index} className="cursor-default">
                             <img src={mng.images?.webp?.large_image_url} alt={mng.title} className="w-full h-64 object-cover" />
                             <div className="p-4">
                                 <h3 className="text-xl font-semibold mb-2">{mng.title_english ?? mng.title}</h3>
@@ -38,7 +39,7 @@ const MangaList = () => {
                                 <p className="text-sm text-gray-500 mb-1">Release Year: {mng.published?.prop.from.year}</p>
                                 <p className="text-sm text-gray-500 mb-2">Genres: {mng.genres.map((genre:any) => genre.name).join(', ')}</p>
                             </div>
-                        {/* </Link> */}
+                        </Link>
                     </div>
                 ))}
             </div>
