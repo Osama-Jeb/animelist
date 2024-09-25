@@ -1,49 +1,58 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useInfo } from "../context/InfoProviders";
+import VoiceCharaCard from "../components/VoiceCharaCard";
 
 const SingleVoiceActor = () => {
     const { id } = useParams();
     const { fetchSingle } = useInfo();
     const [actor, setActor] = useState<any>();
+    const [uniqueVoices, setUniqueVoices] = useState<any>();
 
     useEffect(() => {
         fetchSingle(id, "people", setActor)
-    }, [id])
+
+        const uv = actor?.voices.filter((ani: any, index: number, self: any) =>
+            index === self.findIndex((t: any) => (
+                t.character.name === ani.character.name
+            ))
+        );
+
+        setUniqueVoices(uv);
+    }, [id, uniqueVoices, actor])
 
     return (
         <>
-            <p>Info on a single voice acotr and his roles with the id of : {id}</p>
             {
                 actor && <div>
-                    <p className="text-4xl">{actor.name}</p>
-                    <div className="flex items-center">
-                        <img src={actor.images.jpg.image_url} alt="" />
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                    <div className="flex items-center justify-around gap-2">
+                        <div className="flex flex-col items-center text-xl">
+                            <img src={actor.images.jpg.image_url} alt=""
+                                className="w-[300px]"
+                            />
+                            <p className="mt-3">Name: {actor.name}</p>
+                            <p>Name Kanji: {actor.given_name} {actor.family_name}</p>
+                            <p>
+                                Birthday: {new Date(actor.birthday).toLocaleDateString('en-US', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric'
+                                })}
+                            </p>
+                        </div>
+                        <div className="w-[60vw] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                             {
-                                actor.voices.map((ani: any, index: number) => (
-                                    index < 10 && <Link to={`/characters/${ani.character.mal_id}`} key={index}>
-                                        <img src={ani.character.images.jpg.image_url} alt="" />
-                                        <div>
-                                            <p>Title: {ani.anime.title}</p>
-                                            <p>Character: {ani.character.name}</p>
-                                        </div>
-                                    </Link>
+                                uniqueVoices?.map((ani: any, index: number) => (
+                                    index < 10 && <VoiceCharaCard ani={ani} index={index} />
                                 ))
                             }
 
                         </div>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 mt-4">
                         {
-                            actor.voices.map((ani: any, index: number) => (
-                                index > 10 && <Link to={`/characters/${ani.character.mal_id}`} key={index}>
-                                    <img src={ani.character.images.jpg.image_url} alt="" />
-                                    <div>
-                                        <p>Title: {ani.anime.title}</p>
-                                        <p>Character: {ani.character.name}</p>
-                                    </div>
-                                </Link>
+                            uniqueVoices?.map((ani: any, index: number) => (
+                                index > 10 && <VoiceCharaCard ani={ani} index={index} />
                             ))
                         }
                     </div>

@@ -90,31 +90,30 @@ const SingleAnime = () => {
                         <h1 className="text-4xl font-bold mb-4">{animeInfo.title_english}</h1>
                         <div className="grid grid-cols-2 gap-4 mb-6">
                             <div>
-                                <p className="font-semibold text-xl">Episodes: <span className="font-light">{animeInfo.episodes ?? 'Still Airing'}</span></p>
-                                <p className="font-semibold text-xl">Release Year: <span className="font-light">{animeInfo.year}</span></p>
-                                <p className="font-semibold text-xl">Season: <span className="font-light">{animeInfo.season}</span></p>
+                                <p className="font-semibold text-xl">Episodes: <span className="font-light">{animeInfo?.episodes ?? 'Still Airing'}</span></p>
+                                <p className="font-semibold text-xl">Release Year: <span className="font-light">{animeInfo?.year}</span></p>
+                                <p className="font-semibold text-xl">Season: <span className="font-light">{animeInfo?.season}</span></p>
                             </div>
                             <div>
-                                <p className="font-semibold">Studio: {animeInfo.studios[0].name}</p>
-                                <p className="font-semibold">Rating: {animeInfo.score}/10</p>
-                                <p className="font-semibold">Genres: {animeInfo.genres.map((theme) => theme.name).join(', ')}</p>
+                                <p className="font-semibold">Studio: {animeInfo?.studios[0]?.name}</p>
+                                <p className="font-semibold">Rating: {animeInfo?.score}/10</p>
+                                <p className="font-semibold">Genres: {animeInfo?.genres.map((theme) => theme?.name).join(', ')}</p>
                             </div>
                         </div>
-                        <h2 className="text-4xl font-semibold mb-2">Synopsis</h2>
-                        <article className="mb-6">{animeInfo.synopsis}</article>
+                        <h2 className="text-4xl font-semibold mb-2">Synopsis: </h2>
+                        <article className="mb-6">{animeInfo?.synopsis}</article>
+
+                        <h2 className="text-4xl font-semibold mb-2">Related Anime: </h2>
                         <ul className="list-disc">
 
                             {
-                                animeInfo.relations.map(rel => (
-                                    rel.relation == "Sequel" || rel.relation == "Prequel" ?
-                                        <li key={rel.entry[0].mal_id}>
-                                            <Link
-                                                to={`/anime/${rel.entry[0].mal_id}`}
-                                            >{rel.relation} : {rel.entry[0].name}
-                                            </Link>
-                                        </li>
-                                        :
-                                        null
+                                animeInfo?.relations.map(rel => (
+                                    <li key={rel.entry[0].mal_id}>
+                                        <Link
+                                            to={rel.relation != 'Adaptation' ? `/anime/${rel.entry[0].mal_id}` : `/manga/${rel.entry[0].mal_id}`}
+                                        >{rel.relation} : {rel.entry[0].name}
+                                        </Link>
+                                    </li>
                                 ))
                             }
                         </ul>

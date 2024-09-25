@@ -11,9 +11,11 @@ import { useAuth } from "../context/AuthContext";
 
 const AniList = () => {
 
-    // TODO* add criteria when fetching/radio https://docs.api.jikan.moe/#tag/anime/operation/getAnimeSearch
-    const { pagination, fetchAnimes, bookmarkedAnimes, onBookmarkClick } = useInfo();
+    const { pagination, fetchInfo, bookmarkedAnimes, onBookmarkClick } = useInfo();
     const [type, setType] = useState('TV');
+    const [status, setStatus] = useState('complete');
+    const [order, setOrder] = useState('score');
+    const [sort, setSort] = useState('desc');
     const { currentUser } = useAuth();
 
     // const goto = useNavigate()
@@ -24,9 +26,11 @@ const AniList = () => {
     const totalPages = pagination ? pagination.last_visible_page : 1;
     const maxPagesToShow = 2;
 
+
+
     useEffect(() => {
-        fetchAnimes(currPage, type, setAnimeTV)
-    }, [currPage, type])
+        fetchInfo("anime", currPage, type, setAnimeTV, status, order, sort)
+    }, [currPage, type, status, order, sort])
 
     const handlePageChange = (newPage: number) => {
         if (newPage > 0 && (!pagination || newPage <= pagination.last_visible_page)) {
@@ -147,6 +151,23 @@ const AniList = () => {
         { id: "ONA", label: "ONA" },
         { id: "special", label: "Special" },
     ];
+
+    const statusSelect = [
+        { id: "complete", label: "complete" },
+        { id: "airing", label: "airing" },
+        { id: "upcoming", label: "upcoming" },
+    ];
+
+    const orderSelect = [
+        { id: "score", label: "score" },
+        { id: "episodes", label: "episodes" },
+        { id: "rank", label: "rank" },
+        { id: "complete", label: "complete" },
+        { id: "title", label: "title" },
+        { id: "favorites", label: "favorites" },
+        { id: "popularity", label: "popularity" },
+        { id: "start_date", label: "start_date" },
+    ]
     return (
         <>
             {
@@ -204,6 +225,36 @@ const AniList = () => {
                                             </option>
                                         ))}
                                     </select>
+
+                                    <select
+                                        value={status}
+                                        onChange={(e) => setStatus(e.target.value)}
+                                        className="border rounded p-1 text-black capitalize"
+                                    >
+                                        {statusSelect.map((option) => (
+                                            <option key={option.id} value={option.label}>
+                                                {option.label}
+                                            </option>
+                                        ))}
+                                    </select>
+
+                                    <select
+                                        value={order}
+                                        onChange={(e) => setOrder(e.target.value)}
+                                        className="border rounded p-1 text-black capitalize"
+                                    >
+                                        {orderSelect.map((option) => (
+                                            <option key={option.id} value={option.label}>
+                                                {option.label}
+                                            </option>
+                                        ))}
+                                    </select>
+
+                                    <button
+                                        onClick={() => { sort == "desc" ? setSort('asc') : setSort('desc') }}
+                                        className="px-4 py-1 bg-alpha rounded capitalize">
+                                        {sort}
+                                    </button>
                                 </div>
                             </div>
 

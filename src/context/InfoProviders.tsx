@@ -162,7 +162,7 @@ interface User {
 }
 interface InfoContextType {
     pagination: Pagination | null,
-    fetchAnimes: (page: number, type: string, setAnime: (arg: any) => void) => void,
+    fetchInfo: (what: string, page: number, type: string, setAnime: (arg: any) => void, status: string, order_by: string, sort: string) => void,
     fetchSingle: (id: string | undefined, type: string, setSingle : (arg: any) => void, setPic? : (arg: any) => void) => void,
     user: User | null | DocumentData,
     bookmarkedAnimes: Anime[] | null,
@@ -174,7 +174,7 @@ interface InfoContextType {
 
 const InfoContext = createContext<InfoContextType>({
     pagination: null,
-    fetchAnimes: () => { },
+    fetchInfo: () => { },
     fetchSingle: () => { },
     user: null,
     bookmarkedAnimes: null,
@@ -192,9 +192,9 @@ export default function InfoProvider({ children }: PropsWithChildren) {
     const [user, setUser] = useState<User | null | DocumentData>(null)
 
 
-    const fetchAnimes = async (page: number, type: string, setAnime: (arg: any) => void) => {
+    const fetchInfo = async (what: string, page: number, type: string, setAnime: (arg: any) => void, status: string, order_by: string, sort: string) => {
         try {
-            const response = await fetch(`https://api.jikan.moe/v4/anime?page=${page}&type=${type}&order_by=score&sort=desc`);
+            const response = await fetch(`https://api.jikan.moe/v4/${what}?page=${page}&type=${type}&status=${status}&order_by=${order_by}&sort=${sort}`);
 
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -332,7 +332,7 @@ export default function InfoProvider({ children }: PropsWithChildren) {
         }
     };
 
-    return <InfoContext.Provider value={{ pagination, user, fetchAnimes, bookmarkedAnimes, onBookmarkClick, loading, fetchSingle,formatName }}>
+    return <InfoContext.Provider value={{ pagination, user, fetchInfo, bookmarkedAnimes, onBookmarkClick, loading, fetchSingle,formatName }}>
         {children}
     </InfoContext.Provider >
 }

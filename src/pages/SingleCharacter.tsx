@@ -63,9 +63,14 @@ const SingleCharacter = () => {
                                         </p>
 
                                         <p className="font-semibold text-xl">
-                                            NickNames: {character.nicknames.map((char: string, index: number) => (
+                                            NickNames: {character.nicknames.length > 0 ? character.nicknames.map((char: string, index: number) => (
                                                 <span key={index} className="font-light">{char}, </span>
-                                            ))}
+                                            ))
+                                            :
+                                            <>
+                                            NONE
+                                            </>
+                                        }
                                         </p>
                                     </div>
                                 <h2 className="text-4xl font-semibold my-3">About: </h2>

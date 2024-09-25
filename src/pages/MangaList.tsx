@@ -1,31 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useInfo } from "../context/InfoProviders";
 
 const MangaList = () => {
+    const { fetchInfo } = useInfo();
     const [manga, setManga] = useState<any>();
     const [input, setInput] = useState('');
     const [type, setType] = useState('manga');
     const [status, setStatus] = useState('publishing');
+    const [order, setOrder] = useState('score');
     const [sort, setSort] = useState('desc');
 
-    const fetchManga = async () => {
-        try {
-            const response = await fetch(`https://api.jikan.moe/v4/manga?type=${type}&status=${status}&order_by=score&sort=${sort}`);
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json();
-            setManga(data.data);
-        } catch (error) {
-            console.error('err brr:', error);
-        }
-    };
-
     useEffect(() => {
-        fetchManga()
-    }, [type, status, sort])
+        fetchInfo("manga", 1, type, setManga, status, order, sort)
+    }, [type, status, sort, order])
 
     const [searchedManga, setSearchedManga] = useState<any>();
     const onSearch = async (term: string) => {
@@ -55,7 +43,18 @@ const MangaList = () => {
         { id: 'hiatus', label: 'hiatus' },
         { id: 'discontinued', label: 'discontinued' },
         { id: 'upcoming', label: 'upcoming' },
-    ]
+    ];
+
+    const orderSelect = [
+        { id: "score", label: "score" },
+        { id: "chapters", label: "chapters" },
+        { id: "volumes", label: "volumes" },
+        { id: "title", label: "title" },
+        { id: "favorites", label: "favorites" },
+        { id: "popularity", label: "popularity" },
+        { id: "start_date", label: "start_date" },
+        { id: "rank", label: "rank" },
+    ];
 
     const renderManga = (arr: any | null) => {
         return (
@@ -81,7 +80,7 @@ const MangaList = () => {
     }
     return (
         <>
-            <div>
+            <div className="mt-5">
                 <div className="mb-4 flex space-x-2 items-center">
 
                     <div>
@@ -114,12 +113,25 @@ const MangaList = () => {
                                 </option>
                             ))}
                         </select>
+
                         <select
                             value={status}
                             onChange={(e) => setStatus(e.target.value)}
                             className="border rounded p-1 text-black capitalize"
                         >
                             {statusSelect.map((option) => (
+                                <option key={option.id} value={option.label}>
+                                    {option.label}
+                                </option>
+                            ))}
+                        </select>
+
+                        <select
+                            value={order}
+                            onChange={(e) => setOrder(e.target.value)}
+                            className="border rounded p-1 text-black capitalize"
+                        >
+                            {orderSelect.map((option) => (
                                 <option key={option.id} value={option.label}>
                                     {option.label}
                                 </option>
