@@ -40,7 +40,7 @@ const ChartComponent = () => {
 
 
         const dataEntries = Object.entries(genreCount);
-        
+
         const sortedEntries = dataEntries.sort((a, b) => b[1] - a[1]);
 
         const labels: string[] = [];
@@ -83,6 +83,9 @@ const ChartComponent = () => {
                 data={chartData}
                 options={{
                     plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
                         title: {
                             display: true,
                             text: "Anime Genre Chart",

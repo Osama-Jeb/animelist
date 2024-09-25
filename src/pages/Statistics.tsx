@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { Anime, useInfo } from "../context/InfoProviders"
 import { Clock, Film, Play } from "lucide-react";
 import ChartComponent from "../components/ChartComponent";
+import ChartSeasons from "../components/ChartSeasons";
+import FilterByStudio from "../components/FilterByStudio";
 
 
 const Statistics = () => {
     const [timeFormat, setTimeFormat] = useState('Min'); // Default format
-    const {bookmarkedAnimes} = useInfo();
+    const { bookmarkedAnimes } = useInfo();
 
     // const { user } = useInfo();
 
@@ -102,20 +104,33 @@ const Statistics = () => {
                 {/* Charts */}
                 <div className="flex items-center justify-between mt-3">
 
-                    <div className="w-full lg:w-[40vw]">
+                    <div className="w-full lg:w-[35vw]">
+                        <h1 className="text-4xl">Most Watched Genres : </h1>
                         <ChartComponent />
                     </div>
 
-                    {/* <div className="bg-red-500 w-[50vw] rounded">
-                        <p>hey hey hey</p>
-                        <p>hey hey hey</p>
-                        <p>hey hey hey</p>
-                        <p>hey hey hey</p>
-                        <p>hey hey hey</p>
-                        <p>hey hey hey</p>
-                        <p>hey hey hey</p>
-                    </div> */}
+
+                    <div className="w-full lg:w-[40vw]">
+                        <h1 className="text-4xl">Seasonal Anime Information: </h1>
+                        <ChartSeasons />
+                    </div>
+
                 </div>
+
+                {/* Studios */}
+                {/* TODO: STYLE THE  */}
+                <div className="mt-3 flex items-center justify-between">
+
+                    <FilterByStudio />
+                            
+                    <div className="w-full lg:w-[40vw]">
+                        <h1>Anime By Year: </h1>
+                    </div>
+                
+                
+                </div>
+
+
             </section>
         </>
     )

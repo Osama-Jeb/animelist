@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Anime, useInfo } from "../context/InfoProviders";
-import { Bookmark, Grid, List, TableIcon } from "lucide-react";
+import { Bookmark } from "lucide-react";
 import Loading from "../components/Loading";
+import { useAuth } from "../context/AuthContext";
 
 
-type DisplayMode = 'grid' | 'list' | 'masonry' | 'table'
+// type DisplayMode = 'grid' | 'list' | 'masonry' | 'table'
 
 
 const AniList = () => {
@@ -13,14 +14,15 @@ const AniList = () => {
     // TODO* add criteria when fetching/radio https://docs.api.jikan.moe/#tag/anime/operation/getAnimeSearch
     const { pagination, fetchAnimes, bookmarkedAnimes, onBookmarkClick } = useInfo();
     const [type, setType] = useState('TV');
+    const { currentUser } = useAuth();
 
-    const goto = useNavigate()
-    const [displayMode, setDisplayMode] = useState<DisplayMode>('grid')
+    // const goto = useNavigate()
+    // const [displayMode, setDisplayMode] = useState<DisplayMode>('grid')
 
     const [animeTV, setAnimeTV] = useState<Anime[] | null>(null);
     const [currPage, setCurrPage] = useState(1);
     const totalPages = pagination ? pagination.last_visible_page : 1;
-    const maxPagesToShow = 3;
+    const maxPagesToShow = 2;
 
     useEffect(() => {
         fetchAnimes(currPage, type, setAnimeTV)
@@ -50,12 +52,15 @@ const AniList = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
             {animes?.map((anime, index) => (
                 <div className="relative border border-alpha rounded-lg overflow-hidden hover:bg-gray-900">
-                    <button className="absolute top-[10%] right-[10%] bg-alpha rounded p-1 z-1"
-                        onClick={() => { onBookmarkClick(anime) }}
-                    >
+                    {
+                        currentUser &&
+                        <button className="absolute top-[10%] right-[10%] bg-alpha rounded p-1 z-1"
+                            onClick={() => { onBookmarkClick(anime) }}
+                        >
 
-                        <Bookmark fill={`${bookmarkedAnimes?.some((anm: any) => anm.mal_id === anime.mal_id) ? "white" : "#1d4ed8"}`} />
-                    </button>
+                            <Bookmark fill={`${bookmarkedAnimes?.some((anm: any) => anm.mal_id === anime.mal_id) ? "white" : "#1d4ed8"}`} />
+                        </button>
+                    }
                     <Link to={`/anime/${anime.mal_id}`} key={index} className="cursor-default">
                         <img src={anime.images?.webp?.large_image_url} alt={anime.title} className="w-full h-64 object-cover" />
                         <div className="p-4">
@@ -71,51 +76,51 @@ const AniList = () => {
         </div>
     )
 
-    const renderList = (animes: Anime[] | null) => (
-        <div className="space-y-4">
-            {animes?.map((anime, index) => (
-                <Link to={`/anime/${anime.mal_id}`} key={index} className="flex border rounded-lg overflow-hidden hover:bg-gray-900">
-                    <img src={anime.images?.webp?.large_image_url} alt={anime.title} className="w-48 h-48 object-cover" />
-                    <div className="p-4 flex-grow">
-                        <h3 className="text-xl font-semibold mb-2">{anime.title_english ?? anime.title}</h3>
-                        <p className="text-gray-600 mb-2">{anime.score}</p>
-                        <p className="text-sm text-gray-500 mb-1">Episodes: {anime.episodes}</p>
-                        <p className="text-sm text-gray-500 mb-2">Release Year: {anime.year}</p>
+    // const renderList = (animes: Anime[] | null) => (
+    //     <div className="space-y-4">
+    //         {animes?.map((anime, index) => (
+    //             <Link to={`/anime/${anime.mal_id}`} key={index} className="flex border rounded-lg overflow-hidden hover:bg-gray-900">
+    //                 <img src={anime.images?.webp?.large_image_url} alt={anime.title} className="w-48 h-48 object-cover" />
+    //                 <div className="p-4 flex-grow">
+    //                     <h3 className="text-xl font-semibold mb-2">{anime.title_english ?? anime.title}</h3>
+    //                     <p className="text-gray-600 mb-2">{anime.score}</p>
+    //                     <p className="text-sm text-gray-500 mb-1">Episodes: {anime.episodes}</p>
+    //                     <p className="text-sm text-gray-500 mb-2">Release Year: {anime.year}</p>
 
-                    </div>
-                </Link>
-            ))}
-        </div>
-    )
+    //                 </div>
+    //             </Link>
+    //         ))}
+    //     </div>
+    // )
 
-    const renderTable = (animes: Anime[] | null) => (
-        <div className="overflow-x-auto">
-            <table className="min-w-full ">
-                <thead className="">
-                    <tr>
-                        <th className="px-4 py-2 text-left">Title</th>
-                        <th className="px-4 py-2 text-left">Cover</th>
-                        <th className="px-4 py-2 text-left">Score</th>
-                        <th className="px-4 py-2 text-left">Episodes</th>
-                        <th className="px-4 py-2 text-left">Release Year</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {animes?.map((anime, index) => (
-                        <tr onClick={() => { goto(`/anime/${anime.mal_id}`) }} key={index} className="border-b cursor-pointer hover:bg-gray-700">
-                            <td className="px-4 py-2">{anime.title_english ?? anime.title}</td>
-                            <td className="px-4 py-2">
-                                <img src={anime.images?.webp?.large_image_url} alt={anime.title} className="w-16 h-16 object-cover" />
-                            </td>
-                            <td className="px-4 py-2">{anime.score}</td>
-                            <td className="px-4 py-2">{anime.episodes}</td>
-                            <td className="px-4 py-2">{anime.year}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-    )
+    // const renderTable = (animes: Anime[] | null) => (
+    //     <div className="overflow-x-auto">
+    //         <table className="min-w-full ">
+    //             <thead className="">
+    //                 <tr>
+    //                     <th className="px-4 py-2 text-left">Title</th>
+    //                     <th className="px-4 py-2 text-left">Cover</th>
+    //                     <th className="px-4 py-2 text-left">Score</th>
+    //                     <th className="px-4 py-2 text-left">Episodes</th>
+    //                     <th className="px-4 py-2 text-left">Release Year</th>
+    //                 </tr>
+    //             </thead>
+    //             <tbody>
+    //                 {animes?.map((anime, index) => (
+    //                     <tr onClick={() => { goto(`/anime/${anime.mal_id}`) }} key={index} className="border-b cursor-pointer hover:bg-gray-700">
+    //                         <td className="px-4 py-2">{anime.title_english ?? anime.title}</td>
+    //                         <td className="px-4 py-2">
+    //                             <img src={anime.images?.webp?.large_image_url} alt={anime.title} className="w-16 h-16 object-cover" />
+    //                         </td>
+    //                         <td className="px-4 py-2">{anime.score}</td>
+    //                         <td className="px-4 py-2">{anime.episodes}</td>
+    //                         <td className="px-4 py-2">{anime.year}</td>
+    //                     </tr>
+    //                 ))}
+    //             </tbody>
+    //         </table>
+    //     </div>
+    // )
 
     const [searchedAnimes, setSearchedAnimes] = useState<Anime[] | null>(null);
     const [inputValue, setInputValue] = useState('')
@@ -150,7 +155,7 @@ const AniList = () => {
                         <div className="mt-5">
                             {/* Display Mode Selector */}
                             <div className="mb-4 flex space-x-2 items-center">
-                                <button
+                                {/* <button
                                     onClick={() => setDisplayMode('grid')}
                                     className={`p-2 ${displayMode === 'grid' ? 'bg-blue-500 text-white' : 'bg-gray-800'} rounded`}
                                 >
@@ -167,7 +172,7 @@ const AniList = () => {
                                     className={`p-2 ${displayMode === 'table' ? 'bg-blue-500 text-white' : 'bg-gray-800'} rounded`}
                                 >
                                     <TableIcon size={20} />
-                                </button>
+                                </button> */}
 
                                 <div>
                                     <input type="text" placeholder="Search" className="p-2 rounded bg-gray-800"
@@ -209,9 +214,10 @@ const AniList = () => {
                                 <h2 className="text-2xl font-semibold mb-4">My Anime List</h2>
 
 
-                                {displayMode === 'grid' && renderGrid(searchedAnimes || animeTV)}
-                                {displayMode === 'list' && renderList(searchedAnimes || animeTV)}
-                                {displayMode === 'table' && renderTable(searchedAnimes || animeTV)}
+                                {renderGrid(searchedAnimes || animeTV)}
+                                {/* {displayMode === 'list' && renderList(searchedAnimes || animeTV)}
+                                {displayMode === 'table' && renderTable(searchedAnimes || animeTV)} */}
+
                             </div>
                         </div>
 
