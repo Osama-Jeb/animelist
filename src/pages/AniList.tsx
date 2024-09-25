@@ -140,7 +140,7 @@ const AniList = () => {
     }
 
 
-    const radioOptions = [
+    const typeSelect = [
         { id: "TV", label: "TV" },
         { id: "movie", label: "Movie" },
         { id: "OVA", label: "OVA" },
@@ -193,19 +193,17 @@ const AniList = () => {
                                 </div>
 
                                 <div className="flex items-center gap-2">
-                                    {radioOptions.map((option, index) => (
-                                        <div className="flex items-center gap-1" key={index}>
-                                            <input
-                                                type="radio"
-                                                name="type"
-                                                id={option.id}
-                                                checked={type === option.label}
-                                                value={option.label}
-                                                onChange={() => setType(option.label)}
-                                            />
-                                            <label htmlFor={option.id}>{option.label}</label>
-                                        </div>
-                                    ))}
+                                    <select
+                                        value={type}
+                                        onChange={(e) => setType(e.target.value)}
+                                        className="border rounded p-1 text-black capitalize"
+                                    >
+                                        {typeSelect.map((option) => (
+                                            <option key={option.id} value={option.label}>
+                                                {option.label}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
                             </div>
 

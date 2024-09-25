@@ -194,18 +194,14 @@ export default function InfoProvider({ children }: PropsWithChildren) {
 
     const fetchAnimes = async (page: number, type: string, setAnime: (arg: any) => void) => {
         try {
-            // Fetch data from the Jikan API
-            const response = await fetch(`https://api.jikan.moe/v4/top/anime?page=${page}&type=${type}`);
+            const response = await fetch(`https://api.jikan.moe/v4/anime?page=${page}&type=${type}&order_by=score&sort=desc`);
 
-            // Check if the response is OK
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
 
-            // Parse the JSON from the response
             const data = await response.json();
 
-            // Update the state with the fetched data
             setAnime(data.data);
             setPagination(data.pagination)
         } catch (error) {

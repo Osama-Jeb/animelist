@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Anime, useInfo } from "../context/InfoProviders"
 import { Clock, Film, Play } from "lucide-react";
-import ChartComponent from "../components/ChartComponent";
+// import ChartComponent from "../components/ChartComponent";
 import ChartSeasons from "../components/ChartSeasons";
 import FilterByStudio from "../components/FilterByStudio";
 
@@ -106,7 +106,8 @@ const Statistics = () => {
 
                     <div className="w-full lg:w-[35vw]">
                         <h1 className="text-4xl">Most Watched Genres : </h1>
-                        <ChartComponent />
+                        {/* <ChartComponent /> */}
+                        maybe there's a problem here
                     </div>
 
 

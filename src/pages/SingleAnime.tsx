@@ -131,12 +131,12 @@ const SingleAnime = () => {
                         {animeChara
                             ?.sort((a: any, b: any) => b.favorites - a.favorites)
                             .map((chara: any, index: number) => (
-                                <div key={index} className="shadow-alpha shadow-sm rounded-xl ">
+                                <div key={index} className="border-2 border-alpha/50 rounded-xl ">
                                     <Link to={`/characters/${chara.character.mal_id}`}>
                                         <img src={chara.character.images.webp.image_url}
-                                            className="w-full rounded-xl"
+                                            className="w-full rounded-xl aspect-square object-cover"
                                             alt="" />
-                                        <div className="p-3 flex flex-col gap-2 w-[300px]">
+                                        <div className="p-3 flex flex-col gap-2 w-[250px]">
                                             <p>Name: {formatName(chara.character.name)}</p>
                                             <p>Role: {chara.role}</p>
                                             <p>Voice Actor: {chara.voice_actors.map((human: any, ind: number) => (
