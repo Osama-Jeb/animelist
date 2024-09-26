@@ -5,15 +5,12 @@ import { Clock, Film, Play } from "lucide-react";
 import FilterByStudio from "../components/FilterByStudio";
 import ChartComponent from "../components/ChartComponent";
 import ChartSeasons from "../components/ChartSeasons";
+import FilterByYear from "../components/FilterByYear";
 
 
 const Statistics = () => {
     const [timeFormat, setTimeFormat] = useState('Min'); // Default format
     const { bookmarkedAnimes } = useInfo();
-
-    // const { user } = useInfo();
-
-    // const bookmarkedAnimes = user?.bookmarkedAnime;
 
     const [total, setTotal] = useState(0)
     const animeTotalEpisodes = () => {
@@ -105,28 +102,25 @@ const Statistics = () => {
                 {/* Charts */}
                 <div className="flex items-center justify-around mt-6">
 
-                    <div className="w-full lg:w-[35vw] border border-alpha p-2 rounded-xl">
-                        <h1 className="text-4xl my-3">Most Watched Genres : </h1>
+                    <div className="w-[40vw] border border-alpha p-2 rounded-xl">
+                        <h1 className="text-4xl my-3 px-5">Most Watched Genres : </h1>
                         <ChartComponent />
                     </div>
 
 
-                    <div className="w-full lg:w-[40vw] border border-alpha p-3 rounded-xl">
-                        <h1 className="text-4xl my-3">Seasonal Anime Information: </h1>
+                    <div className="w-[40vw] h-fit border border-alpha p-3 rounded-xl">
+                        <h1 className="text-4xl my-3 px-5 bgre">Seasonal Anime Info: </h1>
                         <ChartSeasons />
                     </div>
 
                 </div>
 
                 {/* Studios */}
-                {/* TODO: STYLE THE  */}
-                <div className="flex items-center justify-around mt-6">
+                <div className="flex  justify-around mt-6">
 
                     <FilterByStudio />
                             
-                    <div className="w-full lg:w-[40vw]">
-                        <h1>Anime By Year: </h1>
-                    </div>
+                    <FilterByYear />
                 
                 
                 </div>
