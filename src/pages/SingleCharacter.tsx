@@ -27,7 +27,7 @@ const SingleCharacter = () => {
 
                     <div className="container mx-auto px-4 py-8">
                         <div className="flex flex-col md:flex-row gap-8">
-                            <div className="md:w-1/3 flex items-center justify-center">
+                            <div className="md:w-1/3 flex justify-center">
 
                                 <Swiper
                                     slidesPerView={1}
@@ -45,7 +45,7 @@ const SingleCharacter = () => {
                                                 <img
                                                     src={img.jpg.image_url}
                                                     alt={character.name}
-                                                    className=" rounded-lg w-full"
+                                                    className=" rounded-lg w-full h-full"
                                                 />
                                             </SwiperSlide>
                                         ))
@@ -59,12 +59,16 @@ const SingleCharacter = () => {
                                         <p className="font-semibold text-xl">Anime: <Link to={`/anime/${character.anime[0].anime.mal_id}`} className="font-light">{character.anime[0].anime.title} </Link></p>
                                         <p className="font-semibold text-xl">Japanese Name: <span className="font-light">{character.name_kanji}</span></p>
                                         <p className="font-semibold text-xl">
-                                            Voice By: {character.voices.filter((char: any) => char.language === "Japanese").map((cha: any) => (<><Link to={`/va/${cha.person.mal_id}`} className="font-light">{formatName(cha.person.name)}, </Link></>))}
+                                            Voice By: {character.voices.filter((char: any) => char.language === "Japanese").map((cha: any) => (<><Link to={`/va/${cha.person.mal_id}`} className="font-light">{formatName(cha.person.name)}
+                                            
+                                            </Link></>))}
                                         </p>
 
                                         <p className="font-semibold text-xl">
                                             NickNames: {character.nicknames.length > 0 ? character.nicknames.map((char: string, index: number) => (
-                                                <span key={index} className="font-light">{char}, </span>
+                                                <span key={index} className="font-light"> {char}
+                                                {index != character.nicknames.length - 1 && ','}
+                                                </span>
                                             ))
                                             :
                                             <>

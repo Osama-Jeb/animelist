@@ -3,6 +3,8 @@ import { Anime, useInfo } from "../context/InfoProviders"
 import { Clock, Film, Play } from "lucide-react";
 // import ChartSeasons from "../components/ChartSeasons";
 import FilterByStudio from "../components/FilterByStudio";
+import ChartComponent from "../components/ChartComponent";
+import ChartSeasons from "../components/ChartSeasons";
 
 
 const Statistics = () => {
@@ -64,7 +66,7 @@ const Statistics = () => {
                 <div className="flex flex-wrap gap-4 mt-4 px-4">
                     {
                         stats.map((stat, index) => (
-                            <div key={index} className="flex-1 min-w-[200px] shadow-alpha shadow-md rounded-lg p-4">
+                            <div key={index} className="flex-1 min-w-[200px] shadow-alpha border border-alpha shadow-md rounded-lg p-4">
                                 <div className="flex flex-row items-center justify-between pb-2">
                                     <h3 className="text-2xl">{stat.title}</h3>
                                     {stat.icon}
@@ -74,7 +76,7 @@ const Statistics = () => {
                         ))
                     }
 
-                    <div className="flex-1 min-w-[200px] shadow-alpha shadow-md rounded-lg p-4">
+                    <div className="flex-1 min-w-[200px] shadow-alpha border border-alpha shadow-md rounded-lg p-4">
                         <div className="flex flex-row items-center justify-between pb-2">
                             <h1 className="text-2xl">Total Watch Time</h1>
                             <Clock color="#6b7280" size={25} />
@@ -101,24 +103,24 @@ const Statistics = () => {
                 </div>
 
                 {/* Charts */}
-                <div className="flex items-center justify-between mt-3">
+                <div className="flex items-center justify-around mt-6">
 
-                    <div className="w-full lg:w-[35vw]">
-                        <h1 className="text-4xl">Most Watched Genres : </h1>
-                        <p>pie chart</p>
+                    <div className="w-full lg:w-[35vw] border border-alpha p-2 rounded-xl">
+                        <h1 className="text-4xl my-3">Most Watched Genres : </h1>
+                        <ChartComponent />
                     </div>
 
 
-                    <div className="w-full lg:w-[40vw]">
-                        <h1 className="text-4xl">Seasonal Anime Information: </h1>
-                        <p>bar charts </p>
+                    <div className="w-full lg:w-[40vw] border border-alpha p-3 rounded-xl">
+                        <h1 className="text-4xl my-3">Seasonal Anime Information: </h1>
+                        <ChartSeasons />
                     </div>
 
                 </div>
 
                 {/* Studios */}
                 {/* TODO: STYLE THE  */}
-                <div className="mt-3 flex items-center justify-between">
+                <div className="flex items-center justify-around mt-6">
 
                     <FilterByStudio />
                             

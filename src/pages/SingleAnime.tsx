@@ -59,7 +59,7 @@ const SingleAnime = () => {
 
             <div className="container mx-auto px-4 py-8">
                 <div className="flex flex-col md:flex-row gap-8">
-                    <div className="md:w-1/3 flex items-center justify-center">
+                    <div className="md:w-1/3 flex  justify-center">
 
                         <Swiper
                             slidesPerView={1}
@@ -78,7 +78,7 @@ const SingleAnime = () => {
                                         <img
                                             src={img.webp?.large_image_url}
                                             alt={animeInfo.title_english ?? animeInfo.title}
-                                            className=" rounded-lg w-full"
+                                            className=" rounded-lg w-full h-full"
                                         />
                                     </SwiperSlide>
                                 ))
@@ -126,7 +126,7 @@ const SingleAnime = () => {
 
                 <p>Characters: </p>
                 <div className="overflow-x-auto my-4">
-                    <div className="flex gap-7 w-fit">
+                    {/* <div className="flex gap-7 w-fit">
                         {animeChara
                             ?.sort((a: any, b: any) => b.favorites - a.favorites)
                             .map((chara: any, index: number) => (
@@ -148,7 +148,41 @@ const SingleAnime = () => {
                                     </Link>
                                 </div>
                             ))}
-                    </div>
+                    </div> */}
+
+                    <Swiper
+                        slidesPerView={5}
+                        spaceBetween={50}
+                        modules={[Navigation]}
+                        navigation
+                        loop={true}
+
+                    >
+                        {animeChara
+                            ?.sort((a: any, b: any) => b.favorites - a.favorites)
+                            .map((chara: any, index: number) => (
+                                <SwiperSlide className="w-[250px]">
+                                    <div key={index} className="border-2 border-alpha/50 rounded-xl ">
+                                        <Link to={`/characters/${chara.character.mal_id}`}>
+                                            <img src={chara.character.images.webp.image_url}
+                                                className="w-full rounded-xl aspect-square object-cover"
+                                                alt="" />
+                                            <div className="p-3">
+                                                <p className="my-1">Name: {formatName(chara.character.name)}</p>
+                                                <p className="my-1">Role: {chara.role}</p>
+                                                <p className="my-1">Voice Actor: {chara.voice_actors.map((human: any, ind: number) => (
+                                                    <span key={ind}>
+                                                        {human.language === "Japanese" && human.person.name.replace(",", "")}
+                                                    </span>
+                                                ))}</p>
+                                                <p className="my-1">Liked by {chara.favorites} person</p>
+                                            </div>
+                                        </Link>
+                                    </div>
+                                </SwiperSlide>
+                            ))}
+
+                    </Swiper>
                 </div>
 
             </div>

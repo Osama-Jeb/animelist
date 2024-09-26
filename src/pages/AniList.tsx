@@ -11,7 +11,7 @@ import { useAuth } from "../context/AuthContext";
 
 const AniList = () => {
 
-    const { pagination, fetchInfo, bookmarkedAnimes, onBookmarkClick } = useInfo();
+    const { fetchInfo, bookmarkedAnimes, onBookmarkClick } = useInfo();
     const [type, setType] = useState('TV');
     const [status, setStatus] = useState('complete');
     const [order, setOrder] = useState('score');
@@ -23,8 +23,8 @@ const AniList = () => {
 
     const [animeTV, setAnimeTV] = useState<Anime[] | null>(null);
     const [currPage, setCurrPage] = useState(1);
-    const totalPages = pagination ? pagination.last_visible_page : 1;
-    const maxPagesToShow = 2;
+    // const totalPages = pagination ? pagination.last_visible_page : 1;
+    // const maxPagesToShow = 2;
 
 
 
@@ -33,23 +33,25 @@ const AniList = () => {
     }, [currPage, type, status, order, sort])
 
     const handlePageChange = (newPage: number) => {
-        if (newPage > 0 && (!pagination || newPage <= pagination.last_visible_page)) {
+        if (newPage > 0 && newPage <= 1095) {
             setCurrPage(newPage);
         }
     };
 
-    const getPageNumbers = () => {
-        const pageNumbers = [];
-        const startPage = Math.max(1, currPage - maxPagesToShow);
-        const endPage = Math.min(totalPages, currPage + maxPagesToShow);
 
-        for (let i = startPage; i <= endPage; i++) {
-            pageNumbers.push(i);
-        }
 
-        return pageNumbers;
-    };
-    const pageNumbers = getPageNumbers();
+    // const getPageNumbers = () => {
+    //     const pageNumbers = [];
+    //     const startPage = Math.max(1, currPage - maxPagesToShow);
+    //     const endPage = Math.min(totalPages, currPage + maxPagesToShow);
+
+    //     for (let i = startPage; i <= endPage; i++) {
+    //         pageNumbers.push(i);
+    //     }
+
+    //     return pageNumbers;
+    // };
+    // const pageNumbers = getPageNumbers();
 
 
     const renderGrid = (animes: Anime[] | null) => (
@@ -69,7 +71,7 @@ const AniList = () => {
                         <img src={anime.images?.webp?.large_image_url} alt={anime.title} className="w-full h-64 object-cover" />
                         <div className="p-4">
                             <h3 className="text-xl font-semibold mb-2">{anime.title_english ?? anime.title}</h3>
-                            <p className="text-gray-600 mb-2">{anime.score}</p>
+                            <p className="text-gray-600 mb-2">Score: {anime.score}/10</p>
                             <p className="text-sm text-gray-500 mb-1">Episodes: {anime.episodes}</p>
                             <p className="text-sm text-gray-500 mb-1">Release Year: {anime.year}</p>
                             <p className="text-sm text-gray-500 mb-2">Genres: {anime.genres.map((genre) => genre.name).join(', ')}</p>
@@ -259,10 +261,7 @@ const AniList = () => {
                             </div>
 
                             {/* Anime Display Section */}
-                            <div>
-                                <h2 className="text-2xl font-semibold mb-4">My Anime List</h2>
-
-
+                            <div className="mt-4">
                                 {renderGrid(searchedAnimes || animeTV)}
                                 {/* {displayMode === 'list' && renderList(searchedAnimes || animeTV)}
                                 {displayMode === 'table' && renderTable(searchedAnimes || animeTV)} */}
@@ -280,23 +279,28 @@ const AniList = () => {
                                 Previous
                             </button>
 
-                            {pageNumbers.map(pageNumber => (
-                                <button
-                                    key={pageNumber}
-                                    onClick={() => handlePageChange(pageNumber)}
-                                    className={`px-2 ${pageNumber === currPage ? 'bg-gray-600' : ''}`}
-                                >
-                                    {pageNumber}
-                                </button>
-                            ))}
+                            <input type="number" name="pagination" id="pagination"
+                                className="text-black w-[50px] px-1"
+                                min="1"
+                                max="1059"
+                                value={currPage}
+                                onChange={(e) => {
+                                    if (Math.round(parseInt(e.target.value)) > 0 && Math.round(parseInt(e.target.value)) < 1095) {
+                                        setCurrPage(parseInt(e.target.value))
+                                    }
+                                }}
+
+                            />
 
                             <button
                                 onClick={() => handlePageChange(currPage + 1)}
-                                disabled={pagination ? currPage >= totalPages : true}
+                                disabled={currPage >= 1059}
                             >
                                 Next
                             </button>
+
                         </div>
+
                     </>
                     :
                     <Loading />

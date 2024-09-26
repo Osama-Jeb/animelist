@@ -11,9 +11,12 @@ const MangaList = () => {
     const [order, setOrder] = useState('score');
     const [sort, setSort] = useState('desc');
 
+    const [currPage, setCurrPage] = useState(1);
+
+
     useEffect(() => {
-        fetchInfo("manga", 1, type, setManga, status, order, sort)
-    }, [type, status, sort, order])
+        fetchInfo("manga", currPage, type, setManga, status, order, sort)
+    }, [currPage, type, status, sort, order])
 
     const [searchedManga, setSearchedManga] = useState<any>();
     const onSearch = async (term: string) => {
@@ -42,7 +45,6 @@ const MangaList = () => {
         { id: 'complete', label: 'complete' },
         { id: 'hiatus', label: 'hiatus' },
         { id: 'discontinued', label: 'discontinued' },
-        { id: 'upcoming', label: 'upcoming' },
     ];
 
     const orderSelect = [
@@ -78,6 +80,12 @@ const MangaList = () => {
             </div>
         )
     }
+
+    const handlePageChange = (newPage: number) => {
+        if (newPage > 0 && newPage <= 2884) {
+            setCurrPage(newPage);
+        }
+    };
     return (
         <>
             <div className="mt-5">
@@ -152,6 +160,35 @@ const MangaList = () => {
                     }
                 </div>
 
+            </div>
+
+            {/* Pagination */}
+            <div className="flex items-center bg-black justify-center gap-5 font-bold text-xl h-[30px] sticky bottom-0">
+                <button
+                    onClick={() => handlePageChange(currPage - 1)}
+                    disabled={currPage <= 1}
+                >
+                    Previous
+                </button>
+
+                <input type="number" name="pagination" id="pagination"
+                    className="text-black w-[50px] px-1"
+                    value={currPage}
+                    onChange={(e) => {
+                        if (Math.round(parseInt(e.target.value)) > 0 && Math.round(parseInt(e.target.value)) < 1095) {
+                            setCurrPage(parseInt(e.target.value))
+                        }
+                    }}
+
+                />
+
+                <button
+                    onClick={() => handlePageChange(currPage + 1)}
+                    disabled={currPage >= 2884}
+                >
+                    Next
+                </button>
+                
             </div>
 
         </>

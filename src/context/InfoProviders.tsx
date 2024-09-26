@@ -132,7 +132,7 @@ export interface Anime {
     licensors: Producer[];
     studios: Producer[];
     genres: Genre[];
-    explicit_genres: any[]; // Empty array in this case
+    explicit_genres: any[];
     themes: Genre[];
     demographics: Genre[];
     relations: Relation[];
@@ -141,27 +141,12 @@ export interface Anime {
     streaming: StreamingService[];
 }
 
-
-interface Pagination {
-    last_visible_page: number,
-    has_next_page: boolean,
-    current_page: number,
-    items: {
-        count: number,
-        total: number,
-        per_page: number
-    }
-
-}
-
-
 interface User {
     username: string,
     bookmarkedAnimes: string[],
     bookmarkedMovies: string[]
 }
 interface InfoContextType {
-    pagination: Pagination | null,
     fetchInfo: (what: string, page: number, type: string, setAnime: (arg: any) => void, status: string, order_by: string, sort: string) => void,
     fetchSingle: (id: string | undefined, type: string, setSingle : (arg: any) => void, setPic? : (arg: any) => void) => void,
     user: User | null | DocumentData,
@@ -173,7 +158,6 @@ interface InfoContextType {
 
 
 const InfoContext = createContext<InfoContextType>({
-    pagination: null,
     fetchInfo: () => { },
     fetchSingle: () => { },
     user: null,
@@ -188,7 +172,6 @@ export default function InfoProvider({ children }: PropsWithChildren) {
     const { currentUser } = useAuth();
     const [bookmarkedAnimes, setBookmarkedAnimes] = useState<any>()
     const [loading, setLoading] = useState(false);
-    const [pagination, setPagination] = useState<Pagination | null>(null)
     const [user, setUser] = useState<User | null | DocumentData>(null)
 
 
@@ -203,7 +186,6 @@ export default function InfoProvider({ children }: PropsWithChildren) {
             const data = await response.json();
 
             setAnime(data.data);
-            setPagination(data.pagination)
         } catch (error) {
             console.error('err brr:', error);
         }
@@ -242,11 +224,11 @@ export default function InfoProvider({ children }: PropsWithChildren) {
                     setUser(userDoc.data());
                 }
             } else {
-                setUser(null); // User is signed out
+                setUser(null); 
             }
         });
 
-        return () => unsubscribe(); // Clean up subscription on unmount
+        return () => unsubscribe(); 
     }, []);
 
 
@@ -321,7 +303,7 @@ export default function InfoProvider({ children }: PropsWithChildren) {
         if (currentUser) {
             fetchBookmarks();
         }
-    }, [bookmarkedAnimes, currentUser]);
+    }, [currentUser]);
 
     const formatName = (name: string) => {
         if (name.includes(",")) {
@@ -332,7 +314,7 @@ export default function InfoProvider({ children }: PropsWithChildren) {
         }
     };
 
-    return <InfoContext.Provider value={{ pagination, user, fetchInfo, bookmarkedAnimes, onBookmarkClick, loading, fetchSingle,formatName }}>
+    return <InfoContext.Provider value={{ user, fetchInfo, bookmarkedAnimes, onBookmarkClick, loading, fetchSingle,formatName }}>
         {children}
     </InfoContext.Provider >
 }

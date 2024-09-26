@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 
 import { Autoplay, Navigation } from 'swiper/modules';
@@ -10,7 +10,7 @@ import { useInfo } from "../context/InfoProviders";
 
 const SingleManga = () => {
     const { id } = useParams();
-    const {fetchSingle} = useInfo();
+    const { fetchSingle } = useInfo();
     const [manga, setManga] = useState<any>();
     const [pics, setPics] = useState<any>();
 
@@ -34,25 +34,25 @@ const SingleManga = () => {
 
                     <div className="container mx-auto px-4 py-8">
                         <div className="flex flex-col md:flex-row gap-8">
-                            <div className="md:w-1/3 flex items-center justify-center">
+                            <div className="md:w-1/3 flex  justify-center">
 
-                            <Swiper
-                            slidesPerView={1}
-                            modules={[Navigation, Autoplay]}
-                            navigation
-                            loop={true}
-                            autoplay={{
-                                delay: 2000,
-                                disableOnInteraction: false,
-                            }}
-                        >
+                                <Swiper
+                                    slidesPerView={1}
+                                    modules={[Navigation, Autoplay]}
+                                    navigation
+                                    loop={true}
+                                    autoplay={{
+                                        delay: 2000,
+                                        disableOnInteraction: false,
+                                    }}
+                                >
                                     {
                                         pics?.map((img: any, index: number) => (
                                             <SwiperSlide key={index} className="w-full">
                                                 <img
                                                     src={img.webp?.large_image_url}
                                                     alt={manga.title_english ?? manga.title}
-                                                    className=" rounded-lg w-full"
+                                                    className=" rounded-lg w-full h-full"
                                                 />
                                             </SwiperSlide>
                                         ))
@@ -71,33 +71,30 @@ const SingleManga = () => {
                                     <div>
                                         {/* <p className="font-semibold">Studio: {manga.studios[0].name}</p> */}
                                         <p className="font-semibold">Rating: {manga.score}/10</p>
-                                        <p className="font-semibold">Genres: {manga.genres.map((theme : any) => theme.name).join(', ')}</p>
+                                        <p className="font-semibold">Genres: {manga.genres.map((theme: any) => theme.name).join(', ')}</p>
                                     </div>
                                 </div>
                                 <h2 className="text-4xl font-semibold mb-2">Synopsis</h2>
                                 <article className="mb-6">{manga.synopsis}</article>
                                 <ul className="list-disc">
 
-                                    {/* {
-                                        manga.relations.map(rel => (
-                                            rel.relation == "Sequel" || rel.relation == "Prequel" ?
-                                                <li key={rel.entry[0].mal_id}>
-                                                    <Link
-                                                        to={`/anime/${rel.entry[0].mal_id}`}
-                                                    >{rel.relation} : {rel.entry[0].name}
-                                                    </Link>
-                                                </li>
-                                                :
-                                                null
+                                    {
+                                        manga.relations.map((rel: any) => (
+                                            <li key={rel.entry[0].mal_id}>
+                                                <Link
+                                                    to={rel.relation == 'Adaptation' ? `/anime/${rel.entry[0].mal_id}` : `/manga/${rel.entry[0].mal_id}`}
+                                                >{rel.relation} : {rel.entry[0].name}
+                                                </Link>
+                                            </li>
                                         ))
-                                    } */}
+                                    }
                                 </ul>
                             </div>
                         </div>
                     </div>
 
                 </section>
-}
+            }
         </>
     )
 }
