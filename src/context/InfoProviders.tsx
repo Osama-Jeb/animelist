@@ -1,6 +1,6 @@
 // import { onAuthStateChanged } from "firebase/auth";
 import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react"
-import {  auth, db } from "../firebase";
+import { auth, db } from "../firebase";
 import { arrayRemove, arrayUnion, doc, DocumentData, getDoc, updateDoc } from "firebase/firestore";
 import { useAuth } from "./AuthContext";
 import { onAuthStateChanged } from "firebase/auth";
@@ -147,8 +147,8 @@ interface User {
     bookmarkedMovies: string[]
 }
 interface InfoContextType {
-    fetchInfo: (what: string, page: number, type: string, setAnime: (arg: any) => void, status: string, order_by: string, sort: string) => void,
-    fetchSingle: (id: string | undefined, type: string, setSingle : (arg: any) => void, setPic? : (arg: any) => void) => void,
+    fetchInfo: (what: string, page: number, type: string, setInfo: (arg: any) => void, status: string, order_by: string, sort: string) => void,
+    fetchSingle: (id: string | undefined, type: string, setSingle: (arg: any) => void, setPic?: (arg: any) => void) => void,
     user: User | null | DocumentData,
     bookmarkedAnimes: Anime[] | null,
     onBookmarkClick: (animeData: Anime) => void,
@@ -172,10 +172,11 @@ export default function InfoProvider({ children }: PropsWithChildren) {
     const { currentUser } = useAuth();
     const [bookmarkedAnimes, setBookmarkedAnimes] = useState<any>()
     const [loading, setLoading] = useState(false);
-    const [user, setUser] = useState<User | null | DocumentData>(null)
+    const [user, setUser] = useState<User | null | DocumentData>(null);
+    // TODO* move the search to the provider
 
 
-    const fetchInfo = async (what: string, page: number, type: string, setAnime: (arg: any) => void, status: string, order_by: string, sort: string) => {
+    const fetchInfo = async (what: string, page: number, type: string, setInfo: (arg: any) => void, status: string, order_by: string, sort: string) => {
         try {
             const response = await fetch(`https://api.jikan.moe/v4/${what}?page=${page}&type=${type}&status=${status}&order_by=${order_by}&sort=${sort}`);
 
@@ -185,13 +186,18 @@ export default function InfoProvider({ children }: PropsWithChildren) {
 
             const data = await response.json();
 
-            setAnime(data.data);
+            if (what == "people") {
+                const filteredData = data.data.filter((item: any) => Array.isArray(item.voices) && item.voices.length > 0);
+                setInfo(filteredData)
+            } else {
+                setInfo(data.data);
+            }
         } catch (error) {
             console.error('err brr:', error);
         }
     };
 
-    const fetchSingle = async(id: string | undefined, type: string, setSingle: (data: any) => void, setPic?: (data:any) => void) => {
+    const fetchSingle = async (id: string | undefined, type: string, setSingle: (data: any) => void, setPic?: (data: any) => void) => {
         try {
             const response = await fetch(`https://api.jikan.moe/v4/${type}/${id}/full`)
 
@@ -224,18 +230,18 @@ export default function InfoProvider({ children }: PropsWithChildren) {
                     setUser(userDoc.data());
                 }
             } else {
-                setUser(null); 
+                setUser(null);
             }
         });
 
-        return () => unsubscribe(); 
+        return () => unsubscribe();
     }, []);
 
 
     const onBookmarkClick = async (animeData: Anime) => {
         const userRef = doc(db, 'users', currentUser.uid);
         setLoading(true);
-    
+
         const ani = {
             mal_id: animeData.mal_id,
             genres: animeData.genres,
@@ -249,19 +255,19 @@ export default function InfoProvider({ children }: PropsWithChildren) {
             score: animeData.score,
             images: animeData.images
         };
-    
+
         try {
             const userDoc = await getDoc(userRef);
             if (userDoc.exists()) {
                 const userData = userDoc.data();
                 const isBookmarked = userData.bookmarkedAnimes.some((anime: any) => anime.mal_id === animeData.mal_id);
-    
+
                 const updatedBookmarks = isBookmarked
                     ? userData.bookmarkedAnimes.filter((anime: any) => anime.mal_id !== animeData.mal_id)
                     : [...userData.bookmarkedAnimes, ani];
-    
+
                 setBookmarkedAnimes(updatedBookmarks);
-    
+
                 if (isBookmarked) {
                     await updateDoc(userRef, {
                         bookmarkedAnimes: arrayRemove(ani)
@@ -281,7 +287,7 @@ export default function InfoProvider({ children }: PropsWithChildren) {
         }
         setLoading(false);
     };
-    
+
 
 
     useEffect(() => {
@@ -314,7 +320,7 @@ export default function InfoProvider({ children }: PropsWithChildren) {
         }
     };
 
-    return <InfoContext.Provider value={{ user, fetchInfo, bookmarkedAnimes, onBookmarkClick, loading, fetchSingle,formatName }}>
+    return <InfoContext.Provider value={{ user, fetchInfo, bookmarkedAnimes, onBookmarkClick, loading, fetchSingle, formatName }}>
         {children}
     </InfoContext.Provider >
 }

@@ -39,7 +39,7 @@ const ChartSeasons = () => {
                         countBySeason('winter'),
                         countBySeason('spring'),
                     ],
-                    backgroundColor: ['#ff0000', '#ffa500', '#00ff00', '#0000ff'],
+                    backgroundColor: ['#ff0000', '#ffa500', '#0000ff', '#00ff00'],
                     borderColor: 'black',
                     borderWidth: 2,
                 },

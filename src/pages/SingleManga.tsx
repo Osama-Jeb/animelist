@@ -64,7 +64,7 @@ const SingleManga = () => {
                                 <h1 className="text-4xl font-bold mb-4">{manga.title_english ?? manga.title}</h1>
                                 <div className="grid grid-cols-2 gap-4 mb-6">
                                     <div>
-                                        <p className="font-semibold text-xl">Author: <span className="font-light">{formatName(manga.authors[0].name)}</span></p>
+                                        <p className="font-semibold text-xl">Author: <Link to={`/va/${manga.authors[0].mal_id}`} className="font-light">{formatName(manga.authors[0].name)}</Link></p>
                                         <p className="font-semibold text-xl">Chapters: <span className="font-light">{manga.chapters ?? 'Still Publishing'}</span></p>
                                         <p className="font-semibold text-xl">Release Year: <span className="font-light">{manga.published?.prop.from.year}</span></p>
                                     </div>

@@ -21,7 +21,7 @@ const MangaList = () => {
     const [searchedManga, setSearchedManga] = useState<any>();
     const onSearch = async (term: string) => {
         try {
-            const res = await fetch(`https://api.jikan.moe/v4/manga?q=${term}`)
+            const res = await fetch(`https://api.jikan.moe/v4/manga?q=${term}&order_by=favorites&sort=desc`)
             if (!res.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -68,7 +68,7 @@ const MangaList = () => {
                                 <img src={mng.images?.webp?.large_image_url} alt={mng.title} className="w-full h-64 object-cover" />
                                 <div className="p-4">
                                     <h3 className="text-xl font-semibold mb-2">{mng.title_english ?? mng.title}</h3>
-                                    <p className="text-gray-600 mb-2">{mng.score}</p>
+                                    <p className="text-gray-600 mb-2">Score: {mng.score}</p>
                                     <p className="text-sm text-gray-500 mb-1">Chapters: {mng.chapters ?? 'Still Publishing'}</p>
                                     <p className="text-sm text-gray-500 mb-1">Release Year: {mng.published?.prop.from.year}</p>
                                     <p className="text-sm text-gray-500 mb-2">Genres: {mng.genres.map((genre: any) => genre.name).join(', ')}</p>
@@ -86,6 +86,8 @@ const MangaList = () => {
             setCurrPage(newPage);
         }
     };
+
+
     return (
         <>
             <div className="mt-5">
@@ -172,7 +174,7 @@ const MangaList = () => {
                 </button>
 
                 <input type="number" name="pagination" id="pagination"
-                    className="text-black w-[50px] px-1"
+                    className="text-black w-[50px] px-1 rounded"
                     value={currPage}
                     onChange={(e) => {
                         if (Math.round(parseInt(e.target.value)) > 0 && Math.round(parseInt(e.target.value)) < 1095) {

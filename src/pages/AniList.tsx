@@ -280,7 +280,7 @@ const AniList = () => {
                             </button>
 
                             <input type="number" name="pagination" id="pagination"
-                                className="text-black w-[50px] px-1"
+                                className="text-black w-[50px] px-1 rounded"
                                 min="1"
                                 max="1059"
                                 value={currPage}
