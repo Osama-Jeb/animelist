@@ -13,7 +13,6 @@ const ChartSeasons = () => {
         labels: ['Summer', 'Fall', 'Winter', 'Spring'],
         datasets: [
             {
-                label: 'Anime Genres',
                 data: [0, 0, 0, 0], // Initial empty data
                 backgroundColor: ['#ff0000', '#ffa500', '#00ff00', '#0000ff'],
                 borderColor: 'black',
@@ -32,7 +31,6 @@ const ChartSeasons = () => {
             labels: ['Summer', 'Fall', 'Winter', 'Spring'],
             datasets: [
                 {
-                    label: 'Anime Genres',
                     data: [
                         countBySeason('summer'),
                         countBySeason('fall'),
@@ -53,14 +51,17 @@ const ChartSeasons = () => {
         <>
             <Bar
                 data={chartData}
-                // options={{
-                //     plugins: {
-                //         title: {
-                //             display: true,
-                //             text: "Anime Genre Chart",
-                //         },
-                //     },
-                // }}
+                options={{
+                    plugins: {
+                        title: {
+                            display: false,
+                            text: "Anime Genre Chart",
+                        },
+                        legend: {
+                            display: false,
+                        }
+                    },
+                }}
             />
         </>
     );

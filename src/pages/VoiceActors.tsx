@@ -1,11 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useInfo } from "../context/InfoProviders";
+import Pagination from "../components/Pagination";
+import { Calendar } from "lucide-react";
+import Loading from "../components/Loading";
 
 const VoiceActors = () => {
+    const { onSearch, loading } = useInfo();
     const [voiceActors, setVoiceActors] = useState<any>();
     const [order, setOrder] = useState<string>('favorites');
     const [currPage, setCurrPage] = useState(1);
 
+    const [input, setInput] = useState('');
+    const [searchededVA, setSearcheedVa] = useState<any>();
 
     const fetchVoiceActors = async () => {
         try {
@@ -31,21 +38,6 @@ const VoiceActors = () => {
         { id: "name", label: "Name" },
         { id: "birthday", label: "Birthday" },
     ];
-    const [input, setInput] = useState('');
-    const [searchededVA, setSearcheedVa] = useState<any>();
-    const onSearch = async (term: string) => {
-        try {
-            const res = await fetch(`https://api.jikan.moe/v4/people?q=${term}&order_by=${order}&sort=desc`)
-            if (!res.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const data = await res.json();
-            setSearcheedVa(data.data);
-
-        } catch (error) {
-            console.log("search erro", error)
-        }
-    }
 
 
     const rendeerVA = (actors: any | null) => {
@@ -53,13 +45,27 @@ const VoiceActors = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                 {actors?.map((chara: any, index: number) => (
-                    <div key={index} className="relative border border-alpha rounded-lg overflow-hidden hover:bg-gray-900">
-                        <Link to={`/va/${chara.mal_id}`} key={index} className="cursor-default">
-                            <img src={chara.images?.jpg?.image_url} alt={chara.title} className="w-full h-64 object-cover" />
-                            <div className="p-4">
-                                <p>Name: {chara.name}</p>
-                                <p>Japanese Name: {chara.given_name} {chara.family_name}</p>
-
+                    <div key={index} className="relative bg-alpha/30 rounded-lg overflow-hidden hover:bg-gray-900">
+                        <Link to={`/va/${chara?.mal_id}`} key={index} className="cursor-default">
+                            <img src={chara?.images?.jpg?.image_url} alt={chara?.title} className="w-full h-64 object-cover" />
+                            <div className="p-4 flex flex-col items- gap-2">
+                                <p className="text-center text-lg">{chara?.name}</p>
+                                <p className="text-center text-[#9ca3af]">({chara?.given_name} {chara?.family_name})</p>
+                                <p className="flex items-center gap-2">
+                                    <Calendar size={16} color="#9ca3af" /> {new Date(chara?.birthday).toLocaleDateString('en-US', {
+                                        year: 'numeric',
+                                        month: 'long',
+                                        day: 'numeric'
+                                    })}
+                                </p>
+                                <p className="my-1">
+                                    {/* <span>{chara?.alternate_names.length > 0 ? '' : 'No Nickname'}</span> */}
+                                    {chara?.alternate_names?.map((nickname: string, index: number) => (
+                                        <span key={index} className="inline-block bg-alpha/40 rounded-full px-2 py-1 m-1 text-sm">
+                                            {nickname}
+                                        </span>
+                                    ))}
+                                </p>
                             </div>
                         </Link>
                     </div>
@@ -68,78 +74,50 @@ const VoiceActors = () => {
         )
     }
 
-    const handlePageChange = (newPage: number) => {
-        if (newPage > 0 && newPage <= 2593) {
-            setCurrPage(newPage);
-        }
-    };
     return (
-        <>
+        voiceActors && !loading ?
+            <>
 
-            <div className="flex items-center gap-2">
-                <input type="text" placeholder="Search..." className="p-2 rounded bg-gray-800"
-                    value={input}
-                    onChange={(e) => {
-                        setInput(e.target.value.toLowerCase())
-                        if (!e.target.value) {
-                            setSearcheedVa(null)
-                        }
-                    }}
-                    onKeyDown={(e) => {
-                        if (e.key == "Enter") {
-                            onSearch(input)
-                        }
-                    }}
+                <div className="flex items-center gap-2">
+                    <input type="text" placeholder="Search..." className="p-2 rounded bg-gray-800"
+                        value={input}
+                        onChange={(e) => {
+                            setInput(e.target.value.toLowerCase())
+                            if (!e.target.value) {
+                                setSearcheedVa(null)
+                            }
+                        }}
+                        onKeyDown={(e) => {
+                            if (e.key == "Enter") {
+                                onSearch("people", input, setSearcheedVa)
+                            }
+                        }}
 
-                />
-                <select
-                    value={order}
-                    onChange={(e) => setOrder(e.target.value)}
-                    className="border rounded p-1 text-black capitalize"
-                >
-                    {orderSelect.map((option) => (
-                        <option key={option.id} value={option.id}>
-                            {option.label}
-                        </option>
-                    ))}
-                </select>
-            </div>
+                    />
+                    <select
+                        value={order}
+                        onChange={(e) => setOrder(e.target.value)}
+                        className="border rounded p-1 text-black capitalize"
+                    >
+                        {orderSelect?.map((option) => (
+                            <option key={option.id} value={option.id}>
+                                {option.label}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
-            <div className="mt-4">
-                {rendeerVA(searchededVA || voiceActors)}
+                <div className="mt-4">
+                    {rendeerVA(searchededVA || voiceActors)}
 
-            </div>
+                </div>
 
 
-            {/* Pagination */}
-            <div className="flex items-center bg-black justify-center gap-5 font-bold text-xl h-[30px] sticky bottom-0">
-                <button
-                    onClick={() => handlePageChange(currPage - 1)}
-                    disabled={currPage <= 1}
-                >
-                    Previous
-                </button>
-
-                <input type="number" name="pagination" id="pagination"
-                    className="text-black w-[50px] px-1 rounded"
-                    value={currPage}
-                    onChange={(e) => {
-                        if (Math.round(parseInt(e.target.value)) > 0 && Math.round(parseInt(e.target.value)) < 1095) {
-                            setCurrPage(parseInt(e.target.value))
-                        }
-                    }}
-
-                />
-
-                <button
-                    onClick={() => handlePageChange(currPage + 1)}
-                    disabled={currPage >= 2884}
-                >
-                    Next
-                </button>
-
-            </div>
-        </>
+                {/* Pagination */}
+                <Pagination currentPage={currPage} setCurrentPage={setCurrPage} max={2884} />
+            </>
+            :
+            <Loading />
     )
 }
 

@@ -147,12 +147,14 @@ interface User {
     bookmarkedMovies: string[]
 }
 interface InfoContextType {
-    fetchInfo: (what: string, page: number, type: string, setInfo: (arg: any) => void, status: string, order_by: string, sort: string) => void,
+    fetchInfo: (what: string, page: number, type: string, setInfo: (arg: any) => void, status: string, order_by: string, sort: string, genres?: number[]) => void,
     fetchSingle: (id: string | undefined, type: string, setSingle: (arg: any) => void, setPic?: (arg: any) => void) => void,
+    onSearch: (what: string, term: string, setResult: (arg: any) => void) => void,
     user: User | null | DocumentData,
     bookmarkedAnimes: Anime[] | null,
     onBookmarkClick: (animeData: Anime) => void,
     loading: boolean,
+    setLoading: (arg: boolean) => void,
     formatName: (name: string) => string,
 }
 
@@ -160,12 +162,13 @@ interface InfoContextType {
 const InfoContext = createContext<InfoContextType>({
     fetchInfo: () => { },
     fetchSingle: () => { },
+    onSearch: () => { },
     user: null,
     bookmarkedAnimes: null,
     onBookmarkClick: () => { },
     loading: false,
+    setLoading: () => { },
     formatName: () => '',
-
 });
 
 export default function InfoProvider({ children }: PropsWithChildren) {
@@ -173,12 +176,16 @@ export default function InfoProvider({ children }: PropsWithChildren) {
     const [bookmarkedAnimes, setBookmarkedAnimes] = useState<any>()
     const [loading, setLoading] = useState(false);
     const [user, setUser] = useState<User | null | DocumentData>(null);
-    // TODO* move the search to the provider
 
 
-    const fetchInfo = async (what: string, page: number, type: string, setInfo: (arg: any) => void, status: string, order_by: string, sort: string) => {
+    const fetchInfo = async (what: string, page: number, type: string, setInfo: (arg: any) => void, status: string, order_by: string, sort: string, genres?: number[]) => {
         try {
-            const response = await fetch(`https://api.jikan.moe/v4/${what}?page=${page}&type=${type}&status=${status}&order_by=${order_by}&sort=${sort}`);
+            let response;
+            if (genres) {
+                response = await fetch(`https://api.jikan.moe/v4/${what}?page=${page}&type=${type}&status=${status}&order_by=${order_by}&sort=${sort}&genres=${genres}`);
+            } else {
+                response = await fetch(`https://api.jikan.moe/v4/${what}?page=${page}&type=${type}&status=${status}&order_by=${order_by}&sort=${sort}`);
+            }
 
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -221,6 +228,22 @@ export default function InfoProvider({ children }: PropsWithChildren) {
         }
     }
 
+    const onSearch = async (what: string, term: string, setResult: (arg: any) => void) => {
+        try {
+            setLoading(true);
+            const res = await fetch(`https://api.jikan.moe/v4/${what}?q=${term}&order_by=favorites&sort=desc`)
+            if (!res.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await res.json();
+            setResult(data.data);
+            setLoading(false);
+
+        } catch (error) {
+            console.log("search erro", error)
+        }
+    }
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -240,7 +263,6 @@ export default function InfoProvider({ children }: PropsWithChildren) {
 
     const onBookmarkClick = async (animeData: Anime) => {
         const userRef = doc(db, 'users', currentUser.uid);
-        setLoading(true);
 
         const ani = {
             mal_id: animeData.mal_id,
@@ -249,11 +271,12 @@ export default function InfoProvider({ children }: PropsWithChildren) {
             type: animeData.type,
             source: animeData.source,
             episodes: animeData.episodes,
-            year: animeData.year,
+            year: animeData.aired.prop.from.year,
             season: animeData.season,
             studios: animeData.studios,
             score: animeData.score,
-            images: animeData.images
+            images: animeData.images,
+            duration: animeData.duration,
         };
 
         try {
@@ -285,7 +308,6 @@ export default function InfoProvider({ children }: PropsWithChildren) {
         } catch (error) {
             console.error("Error updating bookmarks: ", error);
         }
-        setLoading(false);
     };
 
 
@@ -320,7 +342,8 @@ export default function InfoProvider({ children }: PropsWithChildren) {
         }
     };
 
-    return <InfoContext.Provider value={{ user, fetchInfo, bookmarkedAnimes, onBookmarkClick, loading, fetchSingle, formatName }}>
+
+    return <InfoContext.Provider value={{ user, fetchInfo, bookmarkedAnimes, onBookmarkClick, loading, setLoading, fetchSingle, formatName, onSearch }}>
         {children}
     </InfoContext.Provider >
 }

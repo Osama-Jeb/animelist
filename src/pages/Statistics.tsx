@@ -9,9 +9,10 @@ import FilterByYear from "../components/FilterByYear";
 
 
 const Statistics = () => {
-    const [timeFormat, setTimeFormat] = useState('Min'); // Default format
+    // TODO* anime.duration to get episode duration
+    const [timeFormat, setTimeFormat] = useState('Min'); 
     const { bookmarkedAnimes } = useInfo();
-
+    
     const [total, setTotal] = useState(0)
     const animeTotalEpisodes = () => {
         let tempTot = 0;
@@ -99,31 +100,34 @@ const Statistics = () => {
 
                 </div>
 
+                <br />
+                <br />
+                <br />
                 {/* Charts */}
-                <div className="flex items-center justify-around mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <FilterByStudio />
+                    <FilterByYear />
 
-                    <div className="w-[40vw] border border-alpha p-2 rounded-xl">
-                        <h1 className="text-4xl my-3 px-5">Most Watched Genres : </h1>
+                    <div className=" border border-alpha p-2 rounded-xl">
+                        <h1 className="text-4xl p-4 border-b border-gray-700 mb-3">Most Watched Genres : </h1>
                         <ChartComponent />
                     </div>
 
 
-                    <div className="w-[40vw] h-fit border border-alpha p-3 rounded-xl">
-                        <h1 className="text-4xl my-3 px-5 bgre">Seasonal Anime Info: </h1>
+                    <div className=" h-fit border border-alpha p-3 rounded-xl">
+                        <h1 className="text-4xl p-4 border-b border-gray-700 mb-3 ">Seasonal Anime Info: </h1>
                         <ChartSeasons />
                     </div>
 
                 </div>
 
                 {/* Studios */}
-                <div className="flex  justify-around mt-6">
+                {/* <div className="flex  justify-around mt-6">
 
-                    <FilterByStudio />
-                            
-                    <FilterByYear />
-                
-                
-                </div>
+
+
+
+                </div> */}
 
 
             </section>

@@ -58,15 +58,32 @@ const Navbar = () => {
         },
         {
             link: "/va",
-            name: "Voice Actors"
+            name: "People"
         }
     ]
+
+    const [isVisible, setIsVisible] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
+
+    const handleScroll = () => {
+        if (typeof window !== 'undefined') {
+            const currentScrollY = window.scrollY;
+            setIsVisible(currentScrollY < lastScrollY || currentScrollY < 10);
+            setLastScrollY(currentScrollY);
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [lastScrollY]);
+
     return (
-        <nav className="sticky top-0 z-10 bg-black/80">
+        <nav className={`sticky top-0 z-20 bg-black/80 transition-transform ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 bg-transparent">
                 <div className="flex items-center justify-between h-16 bg-transparent">
                     {/* Logo/Website Name */}
-                    <Link to="/" className="text-xl font-bold bg-transparent">
+                    <Link to="/" className="text-xl font-bold">
                         Anime Repo
                     </Link>
 
@@ -81,9 +98,7 @@ const Navbar = () => {
                                     </NavLink>
                                 ))
                             }
-                            {/* <NavLink to="/voice-actors" className="bg-alpha  px-3 py-2 rounded-md text-sm font-medium">
-                                Voice Actors
-                            </NavLink> */}
+
                             {
                                 currentUser ?
                                     <div className="relative" ref={settingsRef}>
@@ -96,7 +111,7 @@ const Navbar = () => {
                                             <p>{currentUser?.displayName}</p>
                                         </button>
                                         {
-                                            profileMenu && <div className="absolute top-[150%] -left-[100px] w-[200px] z-20 bg-black">
+                                            profileMenu && <div className="absolute top-[120%] -left-[100px] w-[200px] z-20 bg-black">
                                                 <Link to={"/bookmarkedAnime"} onClick={() => { setProfileMenu(false) }} className="px-3 py-2 flex gap-2 items-center">
                                                     <Bookmark /> <p>Bookmarked Anime</p>
                                                 </Link>

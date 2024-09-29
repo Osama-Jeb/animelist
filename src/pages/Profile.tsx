@@ -7,11 +7,18 @@ const Profile = () => {
 
     const [username, setUsername] = useState<any>('')
     const [photo, setPhoto] = useState<any>('');
+    // const [newEmail, setNewEmail] = useState<any>('');
+
     const [pass, setPass] = useState<any>('');
+
+    const [isGoogleProvider, setIsGoogleProvider] = useState<any>();
 
     useEffect(() => {
         setUsername(currentUser?.displayName);
-        setPhoto(currentUser?.photoURL)
+        setPhoto(currentUser?.photoURL);
+        const answer = currentUser && currentUser.providerData.some((provider: any) => provider.providerId === 'google.com');
+        setIsGoogleProvider(answer);
+
     }, [currentUser])
 
     const updateUserInfo = async (e: any) => {
@@ -20,17 +27,21 @@ const Profile = () => {
             displayName: username ?? currentUser.displayName,
             photoURL: photo ?? currentUser.photoURL,
         }).then(() => {
-            alert('updated Successfully');
+            alert('updated Successfully!!');
         }).catch((err) => {
             console.log(err);
         })
 
+    }
+
+    const updateUserPassword = async () => {
         await updatePassword(currentUser, pass).then(() => {
-            alert('pass modded');
+            alert('Password Updated!!');
         }).catch((err) => {
             console.log(err)
         })
     }
+
 
     return (
         currentUser &&
@@ -51,7 +62,7 @@ const Profile = () => {
                         <label htmlFor="username">Username: </label>
                         <input type="text" name="username" id="username"
                             value={username}
-                            className="w-full rounded px-4 py-3 text-black mt-2"
+                            className="w-full rounded px-4 py-2 text-black mt-2"
                             onChange={(e) => setUsername(e.target.value)}
                             required
                         />
@@ -60,22 +71,34 @@ const Profile = () => {
                         <label htmlFor="photo">Photo URL:</label>
                         <input type="url" name="photo" id="photo"
                             value={photo}
-                            className="w-full rounded px-4 py-3 text-black mt-2"
+                            className="w-full rounded px-4 py-2 text-black mt-2"
                             onChange={(e) => setPhoto(e.target.value)}
-                        />
-                    </div>
-                    <div className="flex flex-col gap-1 w-full">
-                        <label htmlFor="pass">Password: </label>
-                        <input type="password" name="pass" id="pass"
-                            className="w-full rounded px-4 py-3 text-black mt-2"
-                            onChange={(e) => setPass(e.target.value)}
-                            required
                         />
                     </div>
                     <button className="w-full bg-alpha text-white px-4 py-2 rounded">
                         Update Information
                     </button>
                 </form>
+
+                {
+
+                    !isGoogleProvider && <form
+                        onSubmit={updateUserPassword}
+                        className="flex flex-col items-center gap-5 w-[50%] mt-2"
+                    >
+                        <div className="flex flex-col gap-1 w-full">
+                            <label htmlFor="pass">Password: </label>
+                            <input type="password" name="pass" id="pass"
+                                className="w-full rounded px-4 py-2 text-black mt-2"
+                                onChange={(e) => setPass(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <button className="w-full bg-alpha text-white px-4 py-2 rounded">
+                            Update Password
+                        </button>
+                    </form>
+                }
             </div>
         </section>
 

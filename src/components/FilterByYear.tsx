@@ -1,57 +1,59 @@
 import { useEffect, useState } from "react";
 import { useInfo } from "../context/InfoProviders";
 
+interface Anime {
+    year: number;
+}
+
 const FilterByYear = () => {
     const { bookmarkedAnimes } = useInfo();
-    const [filtered, setFiltered] = useState<any>()
+    const [filtered, setFiltered] = useState<Record<string, number>>({
+        '2020-2024': 0,
+        '2015-2019': 0,
+        '2010-2014': 0,
+        'Before 2010': 0,
+    });
 
     useEffect(() => {
-        // Count animes by year ranges
-        const countAnimesByYearRange = () => {
-            const counts = {
-                '2020-2024': 0,
-                '2015-2019': 0,
-                '2010-2014': 0,
-                'Before 2010': 0,
-            };
+        const counts = { '2020-2024': 0, '2015-2019': 0, '2010-2014': 0, 'Before 2010': 0 };
 
-            bookmarkedAnimes?.forEach(anime => {
-                const year = anime.year;
-                if (year >= 2020 && year <= 2024) {
-                    counts['2020-2024']++;
-                } else if (year >= 2015 && year <= 2019) {
-                    counts['2015-2019']++;
-                } else if (year >= 2010 && year <= 2014) {
-                    counts['2010-2014']++;
-                } else if (year < 2010) {
-                    counts['Before 2010']++;
-                }
-            });
+        bookmarkedAnimes?.forEach((anime: Anime) => {
+            const year = anime.year;
+            if (year >= 2020) counts['2020-2024']++;
+            else if (year >= 2015) counts['2015-2019']++;
+            else if (year >= 2010) counts['2010-2014']++;
+            else counts['Before 2010']++;
+        });
 
-            setFiltered(counts)
-        };
+        setFiltered(counts);
+    }, [bookmarkedAnimes]);
 
-
-        countAnimesByYearRange()
-    }, [bookmarkedAnimes])
     return (
-        <>
-            <div className="w-full lg:w-[40vw] border border-alpha rounded-xl py-2 px-5">
-                <h1 className="text-3xl my-3">Anime By Year: </h1>
-                <div className="flex items-center justify-center">
-                    <div className="w-[50%]">
-
-                        {Object.entries(filtered || []).map(([range, count]) => (
-                            <div key={range} className="flex items-center justify-between text-lg my-2">
-                                <p className="text-xl">{range}</p>
-                                <p className="bg-alpha/60 px-2 py-1 rounded-full text-sm">{count as number}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+        <div className="border border-alpha rounded-xl py-2 px-5">
+            <div className="p-4 border-b border-gray-700">
+                <h2 className="text-xl font-semibold">Anime By Year</h2>
             </div>
-        </>
-    )
-}
+            <div className="p-4 space-y-4">
+                {Object.entries(filtered).map(([range, count]) => (
+                    <div key={range} className="flex items-center">
+                        <div className="w-36">{range}</div>
+                        <div className="flex-1 bg-gray-700 h-4 rounded-full overflow-hidden">
+                            {/* <div
+                                className="bg-green-500 h-full rounded-full"
+                                style={{ width: `${count * 10}%` }}
+                            ></div> */}
+
+                            <div
+                                className={`bg-green-500 h-full rounded-full transition-all duration-700 ease-in-out`}
+                                style={{ width: `${bookmarkedAnimes && (count / bookmarkedAnimes.length) * 100}%` }}
+                            ></div>
+                        </div>
+                        <div className="w-8 text-right">{count}</div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
 
 export default FilterByYear;

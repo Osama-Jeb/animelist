@@ -1,7 +1,7 @@
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
 import { useEffect, useState } from "react";
-import { Pie } from "react-chartjs-2";
+import { Doughnut } from "react-chartjs-2";
 import { Anime, useInfo } from "../context/InfoProviders";
 
 Chart.register(CategoryScale);
@@ -78,22 +78,25 @@ const ChartComponent = () => {
     }, [bookmarkedAnimes]);
 
     return (
-        <>
-            <Pie
+        <div className="flex items-center justify-center">
+            <Doughnut
                 data={chartData}
                 options={{
+                    borderColor: "#000000",
                     plugins: {
                         legend: {
-                            position: 'bottom',
-                        },
-                        title: {
                             display: true,
-                            text: "Anime Genre Chart",
+                            position: "right",
                         },
+                        // title: {
+                        //     display: true,
+                        //     text: "Anime Genre Chart",
+                        // },
+                        
                     },
                 }}
             />
-        </>
+        </div>
     );
 };
 

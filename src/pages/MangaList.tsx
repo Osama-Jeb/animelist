@@ -1,37 +1,30 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useInfo } from "../context/InfoProviders";
+import Pagination from "../components/Pagination";
+import { BookOpen, Calendar, Star } from "lucide-react";
+import Loading from "../components/Loading";
 
 const MangaList = () => {
-    const { fetchInfo } = useInfo();
+    const { fetchInfo, onSearch, loading } = useInfo();
+
     const [manga, setManga] = useState<any>();
     const [input, setInput] = useState('');
-    const [type, setType] = useState('manga');
-    const [status, setStatus] = useState('publishing');
-    const [order, setOrder] = useState('score');
+    const [type, setType] = useState('');
+    const [status, setStatus] = useState('');
+    const [order, setOrder] = useState('');
     const [sort, setSort] = useState('desc');
-
+    const [genres, setGenres] = useState<number[]>([])
     const [currPage, setCurrPage] = useState(1);
+
+    const [searchedManga, setSearchedManga] = useState<any>();
 
 
     useEffect(() => {
-        fetchInfo("manga", currPage, type, setManga, status, order, sort)
-    }, [currPage, type, status, sort, order])
+        fetchInfo("manga", currPage, type, setManga, status, order, sort, genres)
+    }, [currPage, type, status, sort, order, genres])
 
-    const [searchedManga, setSearchedManga] = useState<any>();
-    const onSearch = async (term: string) => {
-        try {
-            const res = await fetch(`https://api.jikan.moe/v4/manga?q=${term}&order_by=favorites&sort=desc`)
-            if (!res.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const data = await res.json();
-            setSearchedManga(data.data);
 
-        } catch (error) {
-            console.log("search erro", error)
-        }
-    }
     const typeSelect = [
         { id: "manga", label: "manga" },
         { id: "manhwa", label: "manhwa" },
@@ -63,137 +56,239 @@ const MangaList = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                 {
                     arr?.map((mng: any, index: number) => (
-                        <div key={index} className="relative border border-alpha rounded-lg overflow-hidden hover:bg-gray-900">
-                            <Link to={`/manga/${mng.mal_id}`} key={index} className="cursor-default">
-                                <img src={mng.images?.webp?.large_image_url} alt={mng.title} className="w-full h-64 object-cover" />
-                                <div className="p-4">
-                                    <h3 className="text-xl font-semibold mb-2">{mng.title_english ?? mng.title}</h3>
-                                    <p className="text-gray-600 mb-2">Score: {mng.score}</p>
-                                    <p className="text-sm text-gray-500 mb-1">Chapters: {mng.chapters ?? 'Still Publishing'}</p>
-                                    <p className="text-sm text-gray-500 mb-1">Release Year: {mng.published?.prop.from.year}</p>
-                                    <p className="text-sm text-gray-500 mb-2">Genres: {mng.genres.map((genre: any) => genre.name).join(', ')}</p>
+                        <Link to={`/manga/${mng.mal_id}`} key={index} className="group z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative">
+                            <div className="relative h-[350px]">
+                                <img
+                                    src={mng.images?.webp?.large_image_url} className="object-cover h-full w-full "
+                                    alt="" />
+                            </div>
+                            <div className="p-4">
+                                <h2 className="text-xl font-bold mb-3">{mng.title_english ?? mng.title}</h2>
+                                <div className="space-y-2 text-sm">
+                                    <div className="flex items-center">
+                                        <Star className="w-5 h-5 mr-2 text-yellow-400" />
+                                        <span>{mng.score}</span>
+                                    </div>
+                                    <div className="flex items-center">
+                                        <BookOpen className="w-5 h-5 mr-2 text-blue-400" />
+                                        <span>{mng.chapters ?? 'Still Publishing'}</span>
+                                    </div>
+                                    <div className="flex items-center">
+                                        <Calendar className="w-5 h-5 mr-2 text-green-400" />
+                                        <span>{mng.published?.prop.from.year}</span>
+                                    </div>
                                 </div>
-                            </Link>
-                        </div>
+                                <div className="mt-4 flex flex-wrap gap-2">
+                                    {mng.genres.map((genre: any, index: number) => (
+                                        <span key={index} className="px-2 py-1 text-xs font-semibold rounded-full bg-alpha/30 text-gray-200">
+                                            {genre.name}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        </Link>
                     ))
                 }
             </div>
         )
     }
 
-    const handlePageChange = (newPage: number) => {
-        if (newPage > 0 && newPage <= 2884) {
-            setCurrPage(newPage);
-        }
-    };
 
+    const handleRemoveGenre = (genreId: number) => {
+        setGenres(genres.filter(gen => gen !== genreId));
+    };
+    const genreSelect = [
+        { id: "1", name: "Action" },
+        { id: "2", name: "Adventure" },
+        { id: "5", name: "Avant Garde" },
+        { id: "46", name: "Award Winning" },
+        { id: "28", name: "Boys Love" },
+        { id: "4", name: "Comedy" },
+        { id: "8", name: "Drama" },
+        { id: "10", name: "Fantasy" },
+        { id: "26", name: "Girls Love" },
+        { id: "47", name: "Gourmet" },
+        { id: "14", name: "Horror" },
+        { id: "7", name: "Mystery" },
+        { id: "22", name: "Romance" },
+        { id: "24", name: "Sci-Fi" },
+        { id: "36", name: "Slice of Life" },
+        { id: "30", name: "Sports" },
+        { id: "37", name: "Supernatural" },
+        { id: "45", name: "Suspense" },
+        { id: "9", name: "Ecchi" },
+        { id: "49", name: "Erotica" },
+        { id: "12", name: "Hentai" },
+        { id: "50", name: "Adult Cast" },
+        { id: "51", name: "Anthropomorphic" },
+        { id: "52", name: "CGDCT" },
+        { id: "53", name: "Childcare" },
+        { id: "54", name: "Combat Sports" },
+        { id: "44", name: "Crossdressing" },
+        { id: "55", name: "Delinquents" },
+        { id: "39", name: "Detective" },
+        { id: "56", name: "Educational" },
+        { id: "57", name: "Gag Humor" },
+        { id: "58", name: "Gore" },
+        { id: "35", name: "Harem" },
+        { id: "59", name: "High Stakes Game" },
+        { id: "13", name: "Historical" },
+        { id: "60", name: "Idols (Female)" },
+        { id: "61", name: "Idols (Male)" },
+        { id: "62", name: "Isekai" },
+        { id: "63", name: "Iyashikei" },
+        { id: "64", name: "Love Polygon" },
+        { id: "65", name: "Magical Sex Shift" },
+        { id: "66", name: "Mahou Shoujo" },
+        { id: "17", name: "Martial Arts" },
+        { id: "18", name: "Mecha" },
+        { id: "67", name: "Medical" },
+        { id: "68", name: "Memoir" },
+        { id: "38", name: "Military" },
+        { id: "19", name: "Music" },
+        { id: "6", name: "Mythology" },
+        { id: "69", name: "Organized Crime" },
+        { id: "70", name: "Otaku Culture" },
+        { id: "20", name: "Parody" },
+        { id: "71", name: "Performing Arts" },
+        { id: "72", name: "Pets" },
+        { id: "40", name: "Psychological" },
+        { id: "3", name: "Racing" },
+        { id: "73", name: "Reincarnation" },
+        { id: "74", name: "Reverse Harem" },
+        { id: "75", name: "Romantic Subtext" },
+        { id: "21", name: "Samurai" },
+        { id: "23", name: "School" },
+        { id: "76", name: "Showbiz" },
+        { id: "29", name: "Space" },
+        { id: "11", name: "Strategy Game" },
+        { id: "31", name: "Super Power" },
+        { id: "77", name: "Survival" },
+        { id: "78", name: "Team Sports" },
+        { id: "79", name: "Time Travel" },
+        { id: "32", name: "Vampire" },
+        { id: "80", name: "Video Game" },
+        { id: "81", name: "Villainess" },
+        { id: "82", name: "Visual Arts" },
+        { id: "48", name: "Workplace" },
+        { id: "42", name: "Josei" },
+        { id: "15", name: "Kids" },
+        { id: "41", name: "Seinen" },
+        { id: "25", name: "Shoujo" },
+        { id: "27", name: "Shounen" }
+    ];
 
     return (
-        <>
-            <div className="mt-5">
-                <div className="mb-4 flex space-x-2 items-center">
+        manga && !loading ?
+            <>
+                <div className="mt-5">
+                    <div className="mb-4 flex space-x-2 items-center">
+
+                        <div>
+                            <input type="text" placeholder="Search..." className="p-2 rounded bg-gray-800"
+                                value={input}
+                                onChange={(e) => {
+                                    setInput(e.target.value.toLowerCase())
+                                    if (!e.target.value) {
+                                        setSearchedManga(null)
+                                    }
+                                }}
+                                onKeyDown={(e) => {
+                                    if (e.key == "Enter") {
+                                        onSearch("manga", input, setSearchedManga)
+                                    }
+                                }}
+
+                            />
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                            <select
+                                value={type}
+                                onChange={(e) => setType(e.target.value)}
+                                className="border rounded p-2 text-black capitalize"
+                            >
+                                <option disabled value="">Type</option>
+                                {typeSelect.map((option) => (
+                                    <option key={option.id} value={option.label}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </select>
+
+                            <select
+                                value={status}
+                                onChange={(e) => setStatus(e.target.value)}
+                                className="border rounded p-2 text-black capitalize"
+                            >
+                                <option disabled value="">Status</option>
+                                {statusSelect.map((option) => (
+                                    <option key={option.id} value={option.label}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </select>
+
+                            <select
+                                value={order}
+                                onChange={(e) => setOrder(e.target.value)}
+                                className="border rounded p-2 text-black capitalize"
+                            >
+                                <option disabled value="">Order By</option>
+                                {orderSelect.map((option) => (
+                                    <option key={option.id} value={option.label}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </select>
+
+                            <button
+                                onClick={() => { sort == "desc" ? setSort('asc') : setSort('desc') }}
+                                className="px-4 py-2 bg-alpha rounded capitalize">
+                                {sort}
+                            </button>
+
+                            <select
+                                onChange={(e) =>
+                                    setGenres([...genres, parseInt(e.target.value)])
+                                }
+                                className="border rounded p-2 text-black capitalize"
+                            >
+                                <option disabled value="">Add Genres</option>
+                                {genreSelect.map((option) => (
+                                    <option key={option.id} value={option.id}>
+                                        {option.name}
+                                    </option>
+                                ))}
+                            </select>
+
+                            {
+                                genreSelect
+                                    .filter(el => genres.includes(parseInt(el.id)))
+                                    .map(el => (
+                                        <button key={el.id}
+                                            className="bg-alpha px-2 py-1 rounded-xl"
+                                            onClick={() => handleRemoveGenre(parseInt(el.id))}>
+                                            {el.name} X
+                                        </button>
+                                    ))
+                            }
+                        </div>
+                    </div>
 
                     <div>
-                        <input type="text" placeholder="Search..." className="p-2 rounded bg-gray-800"
-                            value={input}
-                            onChange={(e) => {
-                                setInput(e.target.value.toLowerCase())
-                                if (!e.target.value) {
-                                    setSearchedManga(null)
-                                }
-                            }}
-                            onKeyDown={(e) => {
-                                if (e.key == "Enter") {
-                                    onSearch(input)
-                                }
-                            }}
-
-                        />
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                        <select
-                            value={type}
-                            onChange={(e) => setType(e.target.value)}
-                            className="border rounded p-1 text-black capitalize"
-                        >
-                            {typeSelect.map((option) => (
-                                <option key={option.id} value={option.label}>
-                                    {option.label}
-                                </option>
-                            ))}
-                        </select>
-
-                        <select
-                            value={status}
-                            onChange={(e) => setStatus(e.target.value)}
-                            className="border rounded p-1 text-black capitalize"
-                        >
-                            {statusSelect.map((option) => (
-                                <option key={option.id} value={option.label}>
-                                    {option.label}
-                                </option>
-                            ))}
-                        </select>
-
-                        <select
-                            value={order}
-                            onChange={(e) => setOrder(e.target.value)}
-                            className="border rounded p-1 text-black capitalize"
-                        >
-                            {orderSelect.map((option) => (
-                                <option key={option.id} value={option.label}>
-                                    {option.label}
-                                </option>
-                            ))}
-                        </select>
-
-                        <button
-                            onClick={() => { sort == "desc" ? setSort('asc') : setSort('desc') }}
-                            className="px-4 py-1 bg-alpha rounded capitalize">
-                            {sort}
-                        </button>
-                    </div>
-                </div>
-
-                <div>
-                    {
-                        renderManga(searchedManga || manga)
-                    }
-                </div>
-
-            </div>
-
-            {/* Pagination */}
-            <div className="flex items-center bg-black justify-center gap-5 font-bold text-xl h-[30px] sticky bottom-0">
-                <button
-                    onClick={() => handlePageChange(currPage - 1)}
-                    disabled={currPage <= 1}
-                >
-                    Previous
-                </button>
-
-                <input type="number" name="pagination" id="pagination"
-                    className="text-black w-[50px] px-1 rounded"
-                    value={currPage}
-                    onChange={(e) => {
-                        if (Math.round(parseInt(e.target.value)) > 0 && Math.round(parseInt(e.target.value)) < 1095) {
-                            setCurrPage(parseInt(e.target.value))
+                        {
+                            renderManga(searchedManga || manga)
                         }
-                    }}
+                    </div>
 
-                />
+                </div>
 
-                <button
-                    onClick={() => handlePageChange(currPage + 1)}
-                    disabled={currPage >= 2884}
-                >
-                    Next
-                </button>
-                
-            </div>
-
-        </>
+                {/* Pagination */}
+                <Pagination currentPage={currPage} max={2884} setCurrentPage={setCurrPage} />
+            </>
+            :
+            <Loading />
     )
 }
 
