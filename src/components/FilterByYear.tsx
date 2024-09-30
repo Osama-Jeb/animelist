@@ -45,7 +45,7 @@ const FilterByYear = () => {
 
                             <div
                                 className={`bg-green-500 h-full rounded-full transition-all duration-700 ease-in-out`}
-                                style={{ width: `${bookmarkedAnimes && (count / bookmarkedAnimes.length) * 100}%` }}
+                                style={{ width: `${bookmarkedAnimes && (count / bookmarkedAnimes.length) * 200}%` }}
                             ></div>
                         </div>
                         <div className="w-8 text-right">{count}</div>

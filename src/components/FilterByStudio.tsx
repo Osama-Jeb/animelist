@@ -64,8 +64,8 @@ const FilterByStudio = () => {
                                 <div className="w-36">{studio[0]}</div>
                                 <div className="flex-1 bg-gray-700 h-4 rounded-full overflow-hidden">
                                     <div
-                                        className="bg-alpha h-full rounded-full"
-                                        style={{ width: `${(studio[1] / filtered.length) * 100}%` }}
+                                        className="bg-alpha h-full rounded-full transition-all duration-700 ease-in-out"
+                                        style={{ width: `${(studio[1] / filtered.length) * 300}%` }}
                                     ></div>
                                 </div>
                                 <div className="w-8 text-right">{studio[1]}</div>

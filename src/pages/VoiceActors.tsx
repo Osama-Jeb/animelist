@@ -42,8 +42,8 @@ const VoiceActors = () => {
 
     const rendeerVA = (actors: any | null) => {
         return (
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+// TODO! LEFT IT HERE TEXT TO LEFT
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-6">
                 {actors?.map((chara: any, index: number) => (
                     <div key={index} className="relative bg-alpha/30 rounded-lg overflow-hidden hover:bg-gray-900">
                         <Link to={`/va/${chara?.mal_id}`} key={index} className="cursor-default">

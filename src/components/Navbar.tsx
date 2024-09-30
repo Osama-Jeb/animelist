@@ -157,33 +157,38 @@ const Navbar = () => {
 
             {/* Mobile Menu */}
             {isMenuOpen && (
-                <div className="md:hidden">
+                <div className="md:hidden ">
                     <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                        <Link to="/anime" className="hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">
-                            Animes List
-                        </Link>
+                        {
+                            links.map((link, index) => (
+                                <NavLink key={index} to={link.link} 
+                                onClick={() => {setIsMenuOpen(false)}}
+                                className="block px-3 py-2 rounded-md text-base font-medium"
 
-                        <Link to="/manga" className="hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">
-                            Manga List
-                        </Link>
+                                >
+                                    {link.name}
+                                </NavLink>
+                            ))
+                        }
 
-                        <Link to={"/bookmarkedAnime"} onClick={() => { setProfileMenu(false) }} className="px-3 py-2 flex gap-2 items-center">
-                            <Bookmark /> <p>Bookmarked Anime</p>
-                        </Link>
-                        <Link to={"/statistics"} onClick={() => { setProfileMenu(false) }} className="px-3 py-2 flex gap-2 items-center my-4">
-                            <ChartPie /> <p>Statistics</p>
-                        </Link>
-                        <Link to={"/profile"} onClick={() => { setProfileMenu(false) }} className="px-3 py-2 flex gap-2 items-center my-4">
-                            <UserCog /> <p>Profile</p>
-                        </Link>
-                        <button className="bg-red-600 px-3 py-2 rounded-md w-full"
-                            onClick={doSignOut}
-                        >
-                            Log Out
-                        </button>
-                        {/* <Link to="/voice-actors" className="hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">
-                            Voice Actors
-                        </Link> */}
+                        {
+                            currentUser && <div>
+                                <Link to={"/bookmarkedAnime"} onClick={() => { setProfileMenu(false) }} className="px-3 py-2 flex gap-2 items-center">
+                                    <Bookmark /> <p>Bookmarked Anime</p>
+                                </Link>
+                                <Link to={"/statistics"} onClick={() => { setProfileMenu(false) }} className="px-3 py-2 flex gap-2 items-center my-4">
+                                    <ChartPie /> <p>Statistics</p>
+                                </Link>
+                                <Link to={"/profile"} onClick={() => { setProfileMenu(false) }} className="px-3 py-2 flex gap-2 items-center my-4">
+                                    <UserCog /> <p>Profile</p>
+                                </Link>
+                                <button className="bg-red-600 px-3 py-2 rounded-md w-full"
+                                    onClick={doSignOut}
+                                >
+                                    Log Out
+                                </button>
+                            </div>
+                        }
                     </div>
                 </div>
             )}

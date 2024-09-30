@@ -30,7 +30,7 @@ const AniList = () => {
 
 
     const renderGrid = (animes: Anime[] | null) => (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-2 md:gap-6">
             {animes?.map((anime, index) => (
                 <div key={index} className="group z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative">
                     {
@@ -44,7 +44,7 @@ const AniList = () => {
                         </button>
                     }
                     <Link to={`/anime/${anime.mal_id}`}>
-                        <div className="relative h-[450px]">
+                        <div className="relative h-[400px]">
                             <img src={anime.images?.webp?.large_image_url} alt={anime.title} className="absolute inset-0 h-full w-full object-cover" />
 
                             <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent  transition-all duration-300" />
@@ -56,7 +56,7 @@ const AniList = () => {
                                 <div className="space-y-2">
                                     <div className="flex items-center gap-2">
                                         <PlayCircle size={16} color="#9ca3af" />
-                                        <span className="text-sm text-gray-400">{anime.episodes}</span>
+                                        <span className="text-sm text-gray-400">{anime.episodes ?? 'Still Airing'}</span>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <Calendar size={16} color="#9ca3af" />
@@ -64,7 +64,7 @@ const AniList = () => {
                                     </div>
                                     <div className="flex flex-wrap gap-2 mt-2">
                                         {anime.genres.map((genre, index) => (
-                                            <span
+                                            index < 3 && <span
                                                 key={index}
                                                 className="px-2 py-1 text-xs font-semibold rounded-full bg-alpha/30 text-gray-200"
                                             >
@@ -199,8 +199,8 @@ const AniList = () => {
                     <>
                         <div className="mt-5">
                             {/* Display Mode Selector */}
-                            <div className="mb-4 flex space-x-2 items-center">
-                                <input type="text" placeholder="Search" className="p-2 rounded bg-gray-800"
+                            <div className="mb-4 flex space-x-2 items-center flex-wrap">
+                                <input type="text" placeholder="Search" className="p-2 rounded bg-gray-800 w-full md:w-fit mb-4 md:m-0"
                                     value={inputValue}
                                     onChange={(e) => {
                                         setInputValue(e.target.value.toLowerCase())
@@ -216,7 +216,7 @@ const AniList = () => {
 
                                 />
 
-                                <div className="flex items-center gap-3">
+                                <div className="flex items-center gap-3 flex-wrap">
                                     <select
                                         value={type}
                                         onChange={(e) => setType(e.target.value)}

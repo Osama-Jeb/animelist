@@ -8,7 +8,6 @@ Chart.register(CategoryScale);
 
 const ChartComponent = () => {
     const { bookmarkedAnimes } = useInfo();
-    // const bookmarkedAnimes = user?.bookmarkedAnimes;
 
     const [chartData, setChartData] = useState<any>({
         labels: [],

@@ -14,13 +14,13 @@ const Root = () => {
 
             {isRootPath &&
                 <>
-                    <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-cover bg-center hero">
+                    <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 hero">
                         <div className="flex flex-col items-center space-y-4 text-center gap-3">
                             <div>
                                 <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none mb-4">
                                     Welcome to the <span className="text-alpha">Anime Repo</span>
                                 </h1>
-                                <p className="md:text-xl">
+                                <p className="md:text-xl text-2xl">
                                     Discover, explore and find any information about anything related to anime.
                                 </p>
                             </div>
@@ -37,7 +37,7 @@ const Root = () => {
                     <section className="w-full py-12 md:py-24 lg:py-32">
                         <div className="container px-4 md:px-6">
                             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">About <span className="text-alpha">Anime Repo</span></h2>
-                            <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center px-6">
+                            <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center px-6 text-center md:text-start">
                                 <div className="space-y-4 text-xl">
                                     <p>
                                         Anime Repo is your ultimate destination for all things anime. We provide a comprehensive platform to explore, discover and engage with your favorite series, manga, characters and voice actors.
@@ -46,7 +46,7 @@ const Root = () => {
                                         Our mission is to give you an easy-to-access platform where you can find all the information about your favorite media and keep track of them. Including some amazing statistics.
                                     </p>
                                 </div>
-                                <div className="flex justify-center">
+                                <div className="hidden md:flex justify-center">
                                     <img
                                         alt="Anime Collage"
                                         className="rounded-xl hover:scale-105 hover:grayscale-0 transition-all duration-200 grayscale"

@@ -53,16 +53,16 @@ const MangaList = () => {
 
     const renderManga = (arr: any | null) => {
         return (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-2 md:gap-6">
                 {
                     arr?.map((mng: any, index: number) => (
                         <Link to={`/manga/${mng.mal_id}`} key={index} className="group z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative">
-                            <div className="relative h-[350px]">
+                            <div className="relative h-[200px] md:h-[350px]">
                                 <img
                                     src={mng.images?.webp?.large_image_url} className="object-cover h-full w-full "
                                     alt="" />
                             </div>
-                            <div className="p-4">
+                            <div className="px-2 pb-2 md:p-3">
                                 <h2 className="text-xl font-bold mb-3">{mng.title_english ?? mng.title}</h2>
                                 <div className="space-y-2 text-sm">
                                     <div className="flex items-center">
@@ -80,7 +80,8 @@ const MangaList = () => {
                                 </div>
                                 <div className="mt-4 flex flex-wrap gap-2">
                                     {mng.genres.map((genre: any, index: number) => (
-                                        <span key={index} className="px-2 py-1 text-xs font-semibold rounded-full bg-alpha/30 text-gray-200">
+
+                                        index < 3 && <span key={index} className="px-2 py-1 text-xs font-semibold rounded-full bg-alpha/30 text-gray-200">
                                             {genre.name}
                                         </span>
                                     ))}
@@ -182,31 +183,29 @@ const MangaList = () => {
         manga && !loading ?
             <>
                 <div className="mt-5">
-                    <div className="mb-4 flex space-x-2 items-center">
+                    <div className="mb-4 flex space-x-2 items-center flex-wrap">
 
-                        <div>
-                            <input type="text" placeholder="Search..." className="p-2 rounded bg-gray-800"
-                                value={input}
-                                onChange={(e) => {
-                                    setInput(e.target.value.toLowerCase())
-                                    if (!e.target.value) {
-                                        setSearchedManga(null)
-                                    }
-                                }}
-                                onKeyDown={(e) => {
-                                    if (e.key == "Enter") {
-                                        onSearch("manga", input, setSearchedManga)
-                                    }
-                                }}
+                        <input type="text" placeholder="Search..." className="p-2 rounded bg-gray-800 w-full md:w-fit"
+                            value={input}
+                            onChange={(e) => {
+                                setInput(e.target.value.toLowerCase())
+                                if (!e.target.value) {
+                                    setSearchedManga(null)
+                                }
+                            }}
+                            onKeyDown={(e) => {
+                                if (e.key == "Enter") {
+                                    onSearch("manga", input, setSearchedManga)
+                                }
+                            }}
 
-                            />
-                        </div>
+                        />
 
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-3 md:gap-2 flex-wrap mt-4 md:m-0">
                             <select
                                 value={type}
                                 onChange={(e) => setType(e.target.value)}
-                                className="border rounded p-2 text-black capitalize"
+                                className="border rounded p-1 md:p-2 text-black capitalize"
                             >
                                 <option disabled value="">Type</option>
                                 {typeSelect.map((option) => (
@@ -219,7 +218,7 @@ const MangaList = () => {
                             <select
                                 value={status}
                                 onChange={(e) => setStatus(e.target.value)}
-                                className="border rounded p-2 text-black capitalize"
+                                className="border rounded p-1 md:p-2 text-black capitalize"
                             >
                                 <option disabled value="">Status</option>
                                 {statusSelect.map((option) => (
@@ -232,7 +231,7 @@ const MangaList = () => {
                             <select
                                 value={order}
                                 onChange={(e) => setOrder(e.target.value)}
-                                className="border rounded p-2 text-black capitalize"
+                                className="border rounded p-1 md:p-2 text-black capitalize"
                             >
                                 <option disabled value="">Order By</option>
                                 {orderSelect.map((option) => (
@@ -244,7 +243,7 @@ const MangaList = () => {
 
                             <button
                                 onClick={() => { sort == "desc" ? setSort('asc') : setSort('desc') }}
-                                className="px-4 py-2 bg-alpha rounded capitalize">
+                                className="p-1 md:p-2 bg-alpha rounded capitalize">
                                 {sort}
                             </button>
 
@@ -252,7 +251,7 @@ const MangaList = () => {
                                 onChange={(e) =>
                                     setGenres([...genres, parseInt(e.target.value)])
                                 }
-                                className="border rounded p-2 text-black capitalize"
+                                className="border rounded p-1 md:p-2 text-black capitalize"
                             >
                                 <option disabled value="">Add Genres</option>
                                 {genreSelect.map((option) => (
