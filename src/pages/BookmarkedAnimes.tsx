@@ -63,7 +63,7 @@ const BookmarkedAnime = () => {
                         {isAscending ? 'Ascending' : 'Descending'}
                     </button>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
                     {filteredAndSortedAnimes?.map((anime: any, index: number) => (
                         index < showMax &&
                         <div key={index} className="group z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative">
@@ -75,17 +75,14 @@ const BookmarkedAnime = () => {
                                 <Bookmark fill={`${bookmarkedAnimes?.some((anm: any) => anm.mal_id === anime.mal_id) ? "white" : "#1d4ed8"}`} />
                             </button>
                             <Link to={`/anime/${anime.mal_id}`}>
-                                <div className="relative h-[350px]">
+                                <div className="relative h-[300px] lg:h-[400px]">
                                     <img src={anime.images?.webp?.large_image_url} alt={anime.title} className="absolute inset-0 h-full w-full object-cover" />
 
-                                    {/* <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent group-hover:opacity-0 transition-all duration-300" /> */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent" />
                                     <div className="absolute bottom-4 left-4">
                                         <span className="rounded-full bg-alpha text-white px-2 py-1 text-sm font-bold">
                                             {anime.score}
                                         </span>
-                                    </div>
-                                </div>
-                                <div className="p-4 ">
                                     <h2 className="text-lg font-bold mb-2">{anime.title_english ?? anime.title}</h2>
                                     <div className="space-y-2">
                                         <div className="flex items-center gap-2">
@@ -107,7 +104,10 @@ const BookmarkedAnime = () => {
                                             ))}
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
+                                {/* <div className="p-4 ">
+                                </div> */}
                             </Link>
                         </div>
                     ))}

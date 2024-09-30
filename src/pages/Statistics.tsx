@@ -80,9 +80,9 @@ const Statistics = () => {
 
     return (
         <>
-            <section>
+            <section className="px-4 pb-4">
                 {/* Top Details */}
-                <div className="flex flex-wrap gap-4 mt-4 px-4">
+                <div className="flex flex-wrap gap-4 mt-4">
                     {
                         stats.map((stat, index) => (
                             <div key={index} className="flex-1 min-w-[200px] shadow-alpha border border-alpha shadow-md rounded-lg p-4">

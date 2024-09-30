@@ -342,7 +342,7 @@ export default function InfoProvider({ children }: PropsWithChildren) {
         }
     };
 
-
+    // TODO! ADD image and password verification 
     return <InfoContext.Provider value={{ user, fetchInfo, bookmarkedAnimes, onBookmarkClick, loading, setLoading, fetchSingle, formatName, onSearch }}>
         {children}
     </InfoContext.Provider >

@@ -42,13 +42,12 @@ const VoiceActors = () => {
 
     const rendeerVA = (actors: any | null) => {
         return (
-// TODO! LEFT IT HERE TEXT TO LEFT
             <div className="grid grid-cols-2 lg:grid-cols-5 gap-6">
                 {actors?.map((chara: any, index: number) => (
                     <div key={index} className="relative bg-alpha/30 rounded-lg overflow-hidden hover:bg-gray-900">
                         <Link to={`/va/${chara?.mal_id}`} key={index} className="cursor-default">
                             <img src={chara?.images?.jpg?.image_url} alt={chara?.title} className="w-full h-64 object-cover" />
-                            <div className="p-4 flex flex-col items- gap-2">
+                            <div className="p-4 flex flex-col gap-2">
                                 <p className="text-center text-lg">{chara?.name}</p>
                                 <p className="text-center text-[#9ca3af]">({chara?.given_name} {chara?.family_name})</p>
                                 <p className="flex items-center gap-2">

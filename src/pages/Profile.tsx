@@ -46,14 +46,14 @@ const Profile = () => {
     return (
         currentUser &&
         <section className="flex items-center gap-2 h-[90vh]">
-            <div className="flex flex-col h-full w-[40vw]">
+            <div className="hidden lg:flex flex-col h-full w-[40vw]">
                 <img src={photo ?? currentUser?.photoURL} className="h-full object-cover rounded" alt="" />
             </div>
-            <div className="w-full flex flex-col items-center justify-center">
+            <div className="w-full flex flex-col items-center justify-center px-4 lg:p-0">
 
                 <form
                     onSubmit={updateUserInfo}
-                    className="flex flex-col items-center gap-5 w-[50%]"
+                    className="flex flex-col items-center gap-5 lg:w-[50%] w-full"
                 >
                     <div>
                         <img src={photo} className="w-[150px] aspect-square rounded-full" alt="" />
@@ -84,7 +84,7 @@ const Profile = () => {
 
                     !isGoogleProvider && <form
                         onSubmit={updateUserPassword}
-                        className="flex flex-col items-center gap-5 w-[50%] mt-2"
+                        className="flex flex-col items-center gap-5 lg:w-[50%] w-full mt-2"
                     >
                         <div className="flex flex-col gap-1 w-full">
                             <label htmlFor="pass">Password: </label>

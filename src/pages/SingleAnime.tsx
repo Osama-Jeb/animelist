@@ -9,15 +9,23 @@ import 'swiper/css/navigation';
 import Loading from "../components/Loading";
 import { Building2, Calendar, Heart, Mic, PlayCircle, Star, SunSnow, Tag } from "lucide-react";
 import ReadMore from "../components/ReadMore";
+import { useColor } from "color-thief-react";
 
 // TODO*** Color-thief for palette
 const SingleAnime = () => {
+
+
+
 
     const { fetchSingle } = useInfo();
     const { id } = useParams();
     const [animeInfo, setAnimeInfo] = useState<Anime>();
     const [animeImages, setAnimeImages] = useState<any>();
     const [animeChara, setAnimeChara] = useState<any>();
+
+    // Call useColor only when you have the image URL
+    const imageUrl = animeInfo && animeInfo?.images?.jpg?.large_image_url;
+    const { data: colors } = useColor(imageUrl as string, 'hex', { quality: 2, crossOrigin: 'anonymous' });
 
     const fetchCharacters = async () => {
         try {
@@ -76,12 +84,32 @@ const SingleAnime = () => {
     };
 
     const iconSize = 20;
-    const iconColor = "#1d4ed8";
+    const iconColor = colors;
     return (
 
-        animeInfo ? <section className="px-12 text-lg tracking-wider">
+        animeInfo ? <section className="px-6 lg:px-12 text-lg tracking-wider relative"
+            // style={{
+            //     background: colors
+            //         ? `linear-gradient(to top, ${colors} 0%, transparent 100%)`
+            //         : 'transparent',
+            // }}
+        >
 
-            <div className="container mx-auto px-4 py-8">
+            {/* new header */}
+            {/* <div
+                className="h-screen absolute inset-0 -z-10 opacity-35"
+                style={{
+                    backgroundImage: `url(${animeInfo?.images.webp.large_image_url})`, // Fix: add `url()`
+                    backgroundSize: 'cover', // Optional: ensure the image covers the entire div
+                    backgroundPosition: 'center', // Optional: centers the background image
+                }}
+            >
+            </div> */}
+
+            <div className={`container mx-auto px-4 py-8`}
+
+
+            >
                 <div className="flex flex-col md:flex-row gap-8">
                     <div className="md:w-1/3 flex  justify-center">
 
@@ -109,6 +137,11 @@ const SingleAnime = () => {
                             }
 
                         </Swiper>
+                        {/* <img
+                            src={animeInfo?.images.jpg?.large_image_url}
+                            alt={animeInfo?.title_english ?? animeInfo?.title}
+                            className=" rounded-lg w-full h-full"
+                        /> */}
                     </div>
                     <div className="md:w-2/3">
                         <h1 className="text-4xl font-bold">{animeInfo?.title_english ?? animeInfo?.title}</h1>
@@ -185,6 +218,7 @@ const SingleAnime = () => {
                 <div>
                     <p className="text-4xl my-2">Characters: </p>
                     <div className="overflow-x-auto my-4 h-full">
+                        {/* TODO: swipers responsive */}
                         <Swiper
                             slidesPerView={4}
                             slidesPerGroup={2}
@@ -197,7 +231,11 @@ const SingleAnime = () => {
                                 ?.sort((a: any, b: any) => b.favorites - a.favorites)
                                 .map((chara: any, index: number) => (
                                     <SwiperSlide>
-                                        <div key={index} className="rounded-xl bg-alpha/20 ">
+                                        <div key={index} className="rounded-xl bg-alpha/30"
+                                            // style={{
+                                            //     backgroundColor: colors,
+                                            // }}
+                                        >
                                             <Link to={`/characters/${chara.character.mal_id}`}>
                                                 <img src={chara.character.images.webp.image_url}
                                                     className="w-full rounded-xl aspect-square object-cover"
@@ -230,12 +268,12 @@ const SingleAnime = () => {
 
                 {
                     animeInfo?.theme.openings && animeInfo?.theme.endings && (animeInfo?.theme.openings.length > 0 || animeInfo?.theme.endings.length > 0) && <div>
-                        <h1 className="text-4xl my-2">Theme Songs: </h1>
-                        <div className="grid grid-cols-2">
+                        {/* <h1 className="text-4xl my-2">Theme Songs: </h1> */}
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-0">
 
                             <div>
-                                <p className="text-2xl my-2">Openings: </p>
-                                <ul className="list-disc">
+                                <p className="text-4xl my-2">Openings: </p>
+                                <ul className="list-disc px-3">
                                     {
                                         animeInfo?.theme.openings.map((op, ind) => (
                                             <li className="my-2" key={ind}>
@@ -249,8 +287,8 @@ const SingleAnime = () => {
                             </div>
 
                             <div>
-                                <p className="text-2xl my-2">Endings: </p>
-                                <ul className="list-disc">
+                                <p className="text-4xl my-2">Endings: </p>
+                                <ul className="list-disc px-3">
                                     {
                                         animeInfo?.theme.endings.map((ed, ind) => (
                                             <li className="my-2" key={ind}>
