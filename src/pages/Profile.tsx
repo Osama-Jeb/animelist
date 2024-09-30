@@ -16,7 +16,7 @@ const Profile = () => {
     useEffect(() => {
         setUsername(currentUser?.displayName);
         setPhoto(currentUser?.photoURL);
-        const answer = currentUser && currentUser.providerData.some((provider: any) => provider.providerId === 'google.com');
+        const answer = currentUser && currentUser.providerData.some((provider: any) => provider.providerId === 'google.com' || provider.providerId === 'github.com');
         setIsGoogleProvider(answer);
 
     }, [currentUser])

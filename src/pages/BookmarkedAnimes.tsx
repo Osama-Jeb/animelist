@@ -113,7 +113,11 @@ const BookmarkedAnime = () => {
                     ))}
                 </div>
                 <button className={`bg-alpha rounded w-full py-3 mt-4`}
-                    onClick={() => setShowMax(showMax + 15)}
+                    onClick={() => {
+                        if (bookmarkedAnimes && showMax < bookmarkedAnimes?.length) {
+                            setShowMax(showMax + 15)
+                        }
+                    }}
                 >
                     Show More
                 </button>

@@ -14,8 +14,61 @@ const Register = () => {
     const [userImage, setUserImage] = useState('');
     const navigate = useNavigate();
 
+    // Image Validation
+    const [isValid, setIsValid] = useState<boolean | null>(null);
+    const checkImageUrl = (url: any) => {
+        const img = new Image();
+        img.src = url;
+
+        img.onload = () => {
+            setIsValid(true); 
+        };
+
+        img.onerror = () => {
+            setIsValid(false); 
+        };
+    };
+    const handleImageChange = (e: any) => {
+        const inputUrl = e.target.value;
+        setUserImage(inputUrl);
+        if (inputUrl) {
+            checkImageUrl(inputUrl);
+        } else {
+            setIsValid(null);
+        }
+    };
+
+
+
+    // Password Validation
+    const validatePassword = () => {
+        const minLength = 8;
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasNumbers = /\d/.test(password);
+        const hasSpecialChars = /[!@#$%^&*]/.test(password);
+        return (
+            password.length >= minLength &&
+            hasUpperCase &&
+            hasLowerCase &&
+            hasNumbers &&
+            hasSpecialChars
+        );
+    };
+
     const register = (e: any) => {
         e.preventDefault()
+
+        if (!validatePassword()) {
+            alert("Password must meet complexity requirements.");
+            return;
+        }
+
+        if (!isValid) {
+            alert("Please set an image adress");
+            return;
+        }
+
         createUserWithEmailAndPassword(auth, email, password)
             .then(async (userCredential) => {
                 const user = userCredential.user;
@@ -109,7 +162,12 @@ const Register = () => {
 
                 <div>
                     <label htmlFor="photourl">Photo URL:</label>
-                    <input className="w-full rounded px-4 py-3 text-black mt-2" type="url" placeholder="Photo URL" onChange={(e) => setUserImage(e.target.value)} value={userImage} />
+                    <input className="w-full rounded px-4 py-3 text-black mt-2" type="url" placeholder="Photo URL"
+                        onChange={handleImageChange}
+                        value={userImage}
+                    />
+                    {isValid === true && <small className="text-green-500">Image is valid!</small>}
+                    {isValid === false && <small className="text-red-500">Image does not exist!</small>}
                 </div>
 
                 {/* TODO: waaay later, email verification */}
@@ -121,9 +179,9 @@ const Register = () => {
                 <div>
                     <label htmlFor="password">Password: <span className="font-bold text-red-600 underline">*</span></label>
                     <input className="w-full rounded px-4 py-3 text-black mt-2" placeholder="Password" type="password" onChange={(e) => setPassword(e.target.value)} value={password} required />
+                    <small>requirements: at least 8 charcaters including uppercase, lowercase and special characters</small>
                 </div>
 
-                {/* TODO: Add Password Verification */}
                 <button className="w-full bg-alpha text-white px-4 py-2 rounded"
                     type="submit"
                 >

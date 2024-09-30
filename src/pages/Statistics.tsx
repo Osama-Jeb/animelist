@@ -9,11 +9,12 @@ import FilterByYear from "../components/FilterByYear";
 
 
 const Statistics = () => {
-    // TODO* anime.duration to get episode duration
-    const [timeFormat, setTimeFormat] = useState('Min'); 
+    // TODO* if got time: separate series from movies
+    const [timeFormat, setTimeFormat] = useState('Min');
     const { bookmarkedAnimes } = useInfo();
-    
     const [total, setTotal] = useState(0)
+    const [totalMin, setTotalMin] = useState(0);
+
     const animeTotalEpisodes = () => {
         let tempTot = 0;
         bookmarkedAnimes?.forEach((anime: Anime) => {
@@ -23,25 +24,45 @@ const Statistics = () => {
         setTotal(tempTot)
     }
 
+    function convertToMinutes(timeString: string): number {
+        const regex = /(\d+)\s*(hr|min)/g;
+        let totalMinutes = 0;
+        let match: RegExpExecArray | null;
 
-    const formatTime = () => {
-        const minutes = total * 24;
-        const hours = minutes / 60;
+        while ((match = regex.exec(timeString)) !== null) {
+            const value = parseInt(match[1]);
+            totalMinutes += match[2] === 'hr' ? value * 60 : value;
+        }
+
+        return totalMinutes;
+    }
+
+    const duration = () => {
+        let tempMin = 0;
+        bookmarkedAnimes?.forEach((anime: Anime) => {
+            tempMin += anime.episodes * convertToMinutes(anime.duration)
+        })
+
+        setTotalMin(tempMin);
+    }
+
+
+    const formatTime = (totalDuration : number) => {
+        const hours = totalDuration / 60;
         const days = hours / 24;
         switch (timeFormat) {
             case 'Min':
-                return minutes.toFixed(0);
+                return totalDuration?.toFixed(0);
             case 'Hours':
                 return hours.toFixed(0);
             case 'Days':
                 return days.toFixed(0);
-            default:
-                return total.toFixed(0);
         }
     };
 
     useEffect(() => {
         animeTotalEpisodes()
+        duration()
     }, [bookmarkedAnimes])
 
     const stats = [
@@ -79,7 +100,7 @@ const Statistics = () => {
                             <h1 className="text-2xl">Total Watch Time</h1>
                             <Clock color="#6b7280" size={25} />
                         </div>
-                        <h1 className="text-4xl">{formatTime()}</h1>
+                        <h1 className="text-4xl">{formatTime(totalMin)}</h1>
 
                         <div className="flex items-center justify-around gap-1 w-full mt-2">
                             {

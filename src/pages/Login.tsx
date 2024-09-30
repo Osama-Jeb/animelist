@@ -9,6 +9,7 @@ import ggl from "../assets/Google_Icons-09-512.webp"
 import git from "../assets/github.webp"
 
 const Login = () => {
+    //* TODO: Password Reset
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();

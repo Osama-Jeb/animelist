@@ -148,7 +148,7 @@ interface User {
 }
 interface InfoContextType {
     fetchInfo: (what: string, page: number, type: string, setInfo: (arg: any) => void, status: string, order_by: string, sort: string, genres?: number[]) => void,
-    fetchSingle: (id: string | undefined, type: string, setSingle: (arg: any) => void, setPic?: (arg: any) => void) => void,
+    fetchSingle: (id: string | undefined, what: string, setSingle: (arg: any) => void, setPic?: (arg: any) => void) => void,
     onSearch: (what: string, term: string, setResult: (arg: any) => void) => void,
     user: User | null | DocumentData,
     bookmarkedAnimes: Anime[] | null,
@@ -204,9 +204,9 @@ export default function InfoProvider({ children }: PropsWithChildren) {
         }
     };
 
-    const fetchSingle = async (id: string | undefined, type: string, setSingle: (data: any) => void, setPic?: (data: any) => void) => {
+    const fetchSingle = async (id: string | undefined, what: string, setSingle: (data: any) => void, setPic?: (data: any) => void) => {
         try {
-            const response = await fetch(`https://api.jikan.moe/v4/${type}/${id}/full`)
+            const response = await fetch(`https://api.jikan.moe/v4/${what}/${id}/full`)
 
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -216,7 +216,7 @@ export default function InfoProvider({ children }: PropsWithChildren) {
             setSingle(data.data);
 
             if (setPic) {
-                const res = await fetch(`https://api.jikan.moe/v4/${type}/${id}/pictures`);
+                const res = await fetch(`https://api.jikan.moe/v4/${what}/${id}/pictures`);
                 if (!res.ok) {
                     throw new Error('Network response not OKIE DOKIE');
                 }

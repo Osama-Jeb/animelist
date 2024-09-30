@@ -9,7 +9,7 @@ import Pagination from "../components/Pagination";
 
 const AniList = () => {
 
-    const { fetchInfo, bookmarkedAnimes, onBookmarkClick, onSearch, loading} = useInfo();
+    const { fetchInfo, bookmarkedAnimes, onBookmarkClick, onSearch, loading } = useInfo();
     const [type, setType] = useState('');
     const [status, setStatus] = useState('');
     const [order, setOrder] = useState('');
@@ -44,39 +44,39 @@ const AniList = () => {
                         </button>
                     }
                     <Link to={`/anime/${anime.mal_id}`}>
-                        <div className="relative h-[350px]">
+                        <div className="relative h-[450px]">
                             <img src={anime.images?.webp?.large_image_url} alt={anime.title} className="absolute inset-0 h-full w-full object-cover" />
 
-                            {/* <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent group-hover:opacity-0 transition-all duration-300" /> */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent  transition-all duration-300" />
                             <div className="absolute bottom-4 left-4">
-                                <span className="rounded-full bg-alpha text-white px-2 py-1 text-sm font-bold">
+                                <p className="rounded-full bg-alpha text-white px-2 py-1 text-sm font-bold w-fit mb-2">
                                     {anime.score}
-                                </span>
-                            </div>
-                        </div>
-                        <div className="p-4 ">
-                            <h2 className="text-lg font-bold mb-2">{anime.title_english ?? anime.title}</h2>
-                            <div className="space-y-2">
-                                <div className="flex items-center gap-2">
-                                    <PlayCircle size={16} color="#9ca3af" />
-                                    <span className="text-sm text-gray-400">{anime.episodes}</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Calendar size={16} color="#9ca3af" />
-                                    <span className="text-sm text-gray-400">{anime.aired.prop.from.year}</span>
-                                </div>
-                                <div className="flex flex-wrap gap-2 mt-2">
-                                    {anime.genres.map((genre, index) => (
-                                        <span
-                                            key={index}
-                                            className="px-2 py-1 text-xs font-semibold rounded-full bg-alpha/30 text-gray-200"
-                                        >
-                                            {genre.name}
-                                        </span>
-                                    ))}
+                                </p>
+                                <h2 className="text-lg font-bold mb-2">{anime.title_english ?? anime.title}</h2>
+                                <div className="space-y-2">
+                                    <div className="flex items-center gap-2">
+                                        <PlayCircle size={16} color="#9ca3af" />
+                                        <span className="text-sm text-gray-400">{anime.episodes}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <Calendar size={16} color="#9ca3af" />
+                                        <span className="text-sm text-gray-400">{anime.aired.prop.from.year}</span>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2 mt-2">
+                                        {anime.genres.map((genre, index) => (
+                                            <span
+                                                key={index}
+                                                className="px-2 py-1 text-xs font-semibold rounded-full bg-alpha/30 text-gray-200"
+                                            >
+                                                {genre.name}
+                                            </span>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        {/* <div className="p-4 ">
+                        </div> */}
                     </Link>
                 </div>
             ))}

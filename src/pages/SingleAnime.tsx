@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Anime } from "../context/InfoProviders";
+import { Anime, useInfo } from "../context/InfoProviders";
 
 import { Autoplay, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -13,38 +13,29 @@ import ReadMore from "../components/ReadMore";
 // TODO*** Color-thief for palette
 const SingleAnime = () => {
 
-    // TODO* add fetchSingle
+    const { fetchSingle } = useInfo();
     const { id } = useParams();
     const [animeInfo, setAnimeInfo] = useState<Anime>();
     const [animeImages, setAnimeImages] = useState<any>();
     const [animeChara, setAnimeChara] = useState<any>();
 
-    useEffect(() => {
-        const fetchAnimes = async () => {
-            try {
+    const fetchCharacters = async () => {
+        try {
+            const response = await fetch(`https://api.jikan.moe/v4/anime/${id}/characters`)
 
-                const response = await fetch(`https://api.jikan.moe/v4/anime/${id}/full`);
-                const res = await fetch(`https://api.jikan.moe/v4/anime/${id}/pictures`);
-                const resp = await fetch(`https://api.jikan.moe/v4/anime/${id}/characters`)
-
-                if (!response.ok || !res.ok || !response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-
-                const data = await response.json();
-                const imgs = await res.json();
-                const chars = await resp.json();
-
-                setAnimeInfo(data.data);
-                setAnimeImages(imgs.data);
-                setAnimeChara(chars.data);
-            } catch (error) {
-                console.error('err brr:', error);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
-        };
+            const chars = await response.json();
 
-        fetchAnimes();
+            setAnimeChara(chars.data);
+        } catch (error) {
+            console.error('err brr:', error);
+        }
+    };
+    useEffect(() => {
+        fetchSingle(id, "anime", setAnimeInfo, setAnimeImages)
+        fetchCharacters();
     }, [id]);
 
 

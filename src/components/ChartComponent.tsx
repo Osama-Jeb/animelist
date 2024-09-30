@@ -7,8 +7,8 @@ import { Anime, useInfo } from "../context/InfoProviders";
 Chart.register(CategoryScale);
 
 const ChartComponent = () => {
-    const { user } = useInfo();
-    const bookmarkedAnimes = user?.bookmarkedAnimes;
+    const { bookmarkedAnimes } = useInfo();
+    // const bookmarkedAnimes = user?.bookmarkedAnimes;
 
     const [chartData, setChartData] = useState<any>({
         labels: [],

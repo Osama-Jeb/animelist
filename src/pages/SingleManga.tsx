@@ -76,7 +76,7 @@ const SingleManga = () => {
                                                     <div className="flex my-1 items-center gap-2">
                                                         <Pen size={iconSize} color={iconColor} />
                                                         <Link key={ind} to={`/va/${auth.mal_id}`} className="font-light">
-                                                            {formatName(auth.name)}
+                                                            {formatName(auth?.name)}
                                                         </Link>
                                                     </div>
                                                 ))
@@ -95,7 +95,7 @@ const SingleManga = () => {
                                         <p className="font-semibold my-1 flex items-center gap-2">
                                             <Book size={iconSize} color={iconColor} />
                                             <span>
-                                                {manga?.serializations[0].name}
+                                                {manga?.serializations[0]?.name}
                                             </span>
                                         </p>
                                         <p className="font-semibold my-1 flex items-center gap-2">
@@ -107,7 +107,7 @@ const SingleManga = () => {
                                         <p className="font-semibold my-1 flex gap-2">
                                             <Tag size={32} color={iconColor} />
                                             <span>
-                                                {manga?.genres.map((theme: any) => theme.name).join(', ')}
+                                                {manga?.genres.map((theme: any) => theme?.name).join(', ')}
                                             </span>
                                         </p>
                                     </div>
@@ -122,7 +122,7 @@ const SingleManga = () => {
                                             <li key={rel.entry[0].mal_id}>
                                                 <Link
                                                     to={rel.relation == 'Adaptation' ? `/anime/${rel.entry[0].mal_id}` : `/manga/${rel.entry[0].mal_id}`}
-                                                >{rel.relation} : {rel.entry[0].name}
+                                                >{rel.relation} : {rel.entry[0]?.name}
                                                 </Link>
                                             </li>
                                         ))
