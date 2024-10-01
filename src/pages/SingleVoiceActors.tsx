@@ -85,12 +85,6 @@ const SingleVoiceActor = () => {
         const today = new Date();
         let age = today.getFullYear() - birthDate.getFullYear();
 
-        // Adjust age if the birthday hasn't occurred yet this year
-        const monthDiff = today.getMonth() - birthDate.getMonth();
-        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-            age--;
-        }
-
         return age;
     }
 
@@ -103,7 +97,7 @@ const SingleVoiceActor = () => {
                     {/* Top Section With Image and Information */}
                     <div className="flex items-center justify-around mb-6">
                         <img src={actor.images.jpg.image_url} alt=""
-                            className="rounded w-[25%]"
+                            className="w-[25%] rounded-lg shadow-md shadow-alpha"
                         />
                         <div className="w-[60vw]">
                             <div className="text-2xl">

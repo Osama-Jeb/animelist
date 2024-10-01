@@ -6,8 +6,12 @@ import { collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
 
 import ggl from "../assets/Google_Icons-09-512.webp"
 import git from "../assets/github.webp"
+import { useInfo } from "../context/InfoProviders";
 
 const Register = () => {
+    const {validatePassword, checkImageUrl} = useInfo();
+
+    const [registering, setRegistering] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
@@ -16,50 +20,22 @@ const Register = () => {
 
     // Image Validation
     const [isValid, setIsValid] = useState<boolean | null>(null);
-    const checkImageUrl = (url: any) => {
-        const img = new Image();
-        img.src = url;
-
-        img.onload = () => {
-            setIsValid(true); 
-        };
-
-        img.onerror = () => {
-            setIsValid(false); 
-        };
-    };
     const handleImageChange = (e: any) => {
         const inputUrl = e.target.value;
         setUserImage(inputUrl);
         if (inputUrl) {
-            checkImageUrl(inputUrl);
+            checkImageUrl(inputUrl, setIsValid);
         } else {
             setIsValid(null);
         }
     };
 
 
-
-    // Password Validation
-    const validatePassword = () => {
-        const minLength = 8;
-        const hasUpperCase = /[A-Z]/.test(password);
-        const hasLowerCase = /[a-z]/.test(password);
-        const hasNumbers = /\d/.test(password);
-        const hasSpecialChars = /[!@#$%^&*]/.test(password);
-        return (
-            password.length >= minLength &&
-            hasUpperCase &&
-            hasLowerCase &&
-            hasNumbers &&
-            hasSpecialChars
-        );
-    };
-
     const register = (e: any) => {
-        e.preventDefault()
+        e.preventDefault();
+        setRegistering(true);
 
-        if (!validatePassword()) {
+        if (!validatePassword(password)) {
             alert("Password must meet complexity requirements.");
             return;
         }
@@ -92,6 +68,8 @@ const Register = () => {
             .catch((error) => {
                 console.log(error);
             });
+
+        setRegistering(false);
     }
 
     const singInWithGoogle = async () => {
@@ -183,9 +161,9 @@ const Register = () => {
                 </div>
 
                 <button className="w-full bg-alpha text-white px-4 py-2 rounded"
-                    type="submit"
+                    type="submit" disabled={!registering}
                 >
-                    Register
+                    {!registering ? 'Register' : 'LOADING....'}
                 </button>
             </form>
             <div className="flex gap-2 mt-4 items-center border-b-2 border-alpha/50 w-[50%] pb-4 mb-6 justify-center">

@@ -22,8 +22,6 @@ const AniList = () => {
     const [currPage, setCurrPage] = useState(1);
 
 
-
-
     useEffect(() => {
         fetchInfo("anime", currPage, type, setAnimeTV, status, order, sort, genres)
     }, [currPage, type, status, order, sort, genres])
@@ -32,7 +30,7 @@ const AniList = () => {
     const renderGrid = (animes: Anime[] | null) => (
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-2 md:gap-6">
             {animes?.map((anime, index) => (
-                <div key={index} className="group z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative">
+                <div key={index} className="group z-1 overflow-hidden rounded-lg transition-all duration-200 bg-gray-900 text-white relative">
                     {
                         currentUser &&
                         // TODO! some loading circle to show the user the function.
@@ -75,8 +73,6 @@ const AniList = () => {
                                 </div>
                             </div>
                         </div>
-                        {/* <div className="p-4 ">
-                        </div> */}
                     </Link>
                 </div>
             ))}
@@ -129,15 +125,11 @@ const AniList = () => {
         { id: "30", name: "Sports" },
         { id: "37", name: "Supernatural" },
         { id: "41", name: "Suspense" },
-        { id: "9", name: "Ecchi" },
-        { id: "49", name: "Erotica" },
-        { id: "12", name: "Hentai" },
         { id: "50", name: "Adult Cast" },
         { id: "51", name: "Anthropomorphic" },
         { id: "52", name: "CGDCT" },
         { id: "53", name: "Childcare" },
         { id: "54", name: "Combat Sports" },
-        { id: "81", name: "Crossdressing" },
         { id: "55", name: "Delinquents" },
         { id: "39", name: "Detective" },
         { id: "56", name: "Educational" },
@@ -198,7 +190,7 @@ const AniList = () => {
                 animeTV && !loading ?
                     <>
                         <div className="mt-5">
-                            {/* Display Mode Selector */}
+
                             <div className="mb-4 flex space-x-2 items-center flex-wrap">
                                 <input type="text" placeholder="Search" className="p-2 rounded bg-gray-800 w-full md:w-fit mb-4 md:m-0"
                                     value={inputValue}
@@ -264,7 +256,7 @@ const AniList = () => {
                                     </button>
 
                                     <select
-                                        // value={order}
+                                        value=""
                                         onChange={(e) =>
                                             setGenres([...genres, parseInt(e.target.value)])
                                         }

@@ -1,14 +1,14 @@
 import { Bar } from "react-chartjs-2";
-import { useInfo } from "../context/InfoProviders";
+import { Anime, useInfo } from "../context/InfoProviders";
 import { useEffect, useState } from "react";
 
 const ChartSeasons = () => {
 
     // const { user } = useInfo();
     // const bookmarkedAnimes = user?.bookmarkedAnimes || [];
-    const {bookmarkedAnimes} = useInfo();
+    const { bookmarkedAnimes } = useInfo();
 
-    
+
     const [chartData, setChartData] = useState({
         labels: ['Summer', 'Fall', 'Winter', 'Spring'],
         datasets: [
@@ -22,7 +22,7 @@ const ChartSeasons = () => {
     });
 
     const countBySeason = (season: string) => {
-        return bookmarkedAnimes?.filter((anime: any) => anime.season === season).length || 0;
+        return bookmarkedAnimes?.filter((anime: Anime) => anime.season === season).length || 0;
     };
     useEffect(() => {
 
@@ -49,20 +49,23 @@ const ChartSeasons = () => {
 
     return (
         <>
-            <Bar
-                data={chartData}
-                options={{
-                    plugins: {
-                        title: {
-                            display: false,
-                            text: "Anime Genre Chart",
+            <div className=" h-fit border border-alpha p-3 rounded-xl">
+                <h1 className="text-3xl p-4 border-b border-gray-700 mb-3 ">Seasonal Anime Info </h1>
+                <Bar
+                    data={chartData}
+                    options={{
+                        plugins: {
+                            title: {
+                                display: false,
+                                text: "Anime Genre Chart",
+                            },
+                            legend: {
+                                display: false,
+                            }
                         },
-                        legend: {
-                            display: false,
-                        }
-                    },
-                }}
-            />
+                    }}
+                />
+            </div>
         </>
     );
 

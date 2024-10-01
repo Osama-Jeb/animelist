@@ -9,6 +9,7 @@ import 'swiper/css/navigation';
 import { useInfo } from "../context/InfoProviders";
 import ReadMore from "../components/ReadMore";
 import { Book, BookOpen, Calendar, Pen, Star, Tag } from "lucide-react";
+import Loading from "../components/Loading";
 
 const SingleManga = () => {
     const { id } = useParams();
@@ -35,7 +36,7 @@ const SingleManga = () => {
     return (
         <>
             {
-                manga && <section className="px-6 text-lg tracking-wider">
+                manga ? <section className="px-6 text-lg tracking-wider">
 
                     <div className="container mx-auto px-4 py-8">
                         <div className="flex flex-col md:flex-row gap-8">
@@ -133,6 +134,8 @@ const SingleManga = () => {
                     </div>
 
                 </section>
+                :
+                <Loading />
             }
         </>
     )

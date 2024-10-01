@@ -117,15 +117,11 @@ const MangaList = () => {
         { id: "30", name: "Sports" },
         { id: "37", name: "Supernatural" },
         { id: "45", name: "Suspense" },
-        { id: "9", name: "Ecchi" },
-        { id: "49", name: "Erotica" },
-        { id: "12", name: "Hentai" },
         { id: "50", name: "Adult Cast" },
         { id: "51", name: "Anthropomorphic" },
         { id: "52", name: "CGDCT" },
         { id: "53", name: "Childcare" },
         { id: "54", name: "Combat Sports" },
-        { id: "44", name: "Crossdressing" },
         { id: "55", name: "Delinquents" },
         { id: "39", name: "Detective" },
         { id: "56", name: "Educational" },
@@ -248,6 +244,7 @@ const MangaList = () => {
                             </button>
 
                             <select
+                                value=""
                                 onChange={(e) =>
                                     setGenres([...genres, parseInt(e.target.value)])
                                 }

@@ -32,13 +32,13 @@ const FilterByStudio = () => {
         <>
             <div className="border border-alpha rounded-xl py-2 px-5">
                 <div className="p-4 border-b border-gray-700 flex items-center justify-between">
-                    <h2 className="text-xl font-semibold">Most Watched Studios</h2>
+                    <h1 className="text-xl font-semibold">Most Watched Studios</h1>
 
                     <div className="flex items-center gap-2">
                         <button
                         className="px-3 py-1 bg-alpha rounded"
                         onClick={() => {
-                            if (maxStudios > 3) {
+                            if (maxStudios > 4) {
                                 setMaxStudios(maxStudios - 1)
                             }
                         }}

@@ -1,6 +1,6 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { List, Film, Mic, Users } from "lucide-react"
+import { Film, Mic, Users, Book } from "lucide-react"
 import about from "../assets/images/aboutwebp.webp";
 
 const Root = () => {
@@ -10,7 +10,7 @@ const Root = () => {
     return (
         <>
             <Navbar />
-            {!isRootPath && <Outlet />}
+            {!isRootPath && <div className="px-6"><Outlet /> </div>}
 
             {isRootPath &&
                 <>
@@ -66,11 +66,11 @@ const Root = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                                 {[
                                     {
-                                        title: "Anime Lists", icon: List, link: '/anime',
+                                        title: "Anime", icon: Film, link: '/anime',
                                         description: "Browse curated lists of top anime series across various genres."
                                     },
                                     {
-                                        title: "Manga List", icon: Film, link: '/manga',
+                                        title: "Manga", icon: Book, link: '/manga',
                                         description: "Discover a wide range of Manga, from classics to recent releases."
                                     },
                                     {

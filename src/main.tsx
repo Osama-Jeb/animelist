@@ -19,6 +19,7 @@ import SingleVoiceActor from './pages/SingleVoiceActors.tsx';
 import Characters from './pages/Characters.tsx';
 import SingleManga from './pages/SingleManga.tsx';
 import SingleCharacter from './pages/SingleCharacter.tsx';
+import ProtectedRoute from './context/ProtectedRoute.tsx';
 
 const router = createBrowserRouter([
   {
@@ -44,15 +45,21 @@ const router = createBrowserRouter([
       },
       {
         path: "/bookmarkedAnime",
-        element: <BookmarkedAnime />
+        element: <ProtectedRoute>
+          <BookmarkedAnime />
+        </ProtectedRoute>
       },
       {
         path: "/statistics",
-        element: <Statistics />
+        element: <ProtectedRoute>
+          <Statistics />
+        </ProtectedRoute>
       },
       {
         path: "/profile",
-        element: <Profile />
+        element: <ProtectedRoute>
+          <Profile />
+        </ProtectedRoute>
       },
       {
         path: "/manga",
@@ -71,11 +78,11 @@ const router = createBrowserRouter([
         element: <SingleVoiceActor />
       },
       {
-        path : "/characters",
+        path: "/characters",
         element: <Characters />
       },
       {
-        path:"/characters/:id",
+        path: "/characters/:id",
         element: <SingleCharacter />
       }
     ]

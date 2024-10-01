@@ -1,9 +1,11 @@
 import { updatePassword, updateProfile } from "firebase/auth";
 import { useAuth } from "../context/AuthContext";
 import { useEffect, useState } from "react";
+import { useInfo } from "../context/InfoProviders";
 
 const Profile = () => {
     const { currentUser } = useAuth();
+    const { validatePassword, checkImageUrl } = useInfo();
 
     const [username, setUsername] = useState<any>('')
     const [photo, setPhoto] = useState<any>('');
@@ -12,6 +14,18 @@ const Profile = () => {
     const [pass, setPass] = useState<any>('');
 
     const [isGoogleProvider, setIsGoogleProvider] = useState<any>();
+
+    // Image Validation
+    const [isValid, setIsValid] = useState<boolean | null>(null);
+    const handleImageChange = (e: any) => {
+        const inputUrl = e.target.value;
+        setPhoto(inputUrl);
+        if (inputUrl) {
+            checkImageUrl(inputUrl, setIsValid);
+        } else {
+            setIsValid(null);
+        }
+    };
 
     useEffect(() => {
         setUsername(currentUser?.displayName);
@@ -22,7 +36,12 @@ const Profile = () => {
     }, [currentUser])
 
     const updateUserInfo = async (e: any) => {
-        e.preventDefault()
+        e.preventDefault();
+        if (!isValid) {
+            alert('Please provide a proper image link');
+            return;
+        }
+
         await updateProfile(currentUser, {
             displayName: username ?? currentUser.displayName,
             photoURL: photo ?? currentUser.photoURL,
@@ -35,6 +54,11 @@ const Profile = () => {
     }
 
     const updateUserPassword = async () => {
+        if (!validatePassword(pass)) {
+            alert('Please Meet the requirements!!');
+            return;
+        }
+
         await updatePassword(currentUser, pass).then(() => {
             alert('Password Updated!!');
         }).catch((err) => {
@@ -72,7 +96,7 @@ const Profile = () => {
                         <input type="url" name="photo" id="photo"
                             value={photo}
                             className="w-full rounded px-4 py-2 text-black mt-2"
-                            onChange={(e) => setPhoto(e.target.value)}
+                            onChange={handleImageChange}
                         />
                     </div>
                     <button className="w-full bg-alpha text-white px-4 py-2 rounded">
@@ -93,6 +117,7 @@ const Profile = () => {
                                 onChange={(e) => setPass(e.target.value)}
                                 required
                             />
+                            <small>requirements: at least 8 charcaters including uppercase, lowercase and special characters</small>
                         </div>
                         <button className="w-full bg-alpha text-white px-4 py-2 rounded">
                             Update Password
