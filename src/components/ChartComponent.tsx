@@ -84,7 +84,7 @@ const ChartComponent = () => {
             labels,
             datasets: [
                 {
-                    label: 'Anime Genres',
+                    label: '',
                     data,
                     backgroundColor,
                 },

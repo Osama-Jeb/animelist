@@ -13,7 +13,11 @@ const Characters = () => {
     const [searchedChara, setSearchedChara] = useState<any>();
 
     useEffect(() => {
-        fetchInfo('characters', curr, "all", setCharacters, 'all', 'favorites', 'desc',);
+        if (input) {
+            onSearch('characters', input, setSearchedChara, curr);
+        } else {
+            fetchInfo('characters', curr, "all", setCharacters, 'all', 'favorites', 'desc',);
+        }
     }, [curr])
 
     const renderChara = (charas: any | null) => {
@@ -55,7 +59,7 @@ const Characters = () => {
                         }}
                         onKeyDown={(e) => {
                             if (e.key == "Enter") {
-                                onSearch("characters", input, setSearchedChara)
+                                onSearch("characters", input, setSearchedChara, curr)
                             }
                         }}
 

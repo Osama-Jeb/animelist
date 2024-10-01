@@ -62,7 +62,7 @@ const Root = () => {
 
                     <section className="w-full py-12 md:py-24 lg:py-32">
                         <div className="container px-4 md:px-6 mx-auto">
-                            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-12">Explore Our Content</h2>
+                            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-12"><span className="text-alpha">Explore</span> Our Content</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                                 {[
                                     {
@@ -82,7 +82,7 @@ const Root = () => {
                                         description: "Explore profiles of voice actors who bring anime characters to life."
                                     },
                                 ].map((item, index) => (
-                                    <Link to={item.link} key={index} className="rounded-lg shadow-md overflow-hidden border border-gray-800 hover:scale-105 translate-all duration-200">
+                                    <Link to={item.link} key={index} className="rounded-lg border border-alpha/50  hover:scale-105 transition-all duration-200">
                                         <div className="p-6">
                                             <div className="flex items-center mb-4">
                                                 <item.icon size={24} color="#1d4ed8" className="mr-3" />

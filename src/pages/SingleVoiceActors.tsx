@@ -22,7 +22,7 @@ const SingleVoiceActor = () => {
         setUniqueVoices(uv);
     }, [id, uniqueVoices, actor])
 
-    const [tab, setTab] = useState('characters');
+    const [tab, setTab] = useState('anime');
 
     const renderCharacters = () => {
         return (

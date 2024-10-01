@@ -20,14 +20,19 @@ const AniList = () => {
 
     const [animeTV, setAnimeTV] = useState<Anime[] | null>(null);
     const [currPage, setCurrPage] = useState(1);
-
+    const [searchedAnimes, setSearchedAnimes] = useState<Anime[] | null>(null);
+    const [inputValue, setInputValue] = useState('')
 
     useEffect(() => {
-        fetchInfo("anime", currPage, type, setAnimeTV, status, order, sort, genres)
+        if (inputValue) {
+            onSearch("anime", inputValue, setSearchedAnimes, currPage);
+        } else {
+            fetchInfo("anime", currPage, type, setAnimeTV, status, order, sort, genres);
+        }
     }, [currPage, type, status, order, sort, genres])
 
 
-    const renderGrid = (animes: Anime[] | null) => (
+    const renderAnime = (animes: Anime[] | null) => (
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-2 md:gap-6">
             {animes?.map((anime, index) => (
                 <div key={index} className="group z-1 overflow-hidden rounded-lg transition-all duration-200 bg-gray-900 text-white relative">
@@ -78,9 +83,6 @@ const AniList = () => {
             ))}
         </div>
     )
-
-    const [searchedAnimes, setSearchedAnimes] = useState<Anime[] | null>(null);
-    const [inputValue, setInputValue] = useState('')
 
 
     const typeSelect = [
@@ -198,94 +200,99 @@ const AniList = () => {
                                         setInputValue(e.target.value.toLowerCase())
                                         if (!e.target.value) {
                                             setSearchedAnimes(null)
+                                            setCurrPage(1)
                                         }
                                     }}
                                     onKeyDown={(e) => {
                                         if (e.key == "Enter") {
-                                            onSearch("anime", inputValue, setSearchedAnimes)
+                                            onSearch("anime", inputValue, setSearchedAnimes, currPage)
                                         }
                                     }}
 
                                 />
 
-                                <div className="flex items-center gap-3 flex-wrap">
-                                    <select
-                                        value={type}
-                                        onChange={(e) => setType(e.target.value)}
-                                        className="border rounded p-2 text-black capitalize"
-                                    >
-                                        <option disabled value="">Type</option>
+                                {
+                                    !inputValue && <div className="flex items-center gap-3 flex-wrap">
+                                        <select
+                                            value={type}
+                                            onChange={(e) => setType(e.target.value)}
+                                            className="border rounded p-2 text-black capitalize"
+                                        >
+                                            <option disabled value="">Type</option>
 
-                                        {typeSelect.map((option) => (
-                                            <option key={option.id} value={option.id}>
-                                                {option.label}
-                                            </option>
-                                        ))}
-                                    </select>
+                                            {typeSelect.map((option) => (
+                                                <option key={option.id} value={option.id}>
+                                                    {option.label}
+                                                </option>
+                                            ))}
+                                        </select>
 
-                                    <select
-                                        value={status}
-                                        onChange={(e) => setStatus(e.target.value)}
-                                        className="border rounded p-2 text-black capitalize"
-                                    >
-                                        <option disabled value="">Status</option>
-                                        {statusSelect.map((option) => (
-                                            <option key={option.id} value={option.id}>
-                                                {option.label}
-                                            </option>
-                                        ))}
-                                    </select>
+                                        <select
+                                            value={status}
+                                            onChange={(e) => setStatus(e.target.value)}
+                                            className="border rounded p-2 text-black capitalize"
+                                        >
+                                            <option disabled value="">Status</option>
+                                            {statusSelect.map((option) => (
+                                                <option key={option.id} value={option.id}>
+                                                    {option.label}
+                                                </option>
+                                            ))}
+                                        </select>
 
-                                    <select
-                                        value={order}
-                                        onChange={(e) => setOrder(e.target.value)}
-                                        className="border rounded p-2 text-black capitalize"
-                                    >
-                                        <option disabled value="">Order By</option>
-                                        {orderSelect.map((option) => (
-                                            <option key={option.id} value={option.id}>
-                                                {option.label}
-                                            </option>
-                                        ))}
-                                    </select>
+                                        <select
+                                            value={order}
+                                            onChange={(e) => setOrder(e.target.value)}
+                                            className="border rounded p-2 text-black capitalize"
+                                        >
+                                            <option disabled value="">Order By</option>
+                                            {orderSelect.map((option) => (
+                                                <option key={option.id} value={option.id}>
+                                                    {option.label}
+                                                </option>
+                                            ))}
+                                        </select>
 
-                                    <button
-                                        onClick={() => { sort == "desc" ? setSort('asc') : setSort('desc') }}
-                                        className="px-4 py-2 bg-alpha rounded capitalize">
-                                        {sort}
-                                    </button>
-
-                                    <select
-                                        value=""
-                                        onChange={(e) =>
-                                            setGenres([...genres, parseInt(e.target.value)])
+                                        {
+                                            !inputValue && <button
+                                                onClick={() => { sort == "desc" ? setSort('asc') : setSort('desc') }}
+                                                className="px-4 py-2 bg-alpha rounded capitalize">
+                                                {sort}
+                                            </button>
                                         }
-                                        className="border rounded p-2 text-black capitalize"
-                                    >
-                                        <option disabled value="">Add Genres</option>
-                                        {genreSelect.map((option) => (
-                                            <option key={option.id} value={option.id}>
-                                                {option.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    {
-                                        genreSelect
-                                            .filter(el => genres.includes(parseInt(el.id)))
-                                            .map(el => (
-                                                <button key={el.id}
-                                                    className="bg-alpha px-2 py-1 rounded-xl"
-                                                    onClick={() => handleRemoveGenre(parseInt(el.id))}>
-                                                    {el.name} X
-                                                </button>
-                                            ))
-                                    }
-                                </div>
+
+                                        <select
+                                            value=""
+                                            onChange={(e) =>
+                                                setGenres([...genres, parseInt(e.target.value)])
+                                            }
+                                            className="border rounded p-2 text-black capitalize"
+                                        >
+                                            <option disabled value="">Add Genres</option>
+                                            {genreSelect.map((option) => (
+                                                <option key={option.id} value={option.id}>
+                                                    {option.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        {
+                                            genreSelect
+                                                .filter(el => genres.includes(parseInt(el.id)))
+                                                .map(el => (
+                                                    <button key={el.id}
+                                                        className="bg-alpha px-2 py-1 rounded-xl"
+                                                        onClick={() => handleRemoveGenre(parseInt(el.id))}>
+                                                        {el.name} X
+                                                    </button>
+                                                ))
+                                        }
+                                    </div>
+                                }
                             </div>
 
                             {/* Anime Display Section */}
                             <div className="mt-4">
-                                {renderGrid(searchedAnimes || animeTV)}
+                                {renderAnime(searchedAnimes || animeTV)}
                                 {/* {displayMode === 'list' && renderList(searchedAnimes || animeTV)}
                                 {displayMode === 'table' && renderTable(searchedAnimes || animeTV)} */}
 

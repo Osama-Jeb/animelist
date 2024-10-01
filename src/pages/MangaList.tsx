@@ -21,7 +21,11 @@ const MangaList = () => {
 
 
     useEffect(() => {
-        fetchInfo("manga", currPage, type, setManga, status, order, sort, genres)
+        if (input) {
+            onSearch("manga", input, setSearchedManga, currPage)
+        } else {
+            fetchInfo("manga", currPage, type, setManga, status, order, sort, genres)
+        }
     }, [currPage, type, status, sort, order, genres])
 
 
@@ -187,17 +191,19 @@ const MangaList = () => {
                                 setInput(e.target.value.toLowerCase())
                                 if (!e.target.value) {
                                     setSearchedManga(null)
+                                    setCurrPage(1)
                                 }
                             }}
                             onKeyDown={(e) => {
                                 if (e.key == "Enter") {
-                                    onSearch("manga", input, setSearchedManga)
+                                    onSearch("manga", input, setSearchedManga, currPage)
                                 }
                             }}
 
                         />
 
-                        <div className="flex items-center gap-3 md:gap-2 flex-wrap mt-4 md:m-0">
+                        {
+                            !input && <div className="flex items-center gap-3 md:gap-2 flex-wrap mt-4 md:m-0">
                             <select
                                 value={type}
                                 onChange={(e) => setType(e.target.value)}
@@ -270,6 +276,7 @@ const MangaList = () => {
                                     ))
                             }
                         </div>
+                        }
                     </div>
 
                     <div>

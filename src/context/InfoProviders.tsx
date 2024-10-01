@@ -142,7 +142,7 @@ export interface Anime {
 interface InfoContextType {
     fetchInfo: (what: string, page: number, type: string, setInfo: (arg: any) => void, status: string, order_by: string, sort: string, genres?: number[]) => void,
     fetchSingle: (id: string | undefined, what: string, setSingle: (arg: any) => void, setPic?: (arg: any) => void) => void,
-    onSearch: (what: string, term: string, setResult: (arg: any) => void) => void,
+    onSearch: (what: string, term: string, setResult: (arg: any) => void, currentPage: number) => void,
     bookmarkedAnimes: Anime[] | null,
     onBookmarkClick: (animeData: Anime) => void,
     loading: boolean,
@@ -222,11 +222,11 @@ export default function InfoProvider({ children }: PropsWithChildren) {
         }
     }
 
-    const onSearch = async (what: string, term: string, setResult: (arg: any) => void) => {
+    const onSearch = async (what: string, term: string, setResult: (arg: any) => void, currentPage: number) => {
         try {
             setLoading(true);
             let res;
-            res = await fetch(`https://api.jikan.moe/v4/${what}?q=${term}&order_by=favorites&sort=desc`)
+            res = await fetch(`https://api.jikan.moe/v4/${what}?q=${term}&page=${currentPage}&order_by=favorites&sort=desc`)
             if (!res.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -249,7 +249,7 @@ export default function InfoProvider({ children }: PropsWithChildren) {
             type: animeData.type,
             source: animeData.source,
             episodes: animeData.episodes,
-            year: animeData.aired.prop.from.year,
+            year: animeData?.aired?.prop.from.year ?? animeData.year,
             season: animeData.season,
             studios: animeData.studios,
             score: animeData.score,

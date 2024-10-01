@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Anime, useInfo } from "../context/InfoProviders"
 import { Bookmark, Calendar, PlayCircle } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 
 const BookmarkedAnime = () => {
@@ -29,7 +30,7 @@ const BookmarkedAnime = () => {
             return 0;
         });
 
-
+    const {currentUser} = useAuth();
     const [showMax, setShowMax] = useState(10);
     return (
         <>
@@ -68,12 +69,16 @@ const BookmarkedAnime = () => {
                         index < showMax &&
                         <div key={index} className="group z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative">
 
-                            <button className="cursor-default absolute top-[5%] right-[5%] bg-alpha rounded-full p-2 z-10"
-                                onClick={() => { onBookmarkClick(anime) }}
-                            >
+                            {
+                                currentUser &&
+                                // TODO! some loading circle to show the user the function.
+                                <button className="cursor-default absolute top-[5%] right-[5%] bg-alpha rounded-full p-2 z-10"
+                                    onClick={() => { onBookmarkClick(anime) }}
+                                >
 
-                                <Bookmark fill={`${bookmarkedAnimes?.some((anm: any) => anm.mal_id === anime.mal_id) ? "white" : "#1d4ed8"}`} />
-                            </button>
+                                    <Bookmark fill={`${bookmarkedAnimes?.some((anm: any) => anm.mal_id === anime.mal_id) ? "white" : "#1d4ed8"}`} />
+                                </button>
+                            }
                             <Link to={`/anime/${anime.mal_id}`}>
                                 <div className="relative h-[300px] lg:h-[400px]">
                                     <img src={anime.images?.webp?.large_image_url} alt={anime.title} className="absolute inset-0 h-full w-full object-cover" />
@@ -83,27 +88,27 @@ const BookmarkedAnime = () => {
                                         <span className="rounded-full bg-alpha text-white px-2 py-1 text-sm font-bold">
                                             {anime.score}
                                         </span>
-                                    <h2 className="text-lg font-bold mb-2">{anime.title_english ?? anime.title}</h2>
-                                    <div className="space-y-2">
-                                        <div className="flex items-center gap-2">
-                                            <PlayCircle size={16} color="#9ca3af" />
-                                            <span className="text-sm text-gray-400">{anime.episodes ?? 'Still Airing'}</span>
+                                        <h2 className="text-lg font-bold mb-2">{anime.title_english ?? anime.title}</h2>
+                                        <div className="space-y-2">
+                                            <div className="flex items-center gap-2">
+                                                <PlayCircle size={16} color="#9ca3af" />
+                                                <span className="text-sm text-gray-400">{anime.episodes ?? 'Still Airing'}</span>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <Calendar size={16} color="#9ca3af" />
+                                                <span className="text-sm text-gray-400">{anime.year}</span>
+                                            </div>
+                                            <div className="flex flex-wrap gap-2 mt-2">
+                                                {anime.genres.map((genre: any, ind: number) => (
+                                                    <span
+                                                        key={ind}
+                                                        className="px-2 py-1 text-xs font-semibold rounded-full bg-alpha/30 text-gray-200"
+                                                    >
+                                                        {genre.name}
+                                                    </span>
+                                                ))}
+                                            </div>
                                         </div>
-                                        <div className="flex items-center gap-2">
-                                            <Calendar size={16} color="#9ca3af" />
-                                            <span className="text-sm text-gray-400">{anime.year}</span>
-                                        </div>
-                                        <div className="flex flex-wrap gap-2 mt-2">
-                                            {anime.genres.map((genre: any, ind: number) => (
-                                                <span
-                                                    key={ind}
-                                                    className="px-2 py-1 text-xs font-semibold rounded-full bg-alpha/30 text-gray-200"
-                                                >
-                                                    {genre.name}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    </div>
                                     </div>
                                 </div>
                                 {/* <div className="p-4 ">

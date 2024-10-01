@@ -29,7 +29,11 @@ const VoiceActors = () => {
         }
     };
     useEffect(() => {
-        fetchVoiceActors()
+        if (input) {
+            onSearch('people', input, setSearcheedVa, currPage)
+        } else {
+            fetchVoiceActors()
+        }
     }, [order, currPage])
 
 
@@ -88,7 +92,7 @@ const VoiceActors = () => {
                         }}
                         onKeyDown={(e) => {
                             if (e.key == "Enter") {
-                                onSearch("people", input, setSearcheedVa)
+                                onSearch("people", input, setSearcheedVa, currPage)
                             }
                         }}
 

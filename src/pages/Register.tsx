@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { auth, db, gitProv, googleProvider } from "../firebase";
-import { createUserWithEmailAndPassword, signInWithPopup, updateProfile } from "firebase/auth";
+import { auth, db } from "../firebase";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
 
-import ggl from "../assets/Google_Icons-09-512.webp"
-import git from "../assets/github.webp"
+
 import { useInfo } from "../context/InfoProviders";
+import OAuthSignIn from "../components/OAuthSignIn";
 
 const Register = () => {
-    const {validatePassword, checkImageUrl} = useInfo();
+    const { validatePassword, checkImageUrl } = useInfo();
 
     const [registering, setRegistering] = useState(false);
     const [email, setEmail] = useState('');
@@ -72,61 +72,6 @@ const Register = () => {
         setRegistering(false);
     }
 
-    const singInWithGoogle = async () => {
-        try {
-            const result = signInWithPopup(auth, googleProvider);
-            const user = (await result).user;
-
-
-            const newUser = {
-                id: user.uid,
-                bookmarkedAnimes: [],
-                created_at: serverTimestamp(),
-                updated_at: serverTimestamp(),
-            };
-
-            await updateProfile(user, {
-                displayName: user.displayName,
-                photoURL: user.photoURL ?? "https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png"
-            })
-
-            const userRef = doc(collection(db, 'users'), newUser.id);
-            await setDoc(userRef, newUser);
-
-            navigate("/")
-
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const signInWithGithub = async () => {
-        try {
-            const result = signInWithPopup(auth, gitProv);
-            const user = (await result).user;
-
-
-            const newUser = {
-                id: user.uid,
-                bookmarkedAnimes: [],
-                created_at: serverTimestamp(),
-                updated_at: serverTimestamp(),
-            };
-
-            await updateProfile(user, {
-                displayName: user.displayName,
-                photoURL: user.photoURL ?? "https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png"
-            })
-
-            const userRef = doc(collection(db, 'users'), newUser.id);
-            await setDoc(userRef, newUser);
-
-            navigate("/")
-
-        } catch (error) {
-            console.log(error)
-        }
-    }
     return (
         <div className="h-[80vh] flex flex-col items-center justify-center">
 
@@ -171,21 +116,7 @@ const Register = () => {
             </div>
 
 
-            <div className="flex items-center justify-around w-[15%]">
-                <button
-                    onClick={singInWithGoogle}
-                    className="bg-white rounded-full"
-                >
-                    <img src={ggl} className="w-[35px] aspect-square p-1" alt="" />
-                </button>
-                <p>OR</p>
-                <button
-                    onClick={signInWithGithub}
-                    className="bg-white rounded-full"
-                >
-                    <img src={git} className="w-[35px] aspect-square" />
-                </button>
-            </div>
+            <OAuthSignIn />
         </div>
     )
 }

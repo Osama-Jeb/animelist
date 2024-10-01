@@ -24,7 +24,7 @@ const Pagination = ({ currentPage, setCurrentPage, max }: PaginationProps) => {
 
     return (
         <>
-            <div className="flex items-center z-20 bg-black justify-center gap-5 font-bold text-xl h-[30px] sticky bottom-0">
+            <div className="flex items-center z-20 bg-black justify-center gap-5 font-bold text-xl sticky bottom-0">
                 <button
                     onClick={() => handlePageChange(currentPage - 1, max, setCurrentPage)}
                     disabled={currentPage <= 1}
