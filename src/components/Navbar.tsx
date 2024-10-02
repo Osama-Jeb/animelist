@@ -122,7 +122,7 @@ const Navbar = () => {
                             {
                                 links.map((link, index) => (
                                     <NavLink key={index} to={link.link} className={({ isActive, isPending }) =>
-                                        isPending ? "pending" : isActive ? "bg-alpha px-3 py-2 rounded-md text-sm font-medium" : "px-3 py-2 border-2 border-alpha/50 rounded-md"}>
+                                        isPending ? "pending" : isActive ? "bg-alpha px-3 py-2 rounded-tr-xl rounded-bl-xl text-sm font-medium" : "px-3 py-2 border-2 border-white/50 rounded-lg"}>
                                         {link.name}
                                     </NavLink>
                                 ))

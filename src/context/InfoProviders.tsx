@@ -182,6 +182,7 @@ export default function InfoProvider({ children }: PropsWithChildren) {
             }
 
             if (!response.ok) {
+                console.log(response)
                 throw new Error('Network response was not ok');
             }
 

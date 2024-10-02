@@ -98,6 +98,8 @@ const Profile = () => {
                             className="w-full rounded px-4 py-2 text-black mt-2"
                             onChange={handleImageChange}
                         />
+                        {isValid === true && <small className="text-green-500">Image is valid!</small>}
+                        {isValid === false && <small className="text-red-500">Image does not exist!</small>}
                     </div>
                     <button className="w-full bg-alpha text-white px-4 py-2 rounded">
                         Update Information
