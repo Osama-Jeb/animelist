@@ -43,7 +43,7 @@ const SingleCharacter = () => {
                                     }}
                                 >
                                     {
-                                        pics?.map((img: any, index: number) => (
+                                        pics?.map((img: any) => (
                                             <SwiperSlide key={img.jpg.image_url} className="w-full">
                                                 <img
                                                     src={img.jpg.image_url}
@@ -57,7 +57,7 @@ const SingleCharacter = () => {
                                 </Swiper>
                             </div>
                             <div className="md:w-2/3">
-                                <h1 className="text-4xl font-bold">{character?.name}</h1>
+                                <h1 className="text-4xl font-bold">{character?.name_english}</h1>
                                 <h1 className="text-xl font-bold text-gray-400 mb-2">{character?.name_kanji}</h1>
                                 <div className="flex flex-col gap-2">
                                     <p className="font-semibold text-xl">Anime: <Link to={`/anime/${character?.anime[0].anime.mal_id}`} className="font-light">{character?.anime[0].anime.title} </Link></p>
@@ -95,12 +95,29 @@ const SingleCharacter = () => {
                     <div>
                         <h1 className="text-4xl my-6">Animes: </h1>
                         <Swiper
-                            slidesPerView={5}
                             slidesPerGroup={2}
                             spaceBetween={30}
                             modules={[Navigation]}
                             navigation
                             loop={true}
+                            breakpoints={{
+                                0: {
+                                    slidesPerView: 1,
+                                    spaceBetween: 0,
+                                },
+                                640: {
+                                    slidesPerView: 2,
+                                    spaceBetween: 20,
+                                },
+                                768: {
+                                    slidesPerView: 4,
+                                    spaceBetween: 40,
+                                },
+                                1024: {
+                                    slidesPerView: 5,
+                                    spaceBetween: 50,
+                                },
+                            }}
                         >
 
                             {character?.anime.map((anime: any) => (
@@ -128,12 +145,29 @@ const SingleCharacter = () => {
                     <div>
                         <h1 className="text-4xl my-6">Manga: </h1>
                         <Swiper
-                            slidesPerView={5}
                             slidesPerGroup={2}
                             spaceBetween={30}
                             modules={[Navigation]}
                             navigation
                             loop={true}
+                            breakpoints={{
+                                0: {
+                                    slidesPerView: 1,
+                                    spaceBetween: 0,
+                                },
+                                640: {
+                                    slidesPerView: 2,
+                                    spaceBetween: 20,
+                                },
+                                768: {
+                                    slidesPerView: 4,
+                                    spaceBetween: 40,
+                                },
+                                1024: {
+                                    slidesPerView: 5,
+                                    spaceBetween: 50,
+                                },
+                            }}
                         >
 
                             {character?.manga.map((mng: any) => (
@@ -142,7 +176,7 @@ const SingleCharacter = () => {
                                     key={mng.manga.mal_id}
                                 >
 
-                                    <div  className="group z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative h-full">
+                                    <div className="group z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative h-full">
                                         <Link to={`/manga/${mng.manga.mal_id}`}>
                                             <div className="relative h-[350px]">
                                                 <img src={mng.manga.images?.webp?.large_image_url} alt={mng.manga.title} className="absolute inset-0 h-full w-full object-cover" />
@@ -160,12 +194,29 @@ const SingleCharacter = () => {
                     <div>
                         <h1 className="text-4xl my-6">Voice Actors: </h1>
                         <Swiper
-                            slidesPerView={5}
                             slidesPerGroup={2}
                             spaceBetween={30}
                             modules={[Navigation]}
                             navigation
                             loop={true}
+                            breakpoints={{
+                                0: {
+                                    slidesPerView: 1,
+                                    spaceBetween: 0,
+                                },
+                                640: {
+                                    slidesPerView: 2,
+                                    spaceBetween: 20,
+                                },
+                                768: {
+                                    slidesPerView: 4,
+                                    spaceBetween: 40,
+                                },
+                                1024: {
+                                    slidesPerView: 5,
+                                    spaceBetween: 50,
+                                },
+                            }}
                         >
 
                             {character?.voices.map((va: any) => (
@@ -174,7 +225,7 @@ const SingleCharacter = () => {
                                     key={va.person.mal_id}
                                 >
 
-                                    <div  className="group z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative h-full">
+                                    <div className="group z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative h-full">
                                         <Link to={`/va/${va.person.mal_id}`}>
                                             <div className="relative h-[350px]">
                                                 <img src={va.person.images?.jpg?.image_url} alt={va.person.name} className="absolute inset-0 h-full w-full object-cover" />

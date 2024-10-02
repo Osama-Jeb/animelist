@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useInfo } from "../context/InfoProviders";
 import Pagination from "../components/Pagination";
 import Loading from "../components/Loading";
+import { Search } from "lucide-react";
 
 const Characters = () => {
     const { fetchInfo, onSearch, loading } = useInfo();
@@ -48,7 +49,7 @@ const Characters = () => {
     return (
         characters && !loading ?
             <>
-                <div className="py-3">
+                <div className="py-3 flex items-center gap-2">
                     <input type="text" placeholder="Search Name..." className="p-2 rounded bg-gray-800 w-full md:w-fit"
                         value={input}
                         onChange={(e) => {
@@ -64,6 +65,21 @@ const Characters = () => {
                         }}
 
                     />
+
+                    <button
+                        className="px-3 py-2 rounded bg-alpha"
+                        onClick={() => {
+                            if (input) {
+                                onSearch('characters', input, setSearchedChara, curr)
+                            }
+                        }
+                        }
+
+                    >
+
+                        <Search size={20} />
+                    </button>
+
                 </div>
                 {renderChara(searchedChara || characters)}
 

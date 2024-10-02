@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useInfo } from "../context/InfoProviders";
 import Pagination from "../components/Pagination";
-import { Calendar } from "lucide-react";
+import { Calendar, Search } from "lucide-react";
 import Loading from "../components/Loading";
 
 const VoiceActors = () => {
@@ -12,7 +12,7 @@ const VoiceActors = () => {
     const [currPage, setCurrPage] = useState(1);
 
     const [input, setInput] = useState('');
-    const [searchededVA, setSearcheedVa] = useState<any>();
+    const [searchededVA, setSearchedVA] = useState<any>();
 
     const fetchVoiceActors = async () => {
         try {
@@ -30,7 +30,7 @@ const VoiceActors = () => {
     };
     useEffect(() => {
         if (input) {
-            onSearch('people', input, setSearcheedVa, currPage)
+            onSearch('people', input, setSearchedVA, currPage)
         } else {
             fetchVoiceActors()
         }
@@ -87,27 +87,39 @@ const VoiceActors = () => {
                         onChange={(e) => {
                             setInput(e.target.value.toLowerCase())
                             if (!e.target.value) {
-                                setSearcheedVa(null)
+                                setSearchedVA(null)
                             }
                         }}
                         onKeyDown={(e) => {
                             if (e.key == "Enter") {
-                                onSearch("people", input, setSearcheedVa, currPage)
+                                onSearch("people", input, setSearchedVA, currPage)
                             }
                         }}
 
                     />
-                    <select
-                        value={order}
-                        onChange={(e) => setOrder(e.target.value)}
-                        className="border rounded p-1 text-black capitalize"
-                    >
-                        {orderSelect?.map((option) => (
-                            <option key={option.id} value={option.id}>
-                                {option.label}
-                            </option>
-                        ))}
-                    </select>
+                    {
+                        input && <button
+                            className="px-3 py-2 bg-alpha rounded"
+                            onClick={() => { onSearch('people', input, setSearchedVA, currPage) }}
+                        >
+                            <Search size={20} />
+                        </button>
+                    }
+
+                    {
+                        !input &&
+                        <select
+                            value={order}
+                            onChange={(e) => setOrder(e.target.value)}
+                            className="border rounded p-2 text-black capitalize"
+                        >
+                            {orderSelect?.map((option) => (
+                                <option key={option.id} value={option.id}>
+                                    {option.label}
+                                </option>
+                            ))}
+                        </select>
+                    }
                 </div>
 
                 <div className="mt-4">

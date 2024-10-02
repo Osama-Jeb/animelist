@@ -8,6 +8,10 @@ body {
     font-family: monospace;
 }
 
+.swiper-container {
+    width: 100%;
+}
+
 .reg {
     position: relative;
     overflow: hidden;

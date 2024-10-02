@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Anime, useInfo } from "../context/InfoProviders";
-import { Bookmark, Calendar, PlayCircle } from "lucide-react";
+import { Bookmark, Calendar, PlayCircle, Search } from "lucide-react";
 import Loading from "../components/Loading";
 import { useAuth } from "../context/AuthContext";
 import Pagination from "../components/Pagination";
@@ -210,6 +210,15 @@ const AniList = () => {
                                     }}
 
                                 />
+
+                                {
+                                    inputValue && <button
+                                        className="px-3 py-2 bg-alpha rounded"
+                                        onClick={() => { onSearch('anime', inputValue, setSearchedAnimes, currPage) }}
+                                    >
+                                        <Search size={20} />
+                                    </button>
+                                }
 
                                 {
                                     !inputValue && <div className="flex items-center gap-3 flex-wrap">

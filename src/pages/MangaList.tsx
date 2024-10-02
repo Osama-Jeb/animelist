@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useInfo } from "../context/InfoProviders";
 import Pagination from "../components/Pagination";
-import { BookOpen, Calendar, Star } from "lucide-react";
+import { BookOpen, Calendar, Search, Star } from "lucide-react";
 import Loading from "../components/Loading";
 
 const MangaList = () => {
@@ -201,6 +201,15 @@ const MangaList = () => {
                             }}
 
                         />
+
+                        {
+                            input && <button
+                            className="px-3 py-2 bg-alpha rounded"
+                            onClick={() => {onSearch('manga', input, setSearchedManga, currPage)}}
+                            >
+                                <Search size={20} />
+                            </button>
+                        }
 
                         {
                             !input && <div className="flex items-center gap-3 md:gap-2 flex-wrap mt-4 md:m-0">

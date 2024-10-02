@@ -88,11 +88,11 @@ const SingleAnime = () => {
     return (
 
         animeInfo ? <section className="px-6 text-lg tracking-wider relative"
-            // style={{
-            //     background: colors
-            //         ? `linear-gradient(to top, ${colors} 20%, transparent 100%)`
-            //         : 'transparent',
-            // }}
+        // style={{
+        //     background: colors
+        //         ? `linear-gradient(to top, ${colors} 20%, transparent 100%)`
+        //         : 'transparent',
+        // }}
         >
 
             {/* new header */}
@@ -220,21 +220,38 @@ const SingleAnime = () => {
                     <div className="overflow-x-auto my-4 h-full">
                         {/* TODO: swipers responsive */}
                         <Swiper
-                            slidesPerView={4}
                             slidesPerGroup={2}
                             spaceBetween={50}
                             modules={[Navigation]}
                             navigation
                             loop={true}
+                            breakpoints={{
+                                0: {
+                                    slidesPerView: 1,
+                                    spaceBetween: 0,
+                                },
+                                640: {
+                                    slidesPerView: 2,
+                                    spaceBetween: 20,
+                                },
+                                768: {
+                                    slidesPerView: 4,
+                                    spaceBetween: 40,
+                                },
+                                1024: {
+                                    slidesPerView: 5,
+                                    spaceBetween: 50,
+                                },
+                            }}
                         >
                             {animeChara
                                 ?.sort((a: any, b: any) => b.favorites - a.favorites)
                                 .map((chara: any, index: number) => (
-                                    <SwiperSlide>
-                                        <div key={index} className="rounded-xl bg-alpha/30"
-                                            // style={{
-                                            //     backgroundColor: colors,
-                                            // }}
+                                    <SwiperSlide key={index}>
+                                        <div className="rounded-xl bg-alpha/30"
+                                        // style={{
+                                        //     backgroundColor: colors,
+                                        // }}
                                         >
                                             <Link to={`/characters/${chara.character.mal_id}`}>
                                                 <img src={chara.character.images.webp.image_url}
