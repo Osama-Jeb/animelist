@@ -34,7 +34,7 @@ const BookmarkedAnime = () => {
     const [showMax, setShowMax] = useState(10);
     return (
         <>
-            <div className="container mx-auto p-4 mt-4">
+            <section>
                 <h1 className="text-3xl font-bold mb-4">My Bookedmarked Animes</h1>
                 <div className="mb-4 flex flex-col sm:flex-row justify-between gap-2">
                     <input
@@ -126,7 +126,7 @@ const BookmarkedAnime = () => {
                 >
                     Show More
                 </button>
-            </div>
+            </section>
         </>
     )
 }

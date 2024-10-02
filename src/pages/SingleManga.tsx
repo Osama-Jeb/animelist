@@ -74,7 +74,7 @@ const SingleManga = () => {
                                         <div className="font-semibold text-xl">
                                             {
                                                 manga?.authors.map((auth: any, ind: number) => (
-                                                    <div className="flex my-1 items-center gap-2">
+                                                    <div key={ind} className="flex my-1 items-center gap-2">
                                                         <Pen size={iconSize} color={iconColor} />
                                                         <Link key={ind} to={`/va/${auth.mal_id}`} className="font-light">
                                                             {formatName(auth?.name)}

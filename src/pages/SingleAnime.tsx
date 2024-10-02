@@ -137,11 +137,11 @@ const SingleAnime = () => {
                             }
 
                         </Swiper>
-                        <img
+                        {/* <img
                             src={animeInfo?.images.jpg?.large_image_url}
                             alt={animeInfo?.title_english ?? animeInfo?.title}
                             className=" rounded-lg w-full h-full"
-                        />
+                        /> */}
                     </div>
                     <div className="md:w-2/3">
                         <h1 className="text-4xl font-bold">{animeInfo?.title_english ?? animeInfo?.title}</h1>

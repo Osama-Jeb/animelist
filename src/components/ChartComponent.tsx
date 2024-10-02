@@ -1,6 +1,6 @@
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
 import { Anime, useInfo } from "../context/InfoProviders";
 
@@ -48,7 +48,7 @@ const ChartComponent = () => {
                     genreCount[anime.type] = (genreCount[anime.type] || 0) + 1;
                     break;
                 case 'episodes':
-                    genreCount[anime.episodes] = (genreCount[anime.episodes] || 0) + 1;
+                    genreCount[anime.episodes] = (genreCount[anime.studios[0].name] || 0) + 1;
                     break;
             }
         });
@@ -93,12 +93,24 @@ const ChartComponent = () => {
     }, [bookmarkedAnimes, chartFilter]);
 
 
+    const chartRef = useRef<any>(null);
+
+    const handleChartClick = (event: any) => {
+        if (chartRef.current) {
+            const elements = chartRef.current.getElementsAtEventForMode(event, 'nearest', { intersect: true }, false);
+            if (elements.length) {
+                const { index } = elements[0];
+                const selectedLabel = chartData.labels[index];
+                console.log(selectedLabel);
+            }
+        }
+    };
     const filterButtons = ['genre', 'duration', 'source', 'type', 'episodes']
     return (
-        <div className=" border border-alpha p-2 rounded-xl">
+        <div className=" border border-alpha p-2 rounded-xl h-[105%]">
             <div className="p-4 border-b border-gray-700 flex items-center justify-between">
-                <h1 className="text-3xl font-semibold">Most Watched Genres </h1>
-                <div className="flex items-center gap-2">
+                <h1 className="text-2xl font-semibold">Get Statistics by:  </h1>
+                <div className="flex items-center gap-2 flex-wrap">
                     {
                         filterButtons.map((btn, index) =>
                             <button
@@ -115,8 +127,10 @@ const ChartComponent = () => {
             <div className="flex items-center justify-center">
                 <Doughnut
                     data={chartData}
+                    ref={chartRef}
                     options={{
                         borderColor: "#000000",
+                        onClick: handleChartClick,
                         plugins: {
                             legend: {
                                 display: true,

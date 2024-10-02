@@ -44,7 +44,7 @@ const SingleCharacter = () => {
                                 >
                                     {
                                         pics?.map((img: any, index: number) => (
-                                            <SwiperSlide key={index} className="w-full">
+                                            <SwiperSlide key={img.jpg.image_url} className="w-full">
                                                 <img
                                                     src={img.jpg.image_url}
                                                     alt={character?.name}
@@ -62,7 +62,8 @@ const SingleCharacter = () => {
                                 <div className="flex flex-col gap-2">
                                     <p className="font-semibold text-xl">Anime: <Link to={`/anime/${character?.anime[0].anime.mal_id}`} className="font-light">{character?.anime[0].anime.title} </Link></p>
                                     <p className="font-semibold text-xl">
-                                        Japanese Voice: {character?.voices.filter((char: any) => char.language === "Japanese").map((cha: any) => (<><Link to={`/va/${cha.person.mal_id}`} className="font-light">{formatName(cha.person.name)}
+                                        Japanese Voice: {character?.voices.filter((char: any) => char.language === "Japanese").map((cha: any) =>
+                                        (<><Link key={cha.person.name} to={`/va/${cha.person.mal_id}`} className="font-light">{formatName(cha.person.name)}
 
                                             <span>, </span>
 
@@ -102,12 +103,13 @@ const SingleCharacter = () => {
                             loop={true}
                         >
 
-                            {character?.anime.map((anime: any, index: number) => (
+                            {character?.anime.map((anime: any) => (
                                 <SwiperSlide
                                     style={{ height: "500px" }}
+                                    key={anime.anime.mal_id}
                                 >
 
-                                    <div key={index} className="group z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative h-full">
+                                    <div className="group z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative h-full">
                                         <Link to={`/anime/${anime.anime.mal_id}`}>
                                             <div className="relative h-[350px]">
                                                 <img src={anime.anime.images?.webp?.large_image_url} alt={anime.title} className="absolute inset-0 h-full w-full object-cover" />
@@ -134,12 +136,13 @@ const SingleCharacter = () => {
                             loop={true}
                         >
 
-                            {character?.manga.map((mng: any, index: number) => (
+                            {character?.manga.map((mng: any) => (
                                 <SwiperSlide
                                     style={{ height: "450px" }}
+                                    key={mng.manga.mal_id}
                                 >
 
-                                    <div key={index} className="group z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative h-full">
+                                    <div  className="group z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative h-full">
                                         <Link to={`/manga/${mng.manga.mal_id}`}>
                                             <div className="relative h-[350px]">
                                                 <img src={mng.manga.images?.webp?.large_image_url} alt={mng.manga.title} className="absolute inset-0 h-full w-full object-cover" />
@@ -165,12 +168,13 @@ const SingleCharacter = () => {
                             loop={true}
                         >
 
-                            {character?.voices.map((va: any, index: number) => (
+                            {character?.voices.map((va: any) => (
                                 <SwiperSlide
                                     style={{ height: "500px" }}
+                                    key={va.person.mal_id}
                                 >
 
-                                    <div key={index} className="group z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative h-full">
+                                    <div  className="group z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative h-full">
                                         <Link to={`/va/${va.person.mal_id}`}>
                                             <div className="relative h-[350px]">
                                                 <img src={va.person.images?.jpg?.image_url} alt={va.person.name} className="absolute inset-0 h-full w-full object-cover" />
@@ -187,8 +191,8 @@ const SingleCharacter = () => {
                     </div>
 
                 </section>
-                :
-                <Loading />
+                    :
+                    <Loading />
             }
         </>
     )

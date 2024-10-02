@@ -60,12 +60,12 @@ const FilterByStudio = () => {
                 <div className="p-4">
                     <div className="space-y-4">
                         {filtered?.map((studio : any, index: number) => (
-                            index < maxStudios && <div key={studio.name} className="flex items-center">
+                            index < maxStudios && <div key={index}  className="flex items-center">
                                 <div className="w-36">{studio[0]}</div>
                                 <div className="flex-1 bg-gray-700 h-4 rounded-full overflow-hidden">
                                     <div
                                         className="bg-alpha h-full rounded-full transition-all duration-700 ease-in-out"
-                                        style={{ width: `${(studio[1] / filtered.length) * 300}%` }}
+                                        style={{ width: `${(studio[1] / filtered.length) * 200}%` }}
                                     ></div>
                                 </div>
                                 <div className="w-8 text-right">{studio[1]}</div>

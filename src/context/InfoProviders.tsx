@@ -182,18 +182,31 @@ export default function InfoProvider({ children }: PropsWithChildren) {
             }
 
             if (!response.ok) {
-                console.log(response)
+                // if too many requests
+                if (response.status == 249) {
+                    // wait a bit
+                    const retryDelay = 2000;
+                    setTimeout(() => {
+                        if (genres) {
+                            fetchInfo(what, page, type, setInfo, status, order_by, sort, genres);
+                        } else {
+                            fetchInfo(what, page, type, setInfo, status, order_by, sort);
+                        }
+                    }, retryDelay);
+                }
+
                 throw new Error('Network response was not ok');
             }
 
             const data = await response.json();
 
-            if (what == "people") {
-                const filteredData = data.data.filter((item: any) => Array.isArray(item.voices) && item.voices.length > 0);
-                setInfo(filteredData)
-            } else {
-                setInfo(data.data);
-            }
+            //* TODO: see if this condition is necessary
+            // if (what == "people") {
+            //     const filteredData = data.data.filter((item: any) => Array.isArray(item.voices) && item.voices.length > 0);
+            //     setInfo(filteredData)
+            // } else {
+            // }
+            setInfo(data.data);
         } catch (error) {
             console.error('err brr:', error);
         }

@@ -20,7 +20,7 @@ const SingleVoiceActor = () => {
         );
 
         setUniqueVoices(uv);
-    }, [id, uniqueVoices, actor])
+    }, [id, actor])
 
     const [tab, setTab] = useState('anime');
 
