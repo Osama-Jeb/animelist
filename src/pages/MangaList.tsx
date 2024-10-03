@@ -12,7 +12,7 @@ const MangaList = () => {
     const [input, setInput] = useState('');
     const [type, setType] = useState('');
     const [status, setStatus] = useState('');
-    const [order, setOrder] = useState('');
+    const [order, setOrder] = useState('score');
     const [sort, setSort] = useState('desc');
     const [genres, setGenres] = useState<number[]>([])
     const [currPage, setCurrPage] = useState(1);
@@ -52,7 +52,6 @@ const MangaList = () => {
         { id: "favorites", label: "favorites" },
         { id: "popularity", label: "popularity" },
         { id: "start_date", label: "start_date" },
-        { id: "rank", label: "rank" },
     ];
 
     const renderManga = (arr: any | null) => {
@@ -131,7 +130,6 @@ const MangaList = () => {
         { id: "56", name: "Educational" },
         { id: "57", name: "Gag Humor" },
         { id: "58", name: "Gore" },
-        { id: "35", name: "Harem" },
         { id: "59", name: "High Stakes Game" },
         { id: "13", name: "Historical" },
         { id: "60", name: "Idols (Female)" },
@@ -156,7 +154,6 @@ const MangaList = () => {
         { id: "40", name: "Psychological" },
         { id: "3", name: "Racing" },
         { id: "73", name: "Reincarnation" },
-        { id: "74", name: "Reverse Harem" },
         { id: "75", name: "Romantic Subtext" },
         { id: "21", name: "Samurai" },
         { id: "23", name: "School" },

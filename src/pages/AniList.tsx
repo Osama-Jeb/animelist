@@ -11,8 +11,8 @@ const AniList = () => {
 
     const { fetchInfo, bookmarkedAnimes, onBookmarkClick, onSearch, loading } = useInfo();
     const [type, setType] = useState('');
-    const [status, setStatus] = useState('');
-    const [order, setOrder] = useState('');
+    const [status, setStatus] = useState('complete');
+    const [order, setOrder] = useState('score');
     const [sort, setSort] = useState('desc');
     const [genres, setGenres] = useState<number[]>([]);
 
@@ -31,7 +31,7 @@ const AniList = () => {
         }
     }, [currPage, type, status, order, sort, genres])
 
-
+    // const [title, setTitle] = useState(true);
     const renderAnime = (animes: Anime[] | null) => (
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-2 md:gap-6">
             {animes?.map((anime, index) => (
@@ -54,6 +54,7 @@ const AniList = () => {
                                     {anime.score}
                                 </p>
                                 <h2 className="text-lg font-bold mb-2">{anime.title_english ?? anime.title}</h2>
+                                {/* <h2 className="text-lg font-bold mb-2">{title ? anime.title_english : anime.title}</h2> */}
                                 <div className="space-y-2">
                                     <div className="flex items-center gap-2">
                                         <PlayCircle size={16} color="#9ca3af" />
@@ -100,7 +101,6 @@ const AniList = () => {
     const orderSelect = [
         { id: "score", label: "Score" },
         { id: "episodes", label: "Episodes" },
-        { id: "rank", label: "Rank" },
         { id: "title", label: "Title" },
         { id: "favorites", label: "Favorite" },
         { id: "start_date", label: "Start Date" },
@@ -135,7 +135,6 @@ const AniList = () => {
         { id: "56", name: "Educational" },
         { id: "57", name: "Gag Humor" },
         { id: "58", name: "Gore" },
-        { id: "35", name: "Harem" },
         { id: "59", name: "High Stakes Game" },
         { id: "13", name: "Historical" },
         { id: "60", name: "Idols (Female)" },
@@ -159,7 +158,6 @@ const AniList = () => {
         { id: "40", name: "Psychological" },
         { id: "3", name: "Racing" },
         { id: "72", name: "Reincarnation" },
-        { id: "73", name: "Reverse Harem" },
         { id: "74", name: "Romantic Subtext" },
         { id: "21", name: "Samurai" },
         { id: "23", name: "School" },
@@ -208,6 +206,12 @@ const AniList = () => {
                                     }}
 
                                 />
+                                {/* <button
+                                className="bg-alpha rounded p-1"
+                                    onClick={() => { setTitle(!title) }}
+                                >
+                                    Title Version
+                                </button> */}
 
                                 {
                                     inputValue && <button

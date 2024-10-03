@@ -34,28 +34,18 @@ const Root = () => {
                     </section>
 
                     {/* About Section */}
-                    <section className="w-full py-12 md:py-24 lg:py-32">
-                        <div className="container px-4 md:px-6">
+                    <section className="container text-center  flex items-center justify-center py-12 md:py-24 lg:py-32 text-xl">
+                        <div className="w-[80%]">
                             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">About <span className="text-alpha">Anime Repo</span></h2>
-                            <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center px-6 text-center md:text-start">
-                                <div className="space-y-4 text-xl">
-                                    <p>
-                                        Anime Repo is your ultimate destination for all things anime. We provide a comprehensive platform to explore, discover and engage with your favorite series, manga, characters and voice actors.
-                                    </p>
-                                    <p>
-                                        Our mission is to give you an easy-to-access platform where you can find all the information about your favorite media and keep track of them. Including some amazing statistics.
-                                    </p>
-                                </div>
-                                <div className="hidden md:flex justify-center">
-                                    <img
-                                        alt="Anime Collage"
-                                        className="rounded-xl hover:scale-105 hover:grayscale-0 transition-all duration-200 grayscale"
-                                        width={600}
-                                        src={about}
-                                    />
-                                </div>
-                            </div>
+                            <p>
+                                Anime Repo is your ultimate destination for all things anime. We provide a comprehensive platform to explore, discover and engage with your favorite series, manga, characters and voice actors.
+                            </p>
+                            <br />
+                            <p>
+                                Our mission is to give you an easy-to-access platform where you can find all the information about your favorite media and keep track of them. Including some amazing statistics.
+                            </p>
                         </div>
+
                     </section>
 
 
@@ -63,7 +53,7 @@ const Root = () => {
                     <section className="w-full py-12 md:py-24 lg:py-32">
                         <div className="container px-4 md:px-6 mx-auto">
                             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-12"><span className="text-alpha">Explore</span> Our Content</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                                 {[
                                     {
                                         title: "Anime", icon: Film, link: '/anime',
@@ -92,7 +82,42 @@ const Root = () => {
                                         </div>
                                     </Link>
                                 ))}
-                            </div>
+                            </div> */}
+
+                            {
+                                [
+                                    {
+                                        title: "Anime", icon: Film, link: '/anime',
+                                        description: "Browse curated lists of top anime series across various genres."
+                                    },
+                                    {
+                                        title: "Manga", icon: Book, link: '/manga',
+                                        description: "Discover a wide range of Manga, from classics to recent releases."
+                                    },
+                                    {
+                                        title: "Characters", icon: Users, link: '/characters',
+                                        description: "Learn about the characters and get more detailed information about them."
+                                    },
+                                    {
+                                        title: "Voice Actors", icon: Mic, link: '/va',
+                                        description: "Explore profiles of voice actors who bring anime characters to life."
+                                    },
+                                ].map((el, ind) => (
+                                    <div className={`my-12 flex justify-between gap-5 ${ind % 2 == 0 ? 'flex-row' : 'flex-row-reverse'}`}>
+                                        <img src={about} className="rounded-lg grayscale-[50%]" alt="" />
+                                        <Link to={el.link} className="rounded-lg h-fit w-fit border border-alpha/50 sticky top-0">
+                                            <div className="p-6">
+                                                <div className="flex items-center mb-4">
+                                                    <el.icon size={24} color="#1d4ed8" className="mr-3" />
+                                                    <h3 className="text-2xl font-semibold tracking-wider">{el.title}</h3>
+                                                </div>
+                                                <p className="text-lg tracking-wide">{el.description}</p>
+                                            </div>
+                                        </Link>
+                                    </div>
+                                ))
+                            }
+
                         </div>
                     </section>
 

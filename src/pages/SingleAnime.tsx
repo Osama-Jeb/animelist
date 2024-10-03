@@ -9,7 +9,7 @@ import 'swiper/css/navigation';
 import Loading from "../components/Loading";
 import { Building2, Calendar, Heart, Mic, PlayCircle, Star, SunSnow, Tag } from "lucide-react";
 import ReadMore from "../components/ReadMore";
-import { useColor } from "color-thief-react";
+// import { useColor } from "color-thief-react";
 
 // TODO*** Color-thief for palette
 const SingleAnime = () => {
@@ -24,8 +24,8 @@ const SingleAnime = () => {
     const [animeChara, setAnimeChara] = useState<any>();
 
     // Call useColor only when you have the image URL
-    const imageUrl = animeInfo && animeInfo?.images?.jpg?.large_image_url;
-    const { data: colors } = useColor(imageUrl as string, 'hex', { quality: 2, crossOrigin: 'anonymous' });
+    // const imageUrl = animeInfo && animeInfo?.images?.jpg?.large_image_url;
+    // const { data: colors } = useColor(imageUrl as string, 'hex', { quality: 2, crossOrigin: 'anonymous' });
 
     const fetchCharacters = async () => {
         try {

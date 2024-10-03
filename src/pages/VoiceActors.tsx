@@ -8,7 +8,7 @@ import Loading from "../components/Loading";
 const VoiceActors = () => {
     const { onSearch, loading } = useInfo();
     const [voiceActors, setVoiceActors] = useState<any>();
-    const [order, setOrder] = useState<string>('favorites');
+    // const [order, setOrder] = useState<string>('favorites');
     const [currPage, setCurrPage] = useState(1);
 
     const [input, setInput] = useState('');
@@ -16,10 +16,10 @@ const VoiceActors = () => {
 
     const fetchVoiceActors = async () => {
         try {
-            const response = await fetch(`https://api.jikan.moe/v4/people?page=${currPage}&order_by=${order}&sort=desc`);
+            const response = await fetch(`https://api.jikan.moe/v4/people?page=${currPage}&order_by=favorites&sort=desc`);
 
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error('Voice Chara response no OK');
             }
 
             const data = await response.json();
@@ -34,14 +34,14 @@ const VoiceActors = () => {
         } else {
             fetchVoiceActors()
         }
-    }, [order, currPage])
+    }, [currPage])
 
 
-    const orderSelect = [
-        { id: "favorites", label: "Popularity" },
-        { id: "name", label: "Name" },
-        { id: "birthday", label: "Birthday" },
-    ];
+    // const orderSelect = [
+    //     { id: "favorites", label: "Popularity" },
+    //     { id: "name", label: "Name" },
+    //     { id: "birthday", label: "Birthday" },
+    // ];
 
 
     const rendeerVA = (actors: any | null) => {
@@ -106,7 +106,7 @@ const VoiceActors = () => {
                         </button>
                     }
 
-                    {
+                    {/* {
                         !input &&
                         <select
                             value={order}
@@ -119,7 +119,7 @@ const VoiceActors = () => {
                                 </option>
                             ))}
                         </select>
-                    }
+                    } */}
                 </div>
 
                 <div className="mt-4">

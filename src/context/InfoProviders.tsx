@@ -220,7 +220,7 @@ export default function InfoProvider({ children }: PropsWithChildren) {
             if (setPic) {
                 const res = await fetch(`https://api.jikan.moe/v4/${what}/${id}/pictures`);
                 if (!res.ok) {
-                    throw new Error('Network response not OKIE DOKIE');
+                    console.log('Image FetchInfo respose: ', res.status);
                 }
                 const imgs = await res.json();
                 setPic(imgs.data);
