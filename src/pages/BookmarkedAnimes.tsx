@@ -71,7 +71,6 @@ const BookmarkedAnime = () => {
 
                             {
                                 currentUser &&
-                                // TODO! some loading circle to show the user the function.
                                 <button className="cursor-default absolute top-[5%] right-[5%] bg-alpha rounded-full p-2 z-10"
                                     onClick={() => { onBookmarkClick(anime) }}
                                 >

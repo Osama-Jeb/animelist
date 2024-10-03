@@ -200,12 +200,6 @@ export default function InfoProvider({ children }: PropsWithChildren) {
 
             const data = await response.json();
 
-            //* TODO: see if this condition is necessary
-            // if (what == "people") {
-            //     const filteredData = data.data.filter((item: any) => Array.isArray(item.voices) && item.voices.length > 0);
-            //     setInfo(filteredData)
-            // } else {
-            // }
             setInfo(data.data);
         } catch (error) {
             console.error('err brr:', error);

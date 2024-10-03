@@ -9,7 +9,7 @@ import FilterByYear from "../components/FilterByYear";
 
 
 const Statistics = () => {
-    // TODO* if got time: separate series from movies
+
     const [timeFormat, setTimeFormat] = useState('Min');
     const { bookmarkedAnimes } = useInfo();
     const [total, setTotal] = useState(0)

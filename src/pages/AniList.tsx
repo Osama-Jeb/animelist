@@ -38,11 +38,9 @@ const AniList = () => {
                 <div key={index} className="group z-1 overflow-hidden rounded-lg transition-all duration-200 bg-gray-900 text-white relative">
                     {
                         currentUser &&
-                        // TODO! some loading circle to show the user the function.
                         <button className="cursor-default absolute top-[5%] right-[5%] bg-alpha rounded-full p-2 z-10"
                             onClick={() => { onBookmarkClick(anime) }}
                         >
-
                             <Bookmark fill={`${bookmarkedAnimes?.some((anm: any) => anm.mal_id === anime.mal_id) ? "white" : "#1d4ed8"}`} />
                         </button>
                     }

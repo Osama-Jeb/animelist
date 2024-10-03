@@ -9,7 +9,7 @@ import 'swiper/css/navigation';
 import Loading from "../components/Loading";
 import { Building2, Calendar, Heart, Mic, PlayCircle, Star, SunSnow, Tag } from "lucide-react";
 import ReadMore from "../components/ReadMore";
-// import { useColor } from "color-thief-react";
+import { useColor } from "color-thief-react";
 
 // TODO*** Color-thief for palette
 const SingleAnime = () => {
@@ -24,8 +24,8 @@ const SingleAnime = () => {
     const [animeChara, setAnimeChara] = useState<any>();
 
     // Call useColor only when you have the image URL
-    // const imageUrl = animeInfo && animeInfo?.images?.jpg?.large_image_url;
-    // const { data: colors } = useColor(imageUrl as string, 'hex', { quality: 2, crossOrigin: 'anonymous' });
+    const imageUrl = animeInfo && animeInfo?.images?.jpg?.large_image_url;
+    const { data: colors } = useColor(imageUrl as string, 'hex', { quality: 2, crossOrigin: 'anonymous' });
 
     const fetchCharacters = async () => {
         try {
@@ -88,11 +88,11 @@ const SingleAnime = () => {
     return (
 
         animeInfo ? <section className="px-6 text-lg tracking-wider relative"
-        // style={{
-        //     background: colors
-        //         ? `linear-gradient(to top, ${colors} 20%, transparent 100%)`
-        //         : 'transparent',
-        // }}
+            // style={{
+            //     background: colors
+            //         ? `linear-gradient(to top, ${colors} 50%, transparent 100%)`
+            //         : 'transparent',
+            // }}
         >
 
             {/* new header */}
@@ -104,6 +104,34 @@ const SingleAnime = () => {
                     backgroundPosition: 'center', // Optional: centers the background image
                 }}
             >
+            </div> */}
+
+            {/* <div>
+                <h1 className="text-6xl">{animeInfo?.title_english ?? animeInfo?.title}</h1>
+                <p>2022 - Duration - Japanese - Movie</p>
+
+                <br />
+                <div className="flex items-center justify-around">
+                    <img
+                        src={animeInfo?.images.webp.large_image_url}
+                        className="w-[20vw]"
+                    />
+                    <div>
+                        <p>author name in here</p>
+                        <p>
+                            synopsis
+                        </p>
+                        <div className="flex items-center gap-2">
+                            <p>tags</p>
+                            <p>tags</p>
+                            <p>tags</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        score
+                    </div>
+                </div>
             </div> */}
 
             <div className={`container mx-auto px-4 py-8`}
@@ -137,11 +165,6 @@ const SingleAnime = () => {
                             }
 
                         </Swiper>
-                        {/* <img
-                            src={animeInfo?.images.jpg?.large_image_url}
-                            alt={animeInfo?.title_english ?? animeInfo?.title}
-                            className=" rounded-lg w-full h-full"
-                        /> */}
                     </div>
                     <div className="md:w-2/3">
                         <h1 className="text-4xl font-bold">{animeInfo?.title_english ?? animeInfo?.title}</h1>
@@ -218,7 +241,7 @@ const SingleAnime = () => {
                 <div>
                     <p className="text-4xl my-2">Characters: </p>
                     <div className="overflow-x-auto my-4 h-full">
-                        {/* TODO: swipers responsive */}
+
                         <Swiper
                             slidesPerGroup={2}
                             spaceBetween={50}
