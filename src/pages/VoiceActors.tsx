@@ -48,12 +48,15 @@ const VoiceActors = () => {
         return (
             <div className="grid grid-cols-2 lg:grid-cols-5 gap-6">
                 {actors?.map((chara: any, index: number) => (
-                    <div key={index} className="relative bg-alpha/30 rounded-lg overflow-hidden hover:bg-gray-900">
-                        <Link to={`/va/${chara?.mal_id}`} key={index} className="cursor-default">
-                            <img src={chara?.images?.jpg?.image_url} alt={chara?.title} className="w-full h-64 object-cover" />
-                            <div className="p-4 flex flex-col gap-2">
+                    <Link to={`/va/${chara?.mal_id}`} key={index} className="cursor-default">
+                        <div className="relative h-[400px]">
+                            <img src={chara?.images?.jpg?.image_url} alt={chara?.title} className="absolute inset-0 h-full w-full object-cover" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent  transition-all duration-300" />
+
+                            <div className="absolute bottom-4 left-4">
                                 <p className="text-center text-lg">{chara?.name}</p>
                                 <p className="text-center text-[#9ca3af]">({chara?.given_name} {chara?.family_name})</p>
+
                                 <p className="flex items-center gap-2">
                                     <Calendar size={16} color="#9ca3af" /> {new Date(chara?.birthday).toLocaleDateString('en-US', {
                                         year: 'numeric',
@@ -61,17 +64,16 @@ const VoiceActors = () => {
                                         day: 'numeric'
                                     })}
                                 </p>
-                                <p className="my-1">
-                                    {/* <span>{chara?.alternate_names.length > 0 ? '' : 'No Nickname'}</span> */}
+                                {/* <p className="my-1">
                                     {chara?.alternate_names?.map((nickname: string, index: number) => (
                                         <span key={index} className="inline-block bg-alpha/40 rounded-full px-2 py-1 m-1 text-sm">
                                             {nickname}
                                         </span>
                                     ))}
-                                </p>
+                                </p> */}
                             </div>
-                        </Link>
-                    </div>
+                        </div>
+                    </Link>
                 ))}
             </div>
         )
@@ -82,29 +84,34 @@ const VoiceActors = () => {
             <>
 
                 <div className="flex items-center gap-2">
-                    <input type="text" placeholder="Search..." className="p-2 rounded bg-gray-800"
+                    <input type="text" placeholder="Search..." className="p-2 rounded bg-gray-800 w-full md:w-fit"
                         value={input}
                         onChange={(e) => {
                             setInput(e.target.value.toLowerCase())
                             if (!e.target.value) {
                                 setSearchedVA(null)
+                                setCurrPage(1)
                             }
                         }}
                         onKeyDown={(e) => {
                             if (e.key == "Enter") {
                                 onSearch("people", input, setSearchedVA, currPage)
+                                setCurrPage(1)
                             }
                         }}
 
                     />
-                    {
-                        input && <button
-                            className="px-3 py-2 bg-alpha rounded"
-                            onClick={() => { onSearch('people', input, setSearchedVA, currPage) }}
-                        >
-                            <Search size={20} />
-                        </button>
-                    }
+
+                    <button
+                        className="px-3 py-2 bg-alpha rounded"
+                        onClick={() => {
+                            onSearch('people', input, setSearchedVA, currPage)
+                            setCurrPage(1)
+                        }}
+                    >
+                        <Search size={20} />
+                    </button>
+
 
                     {/* {
                         !input &&

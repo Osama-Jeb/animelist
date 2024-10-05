@@ -1,6 +1,7 @@
 import { Bar } from "react-chartjs-2";
-import { Anime, useInfo } from "../context/InfoProviders";
+import { useInfo } from "../context/InfoProviders";
 import { useEffect, useState } from "react";
+import { Anime } from "../utils/types";
 
 const ChartSeasons = () => {
 

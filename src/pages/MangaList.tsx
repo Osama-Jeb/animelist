@@ -60,34 +60,37 @@ const MangaList = () => {
                 {
                     arr?.map((mng: any, index: number) => (
                         <Link to={`/manga/${mng.mal_id}`} key={index} className="group z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative">
-                            <div className="relative h-[200px] md:h-[350px]">
+                            <div className="relative h-[400px]">
                                 <img
-                                    src={mng.images?.webp?.large_image_url} className="object-cover h-full w-full "
+                                    src={mng.images?.webp?.large_image_url} className="absolute inset-0 h-full w-full object-cover "
                                     alt="" />
-                            </div>
-                            <div className="px-2 pb-2 md:p-3">
-                                <h2 className="text-xl font-bold mb-3">{mng.title_english ?? mng.title}</h2>
-                                <div className="space-y-2 text-sm">
-                                    <div className="flex items-center">
-                                        <Star className="w-5 h-5 mr-2 text-yellow-400" />
-                                        <span>{mng.score}</span>
-                                    </div>
-                                    <div className="flex items-center">
-                                        <BookOpen className="w-5 h-5 mr-2 text-blue-400" />
-                                        <span>{mng.chapters ?? 'Still Publishing'}</span>
-                                    </div>
-                                    <div className="flex items-center">
-                                        <Calendar className="w-5 h-5 mr-2 text-green-400" />
-                                        <span>{mng.published?.prop.from.year}</span>
-                                    </div>
-                                </div>
-                                <div className="mt-4 flex flex-wrap gap-2">
-                                    {mng.genres.map((genre: any, index: number) => (
 
-                                        index < 3 && <span key={index} className="px-2 py-1 text-xs font-semibold rounded-full bg-alpha/30 text-gray-200">
-                                            {genre.name}
-                                        </span>
-                                    ))}
+
+                                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent  transition-all duration-300" />
+                                <div className="absolute bottom-4 left-4">
+                                    <h2 className="text-xl font-bold mb-3">{mng.title_english ?? mng.title}</h2>
+                                    <div className="space-y-2 text-sm">
+                                        <div className="flex items-center">
+                                            <Star className="w-5 h-5 mr-2 text-yellow-400" />
+                                            <span className="text-gray-200">{mng.score}</span>
+                                        </div>
+                                        <div className="flex items-center">
+                                            <BookOpen className="w-5 h-5 mr-2 text-blue-400" />
+                                            <span className="text-gray-200">{mng.chapters ?? 'Still Publishing'}</span>
+                                        </div>
+                                        <div className="flex items-center">
+                                            <Calendar className="w-5 h-5 mr-2 text-green-400" />
+                                            <span className="text-gray-200">{mng.published?.prop.from.year}</span>
+                                        </div>
+                                    </div>
+                                    <div className="mt-4 flex flex-wrap gap-2">
+                                        {mng.genres.map((genre: any, index: number) => (
+
+                                            index < 3 && <span key={index} className="px-2 py-1 text-xs font-semibold rounded-full bg-alpha/30 text-gray-200">
+                                                {genre.name}
+                                            </span>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                         </Link>
@@ -193,6 +196,7 @@ const MangaList = () => {
                             }}
                             onKeyDown={(e) => {
                                 if (e.key == "Enter") {
+                                    setCurrPage(1)
                                     onSearch("manga", input, setSearchedManga, currPage)
                                 }
                             }}
@@ -201,8 +205,11 @@ const MangaList = () => {
 
                         {
                             input && <button
-                            className="px-3 py-2 bg-alpha rounded"
-                            onClick={() => {onSearch('manga', input, setSearchedManga, currPage)}}
+                                className="px-3 py-2 bg-alpha rounded"
+                                onClick={() => {
+                                    onSearch('manga', input, setSearchedManga, currPage)
+                                    setCurrPage(1)
+                                }}
                             >
                                 <Search size={20} />
                             </button>
@@ -210,78 +217,78 @@ const MangaList = () => {
 
                         {
                             !input && <div className="flex items-center gap-3 md:gap-2 flex-wrap mt-4 md:m-0">
-                            <select
-                                value={type}
-                                onChange={(e) => setType(e.target.value)}
-                                className="border rounded p-1 md:p-2 text-black capitalize"
-                            >
-                                <option disabled value="">Type</option>
-                                {typeSelect.map((option) => (
-                                    <option key={option.id} value={option.label}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </select>
+                                <select
+                                    value={type}
+                                    onChange={(e) => setType(e.target.value)}
+                                    className="border rounded p-1 md:p-2 text-black capitalize"
+                                >
+                                    <option disabled value="">Type</option>
+                                    {typeSelect.map((option) => (
+                                        <option key={option.id} value={option.label}>
+                                            {option.label}
+                                        </option>
+                                    ))}
+                                </select>
 
-                            <select
-                                value={status}
-                                onChange={(e) => setStatus(e.target.value)}
-                                className="border rounded p-1 md:p-2 text-black capitalize"
-                            >
-                                <option disabled value="">Status</option>
-                                {statusSelect.map((option) => (
-                                    <option key={option.id} value={option.label}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </select>
+                                <select
+                                    value={status}
+                                    onChange={(e) => setStatus(e.target.value)}
+                                    className="border rounded p-1 md:p-2 text-black capitalize"
+                                >
+                                    <option disabled value="">Status</option>
+                                    {statusSelect.map((option) => (
+                                        <option key={option.id} value={option.label}>
+                                            {option.label}
+                                        </option>
+                                    ))}
+                                </select>
 
-                            <select
-                                value={order}
-                                onChange={(e) => setOrder(e.target.value)}
-                                className="border rounded p-1 md:p-2 text-black capitalize"
-                            >
-                                <option disabled value="">Order By</option>
-                                {orderSelect.map((option) => (
-                                    <option key={option.id} value={option.label}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </select>
+                                <select
+                                    value={order}
+                                    onChange={(e) => setOrder(e.target.value)}
+                                    className="border rounded p-1 md:p-2 text-black capitalize"
+                                >
+                                    <option disabled value="">Order By</option>
+                                    {orderSelect.map((option) => (
+                                        <option key={option.id} value={option.label}>
+                                            {option.label}
+                                        </option>
+                                    ))}
+                                </select>
 
-                            <button
-                                onClick={() => { sort == "desc" ? setSort('asc') : setSort('desc') }}
-                                className="p-1 md:p-2 bg-alpha rounded capitalize">
-                                {sort}
-                            </button>
+                                <button
+                                    onClick={() => { sort == "desc" ? setSort('asc') : setSort('desc') }}
+                                    className="p-1 md:p-2 bg-alpha rounded capitalize">
+                                    {sort}
+                                </button>
 
-                            <select
-                                value=""
-                                onChange={(e) =>
-                                    setGenres([...genres, parseInt(e.target.value)])
+                                <select
+                                    value=""
+                                    onChange={(e) =>
+                                        setGenres([...genres, parseInt(e.target.value)])
+                                    }
+                                    className="border rounded p-1 md:p-2 text-black capitalize"
+                                >
+                                    <option disabled value="">Add Genres</option>
+                                    {genreSelect.map((option) => (
+                                        <option key={option.id} value={option.id}>
+                                            {option.name}
+                                        </option>
+                                    ))}
+                                </select>
+
+                                {
+                                    genreSelect
+                                        .filter(el => genres.includes(parseInt(el.id)))
+                                        .map(el => (
+                                            <button key={el.id}
+                                                className="bg-alpha px-2 py-1 rounded-xl"
+                                                onClick={() => handleRemoveGenre(parseInt(el.id))}>
+                                                {el.name} X
+                                            </button>
+                                        ))
                                 }
-                                className="border rounded p-1 md:p-2 text-black capitalize"
-                            >
-                                <option disabled value="">Add Genres</option>
-                                {genreSelect.map((option) => (
-                                    <option key={option.id} value={option.id}>
-                                        {option.name}
-                                    </option>
-                                ))}
-                            </select>
-
-                            {
-                                genreSelect
-                                    .filter(el => genres.includes(parseInt(el.id)))
-                                    .map(el => (
-                                        <button key={el.id}
-                                            className="bg-alpha px-2 py-1 rounded-xl"
-                                            onClick={() => handleRemoveGenre(parseInt(el.id))}>
-                                            {el.name} X
-                                        </button>
-                                    ))
-                            }
-                        </div>
+                            </div>
                         }
                     </div>
 

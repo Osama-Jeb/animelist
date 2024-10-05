@@ -57,7 +57,7 @@ const SingleCharacter = () => {
                                 </Swiper>
                             </div>
                             <div className="md:w-2/3">
-                                <h1 className="text-4xl font-bold">{character?.name_english}</h1>
+                                <h1 className="text-4xl font-bold">{character?.name}</h1>
                                 <h1 className="text-xl font-bold text-gray-400 mb-2">{character?.name_kanji}</h1>
                                 <div className="flex flex-col gap-2">
                                     <p className="font-semibold text-xl">Anime: <Link to={`/anime/${character?.anime[0].anime.mal_id}`} className="font-light">{character?.anime[0].anime.title} </Link></p>

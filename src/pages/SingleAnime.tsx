@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Anime, useInfo } from "../context/InfoProviders";
+import { useInfo } from "../context/InfoProviders";
 
 import { Autoplay, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -9,6 +9,7 @@ import 'swiper/css/navigation';
 import Loading from "../components/Loading";
 import { Building2, Calendar, Heart, Mic, PlayCircle, Star, SunSnow, Tag } from "lucide-react";
 import ReadMore from "../components/ReadMore";
+import { Anime } from "../utils/types";
 // import { useColor } from "color-thief-react";
 
 // TODO*** Color-thief for palette

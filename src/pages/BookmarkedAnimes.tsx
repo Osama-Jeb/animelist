@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Anime, useInfo } from "../context/InfoProviders"
+import { useInfo } from "../context/InfoProviders"
 import { Bookmark, Calendar, PlayCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { Anime } from "../utils/types";
 
 
 const BookmarkedAnime = () => {
@@ -30,7 +31,7 @@ const BookmarkedAnime = () => {
             return 0;
         });
 
-    const {currentUser} = useAuth();
+    const { currentUser } = useAuth();
     const [showMax, setShowMax] = useState(10);
     return (
         <>
@@ -87,7 +88,12 @@ const BookmarkedAnime = () => {
                                         <span className="rounded-full bg-alpha text-white px-2 py-1 text-sm font-bold">
                                             {anime.score}
                                         </span>
-                                        <h2 className="text-lg font-bold mb-2">{anime.title_english ?? anime.title}</h2>
+                                        <h2 className="text-lg font-bold mb-2">
+                                            {
+                                                anime.titles.map((tit: any) => (
+                                                    tit.type == "English" && <span>{tit.title}</span>
+                                                ))
+                                            }</h2>
                                         <div className="space-y-2">
                                             <div className="flex items-center gap-2">
                                                 <PlayCircle size={16} color="#9ca3af" />

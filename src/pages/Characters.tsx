@@ -25,10 +25,12 @@ const Characters = () => {
         return (
             <div className="grid grid-cols-2 lg:grid-cols-5 gap-6">
                 {charas?.map((chara: any, index: number) => (
-                    <div key={index} className=" rounded-lg overflow-hidden bg-alpha/20 relative">
-                        <Link to={`/characters/${chara.mal_id}`} key={index}>
-                            <img src={chara.images?.jpg?.image_url} alt={chara.title} className="w-full h-64 object-cover" />
-                            <div className="p-4">
+                    <Link to={`/characters/${chara.mal_id}`} key={index}>
+                        <div className="relative h-[400px]">
+                            <img src={chara.images?.jpg?.image_url} alt={chara.title} className="absolute inset-0 h-full w-full object-cover" />
+                            
+                            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent  transition-all duration-300" />
+                            <div className="absolute bottom-4 left-4">
                                 <p className="my-1 text-xl">{chara.name}</p>
                                 <p className="my-1">
                                     <span className="text-lg m-1">{chara.nicknames.length > 0 ? 'Also Known As: ' : 'No Nickname'}</span>
@@ -39,8 +41,8 @@ const Characters = () => {
                                     ))}
                                 </p>
                             </div>
-                        </Link>
-                    </div>
+                        </div>
+                    </Link>
                 ))}
             </div>
         )
@@ -56,11 +58,13 @@ const Characters = () => {
                             setInput(e.target.value.toLowerCase())
                             if (!e.target.value) {
                                 setSearchedChara(null)
+                                setCurr(1)
                             }
                         }}
                         onKeyDown={(e) => {
                             if (e.key == "Enter") {
                                 onSearch("characters", input, setSearchedChara, curr)
+                                setCurr(1)
                             }
                         }}
 
@@ -71,6 +75,7 @@ const Characters = () => {
                         onClick={() => {
                             if (input) {
                                 onSearch('characters', input, setSearchedChara, curr)
+                                setCurr(1)
                             }
                         }
                         }

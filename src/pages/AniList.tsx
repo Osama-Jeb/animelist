@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Anime, useInfo } from "../context/InfoProviders";
+import { useInfo } from "../context/InfoProviders";
 import { Bookmark, Calendar, PlayCircle, Search } from "lucide-react";
 import Loading from "../components/Loading";
 import { useAuth } from "../context/AuthContext";
 import Pagination from "../components/Pagination";
+import { Anime } from "../utils/types";
 
 
 const AniList = () => {
@@ -57,12 +58,12 @@ const AniList = () => {
                                 {/* <h2 className="text-lg font-bold mb-2">{title ? anime.title_english : anime.title}</h2> */}
                                 <div className="space-y-2">
                                     <div className="flex items-center gap-2">
-                                        <PlayCircle size={16} color="#9ca3af" />
-                                        <span className="text-sm text-gray-400">{anime.episodes ?? 'Still Airing'}</span>
+                                        <PlayCircle size={16} className="text-yellow-400" />
+                                        <span className="text-sm text-gray-200">{anime.episodes ?? 'Still Airing'}</span>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <Calendar size={16} color="#9ca3af" />
-                                        <span className="text-sm text-gray-400">{anime.aired.prop.from.year}</span>
+                                        <Calendar size={16} className="text-green-400" />
+                                        <span className="text-sm text-gray-200">{anime.aired.prop.from.year}</span>
                                     </div>
                                     <div className="flex flex-wrap gap-2 mt-2">
                                         {anime.genres.map((genre, index) => (
@@ -201,6 +202,7 @@ const AniList = () => {
                                     }}
                                     onKeyDown={(e) => {
                                         if (e.key == "Enter") {
+                                            setCurrPage(1)
                                             onSearch("anime", inputValue, setSearchedAnimes, currPage)
                                         }
                                     }}
@@ -216,7 +218,10 @@ const AniList = () => {
                                 {
                                     inputValue && <button
                                         className="px-3 py-2 bg-alpha rounded"
-                                        onClick={() => { onSearch('anime', inputValue, setSearchedAnimes, currPage) }}
+                                        onClick={() => {
+                                            onSearch('anime', inputValue, setSearchedAnimes, currPage)
+                                            setCurrPage(1)
+                                        }}
                                     >
                                         <Search size={20} />
                                     </button>

@@ -2,7 +2,8 @@ import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
 import { useEffect, useRef, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
-import { Anime, useInfo } from "../context/InfoProviders";
+import { useInfo } from "../context/InfoProviders";
+import { Anime } from "../utils/types";
 
 Chart.register(CategoryScale);
 
@@ -38,18 +39,14 @@ const ChartComponent = () => {
                 case 'genre':
                     genreCount[anime.genres[0].name] = (genreCount[anime.genres[0].name] || 0) + 1;
                     break;
-                case 'duration':
-                    genreCount[anime.duration] = (genreCount[anime.duration] || 0) + 1;
-                    break;
+                
                 case 'source':
                     genreCount[anime.source] = (genreCount[anime.source] || 0) + 1;
                     break;
                 case 'type':
                     genreCount[anime.type] = (genreCount[anime.type] || 0) + 1;
                     break;
-                case 'episodes':
-                    genreCount[anime.episodes] = (genreCount[anime.studios[0].name] || 0) + 1;
-                    break;
+              
             }
         });
 
@@ -105,7 +102,7 @@ const ChartComponent = () => {
             }
         }
     };
-    const filterButtons = ['genre', 'duration', 'source', 'type', 'episodes']
+    const filterButtons = ['genre', 'source', 'type']
     return (
         <div className=" border border-alpha p-2 rounded-xl h-[105%]">
             <div className="p-4 border-b border-gray-700 flex items-center justify-between">

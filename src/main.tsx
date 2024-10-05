@@ -20,7 +20,6 @@ import Characters from './pages/Characters.tsx';
 import SingleManga from './pages/SingleManga.tsx';
 import SingleCharacter from './pages/SingleCharacter.tsx';
 import ProtectedRoute from './context/ProtectedRoute.tsx';
-import TestPage from './components/TestPage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -85,10 +84,6 @@ const router = createBrowserRouter([
       {
         path: "/characters/:id",
         element: <SingleCharacter />
-      },
-      {
-        path: "/test",
-        element: <TestPage />
       }
     ]
   },

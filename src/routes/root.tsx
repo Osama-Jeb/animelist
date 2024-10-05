@@ -1,7 +1,11 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { Film, Mic, Users, Book } from "lucide-react"
-import about from "../assets/images/aboutwebp.webp";
+
+import anilist from "../assets/images/homepage/animelist1-min.png"
+import mangalist from "../assets/images/homepage/animelist2-min.png"
+import charalist from "../assets/images/homepage/animelist3-min.png"
+import voicelist from "../assets/images/homepage/animelist4-min.png"
 
 const Root = () => {
     const location = useLocation();
@@ -50,61 +54,33 @@ const Root = () => {
 
 
 
+                    {/* Information Section */}
                     <section className="w-full py-12 md:py-24 lg:py-32">
                         <div className="container px-4 md:px-6 mx-auto">
                             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-12"><span className="text-alpha">Explore</span> Our Content</h2>
-                            {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                                {[
-                                    {
-                                        title: "Anime", icon: Film, link: '/anime',
-                                        description: "Browse curated lists of top anime series across various genres."
-                                    },
-                                    {
-                                        title: "Manga", icon: Book, link: '/manga',
-                                        description: "Discover a wide range of Manga, from classics to recent releases."
-                                    },
-                                    {
-                                        title: "Characters", icon: Users, link: '/characters',
-                                        description: "Learn about the characters and get more detailed information about them."
-                                    },
-                                    {
-                                        title: "Voice Actors", icon: Mic, link: '/va',
-                                        description: "Explore profiles of voice actors who bring anime characters to life."
-                                    },
-                                ].map((item, index) => (
-                                    <Link to={item.link} key={index} className="rounded-lg border border-alpha/50  hover:scale-105 transition-all duration-200">
-                                        <div className="p-6">
-                                            <div className="flex items-center mb-4">
-                                                <item.icon size={24} color="#1d4ed8" className="mr-3" />
-                                                <h3 className="text-2xl font-semibold tracking-wider">{item.title}</h3>
-                                            </div>
-                                            <p className="text-lg tracking-wide">{item.description}</p>
-                                        </div>
-                                    </Link>
-                                ))}
-                            </div> */}
-
                             {
                                 [
                                     {
-                                        title: "Anime", icon: Film, link: '/anime',
+                                        title: "Anime", icon: Film, link: '/anime', image: anilist,
                                         description: "Browse curated lists of top anime series across various genres."
                                     },
                                     {
-                                        title: "Manga", icon: Book, link: '/manga',
+                                        title: "Manga", icon: Book, link: '/manga', image: mangalist,
                                         description: "Discover a wide range of Manga, from classics to recent releases."
                                     },
                                     {
-                                        title: "Characters", icon: Users, link: '/characters',
+                                        title: "Characters", icon: Users, link: '/characters', image: charalist,
                                         description: "Learn about the characters and get more detailed information about them."
                                     },
                                     {
-                                        title: "Voice Actors", icon: Mic, link: '/va',
+                                        title: "Voice Actors", icon: Mic, link: '/va', image: voicelist,
                                         description: "Explore profiles of voice actors who bring anime characters to life."
                                     },
                                 ].map((el, ind) => (
-                                    <div className={`my-12 flex justify-between gap-5 ${ind % 2 == 0 ? 'flex-row' : 'flex-row-reverse'}`}>
-                                        <img src={about} className="rounded-lg grayscale-[50%]" alt="" />
+                                    <div className={`my-12 flex gap-5 ${ind % 2 == 0 ? 'flex-row' : 'flex-row-reverse'}`}>
+                                        <Link to={el.link} className="w-[80%] hover:w-[150%] transition-all duration-200">
+                                            <img src={el.image} className="h-[500px] object-cover graysale-[80%]" alt="" />
+                                        </Link>
                                         <Link to={el.link} className="rounded-lg h-fit w-fit border border-alpha/50 sticky top-0">
                                             <div className="p-6">
                                                 <div className="flex items-center mb-4">
@@ -122,6 +98,13 @@ const Root = () => {
                     </section>
 
 
+                    {/* Statistics Section */}
+                    {/* <section className="py-12 md:py-24 lg:py-32 w-full">
+                        <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-12">
+                            Read Amazing <span className="text-alpha">Statistics</span></h2>
+
+
+                    </section> */}
 
                 </>
             }
