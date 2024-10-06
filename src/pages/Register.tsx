@@ -37,12 +37,16 @@ const Register = () => {
 
         if (!validatePassword(password)) {
             alert("Password must meet complexity requirements.");
+            setRegistering(false);
             return;
         }
 
-        if (!isValid) {
-            alert("Please set an image adress");
-            return;
+        if (userImage) {
+            if (!isValid) {
+                alert("Please set an image adress");
+                setRegistering(false);
+                return;
+            }
         }
 
         createUserWithEmailAndPassword(auth, email, password)
@@ -58,7 +62,7 @@ const Register = () => {
 
                 await updateProfile(user, {
                     displayName: username,
-                    photoURL: userImage ?? "https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png"
+                    photoURL: userImage ? userImage : "https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png"
                 })
 
                 const userRef = doc(collection(db, 'users'), newUser.id);
@@ -95,7 +99,7 @@ const Register = () => {
 
                 {/* TODO: waaay later, email verification */}
                 <div>
-                    <label htmlFor="email">Email: <span className="font-bold text-red-600 underline">*</span></label> <span>(can be fake for now, idc)</span>
+                    <label htmlFor="email">Email: <span className="font-bold text-red-600 underline">*</span></label> <span className="text-xs">(you can use a fake email, but you won't be able to recover your account)</span>
                     <input className="w-full rounded px-4 py-3 text-black mt-2" placeholder="example@email.com" type="email" onChange={(e) => setEmail(e.target.value)} value={email} required />
                 </div>
 
@@ -106,11 +110,13 @@ const Register = () => {
                 </div>
 
                 <button className="w-full bg-alpha text-white px-4 py-2 rounded"
-                    type="submit" disabled={!registering}
+                    type="submit" disabled={registering}
                 >
-                    {!registering ? 'Register' : 'LOADING....'}
+                    {registering ? 'Loading...' : 'Register'}
                 </button>
             </form>
+
+            
             <div className="flex gap-2 mt-4 items-center border-b-2 border-alpha/50 w-[50%] pb-4 mb-6 justify-center">
                 <p>Already Have an Account ? </p> <Link to={"/login"} className="font-bold text-lg underline">Sign In</Link>
             </div>

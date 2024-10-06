@@ -11,9 +11,9 @@ import { Anime } from "../utils/types";
 const AniList = () => {
 
     const { fetchInfo, bookmarkedAnimes, onBookmarkClick, onSearch, loading } = useInfo();
-    const [type, setType] = useState('');
+    const [type, setType] = useState('TV');
     const [status, setStatus] = useState('complete');
-    const [order, setOrder] = useState('score');
+    const [order, setOrder] = useState('favorites');
     const [sort, setSort] = useState('desc');
     const [genres, setGenres] = useState<number[]>([]);
 
@@ -309,9 +309,6 @@ const AniList = () => {
                             {/* Anime Display Section */}
                             <div className="mt-4">
                                 {renderAnime(searchedAnimes || animeTV)}
-                                {/* {displayMode === 'list' && renderList(searchedAnimes || animeTV)}
-                                {displayMode === 'table' && renderTable(searchedAnimes || animeTV)} */}
-
                             </div>
                         </div>
 

@@ -53,12 +53,13 @@ const VoiceActors = () => {
                             <img src={chara?.images?.jpg?.image_url} alt={chara?.title} className="absolute inset-0 h-full w-full object-cover" />
                             <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent  transition-all duration-300" />
 
-                            <div className="absolute bottom-4 left-4">
+                            <div className="absolute bottom-4 w-full">
                                 <p className="text-center text-lg">{chara?.name}</p>
                                 <p className="text-center text-[#9ca3af]">({chara?.given_name} {chara?.family_name})</p>
-
-                                <p className="flex items-center gap-2">
-                                    <Calendar size={16} color="#9ca3af" /> {new Date(chara?.birthday).toLocaleDateString('en-US', {
+                                <br />
+                                <p className="flex items-center justify-center gap-2 "> 
+                                    <Calendar size={16} color="#9ca3af" /> 
+                                    {new Date(chara?.birthday).toLocaleDateString('en-US', {
                                         year: 'numeric',
                                         month: 'long',
                                         day: 'numeric'

@@ -60,7 +60,7 @@ const SingleAnime = () => {
     const createYouTubeLink = (text: string) => {
         const match = text.match(/"(.*?)"/);
         const searchText = match ? match[1] : '';
-        const url = `https://www.youtube.com/results?search_query=${encodeURIComponent(searchText)}`;
+        const url = `https://www.youtube.com/results?search_query=${encodeURIComponent(searchText)}+${animeInfo?.title}`;
         return <a href={url} target="_blank" rel="noopener noreferrer">{searchText}</a>;
     };
 
@@ -89,11 +89,11 @@ const SingleAnime = () => {
     return (
 
         animeInfo ? <section className="px-6 text-lg tracking-wider relative"
-            // style={{
-            //     background: colors
-            //         ? `linear-gradient(to top, ${colors} 50%, transparent 100%)`
-            //         : 'transparent',
-            // }}
+        // style={{
+        //     background: colors
+        //         ? `linear-gradient(to top, ${colors} 50%, transparent 100%)`
+        //         : 'transparent',
+        // }}
         >
 
             {/* new header */}
@@ -273,9 +273,6 @@ const SingleAnime = () => {
                                 .map((chara: any, index: number) => (
                                     <SwiperSlide key={index}>
                                         <div className="rounded-xl bg-alpha/30"
-                                        // style={{
-                                        //     backgroundColor: colors,
-                                        // }}
                                         >
                                             <Link to={`/characters/${chara.character.mal_id}`}>
                                                 <img src={chara.character.images.webp.image_url}
