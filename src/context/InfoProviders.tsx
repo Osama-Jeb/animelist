@@ -7,7 +7,7 @@ import { Anime } from "../utils/types";
 
 
 interface InfoContextType {
-    fetchInfo: (what: string, page: number, type: string, setInfo: (arg: any) => void, status: string, order_by: string, sort: string, genres?: number[]) => void,
+    fetchInfo: (what: string, page: number, type: string, setInfo: (arg: any) => void, status: string, order_by: string, sort: string, genres?: number[], studios?: number[]) => void,
     fetchSingle: (id: string | undefined, what: string, setSingle: (arg: any) => void, setPic?: (arg: any) => void) => void,
     onSearch: (what: string, term: string, setResult: (arg: any) => void, currentPage: number) => void,
     bookmarkedAnimes: Anime[] | null,
@@ -39,11 +39,11 @@ export default function InfoProvider({ children }: PropsWithChildren) {
     const [loading, setLoading] = useState(false);
 
 
-    const fetchInfo = async (what: string, page: number, type: string, setInfo: (arg: any) => void, status: string, order_by: string, sort: string, genres?: number[]) => {
+    const fetchInfo = async (what: string, page: number, type: string, setInfo: (arg: any) => void, status: string, order_by: string, sort: string, genres?: number[], studios?: number[]) => {
         try {
             let response;
-            if (genres) {
-                response = await fetch(`https://api.jikan.moe/v4/${what}?page=${page}&type=${type}&status=${status}&order_by=${order_by}&sort=${sort}&genres=${genres}`);
+            if (genres || studios) {
+                response = await fetch(`https://api.jikan.moe/v4/${what}?page=${page}&type=${type}&status=${status}&order_by=${order_by}&sort=${sort}&genres=${genres}&producers=${studios}`);
             } else {
                 response = await fetch(`https://api.jikan.moe/v4/${what}?page=${page}&type=${type}&status=${status}&order_by=${order_by}&sort=${sort}`);
             }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useInfo } from "../context/InfoProviders";
-import { Bookmark, Calendar, PlayCircle, Search } from "lucide-react";
+import { ArrowUpDown, Bookmark, Calendar, PlayCircle, Search } from "lucide-react";
 import Loading from "../components/Loading";
 import { useAuth } from "../context/AuthContext";
 import Pagination from "../components/Pagination";
@@ -16,6 +16,7 @@ const AniList = () => {
     const [order, setOrder] = useState('favorites');
     const [sort, setSort] = useState('desc');
     const [genres, setGenres] = useState<number[]>([]);
+    const [studios, setStudios] = useState<number[]>([]);
 
     const { currentUser } = useAuth();
 
@@ -28,9 +29,9 @@ const AniList = () => {
         if (inputValue) {
             onSearch("anime", inputValue, setSearchedAnimes, currPage);
         } else {
-            fetchInfo("anime", currPage, type, setAnimeTV, status, order, sort, genres);
+            fetchInfo("anime", currPage, type, setAnimeTV, status, order, sort, genres, studios);
         }
-    }, [currPage, type, status, order, sort, genres])
+    }, [currPage, type, status, order, sort, genres, studios])
 
     // const [title, setTitle] = useState(true);
     const renderAnime = (animes: Anime[] | null) => (
@@ -86,6 +87,7 @@ const AniList = () => {
 
 
     const typeSelect = [
+        { id: "", label: "All" },
         { id: "TV", label: "Serie" },
         { id: "movie", label: "Movie" },
         { id: "OVA", label: "OVA" },
@@ -94,12 +96,14 @@ const AniList = () => {
     ];
 
     const statusSelect = [
+        { id: "", label: "All" },
         { id: "complete", label: "Complete" },
         { id: "airing", label: "Airing" },
         { id: "upcoming", label: "Upcoming" },
     ];
 
     const orderSelect = [
+        { id: "", label: "All" },
         { id: "score", label: "Score" },
         { id: "episodes", label: "Episodes" },
         { id: "title", label: "Title" },
@@ -108,81 +112,107 @@ const AniList = () => {
     ]
 
     const genreSelect = [
-        { id: "1", name: "Action" },
-        { id: "2", name: "Adventure" },
-        { id: "5", name: "Avant Garde" },
-        { id: "46", name: "Award Winning" },
-        { id: "28", name: "Boys Love" },
-        { id: "4", name: "Comedy" },
-        { id: "8", name: "Drama" },
-        { id: "10", name: "Fantasy" },
-        { id: "26", name: "Girls Love" },
-        { id: "47", name: "Gourmet" },
-        { id: "14", name: "Horror" },
-        { id: "7", name: "Mystery" },
-        { id: "22", name: "Romance" },
-        { id: "24", name: "Sci-Fi" },
-        { id: "36", name: "Slice of Life" },
-        { id: "30", name: "Sports" },
-        { id: "37", name: "Supernatural" },
-        { id: "41", name: "Suspense" },
-        { id: "50", name: "Adult Cast" },
-        { id: "51", name: "Anthropomorphic" },
-        { id: "52", name: "CGDCT" },
-        { id: "53", name: "Childcare" },
-        { id: "54", name: "Combat Sports" },
-        { id: "55", name: "Delinquents" },
-        { id: "39", name: "Detective" },
-        { id: "56", name: "Educational" },
-        { id: "57", name: "Gag Humor" },
-        { id: "58", name: "Gore" },
-        { id: "59", name: "High Stakes Game" },
-        { id: "13", name: "Historical" },
-        { id: "60", name: "Idols (Female)" },
-        { id: "61", name: "Idols (Male)" },
-        { id: "62", name: "Isekai" },
-        { id: "63", name: "Iyashikei" },
-        { id: "64", name: "Love Polygon" },
-        { id: "65", name: "Magical Sex Shift" },
-        { id: "66", name: "Mahou Shoujo" },
-        { id: "17", name: "Martial Arts" },
-        { id: "18", name: "Mecha" },
-        { id: "67", name: "Medical" },
-        { id: "38", name: "Military" },
-        { id: "19", name: "Music" },
-        { id: "6", name: "Mythology" },
-        { id: "68", name: "Organized Crime" },
-        { id: "69", name: "Otaku Culture" },
-        { id: "20", name: "Parody" },
-        { id: "70", name: "Performing Arts" },
-        { id: "71", name: "Pets" },
-        { id: "40", name: "Psychological" },
-        { id: "3", name: "Racing" },
-        { id: "72", name: "Reincarnation" },
-        { id: "74", name: "Romantic Subtext" },
-        { id: "21", name: "Samurai" },
-        { id: "23", name: "School" },
-        { id: "75", name: "Showbiz" },
-        { id: "29", name: "Space" },
-        { id: "11", name: "Strategy Game" },
-        { id: "31", name: "Super Power" },
-        { id: "76", name: "Survival" },
-        { id: "77", name: "Team Sports" },
-        { id: "78", name: "Time Travel" },
-        { id: "32", name: "Vampire" },
-        { id: "79", name: "Video Game" },
-        { id: "80", name: "Visual Arts" },
-        { id: "48", name: "Workplace" },
-        { id: "43", name: "Josei" },
-        { id: "15", name: "Kids" },
-        { id: "42", name: "Seinen" },
-        { id: "25", name: "Shoujo" },
-        { id: "27", name: "Shounen" }
+        { id: 1, name: "Action" },
+        { id: 2, name: "Adventure" },
+        { id: 5, name: "Avant Garde" },
+        { id: 46, name: "Award Winning" },
+        { id: 28, name: "Boys Love" },
+        { id: 4, name: "Comedy" },
+        { id: 8, name: "Drama" },
+        { id: 10, name: "Fantasy" },
+        { id: 26, name: "Girls Love" },
+        { id: 47, name: "Gourmet" },
+        { id: 14, name: "Horror" },
+        { id: 7, name: "Mystery" },
+        { id: 22, name: "Romance" },
+        { id: 24, name: "Sci-Fi" },
+        { id: 36, name: "Slice of Life" },
+        { id: 30, name: "Sports" },
+        { id: 37, name: "Supernatural" },
+        { id: 41, name: "Suspense" },
+        { id: 50, name: "Adult Cast" },
+        { id: 51, name: "Anthropomorphic" },
+        { id: 52, name: "CGDCT" },
+        { id: 53, name: "Childcare" },
+        { id: 54, name: "Combat Sports" },
+        { id: 55, name: "Delinquents" },
+        { id: 39, name: "Detective" },
+        { id: 56, name: "Educational" },
+        { id: 57, name: "Gag Humor" },
+        { id: 58, name: "Gore" },
+        { id: 59, name: "High Stakes Game" },
+        { id: 13, name: "Historical" },
+        { id: 60, name: "Idols (Female)" },
+        { id: 61, name: "Idols (Male)" },
+        { id: 62, name: "Isekai" },
+        { id: 63, name: "Iyashikei" },
+        { id: 64, name: "Love Polygon" },
+        { id: 65, name: "Magical Sex Shift" },
+        { id: 66, name: "Mahou Shoujo" },
+        { id: 17, name: "Martial Arts" },
+        { id: 18, name: "Mecha" },
+        { id: 67, name: "Medical" },
+        { id: 38, name: "Military" },
+        { id: 19, name: "Music" },
+        { id: 6, name: "Mythology" },
+        { id: 68, name: "Organized Crime" },
+        { id: 69, name: "Otaku Culture" },
+        { id: 20, name: "Parody" },
+        { id: 70, name: "Performing Arts" },
+        { id: 71, name: "Pets" },
+        { id: 40, name: "Psychological" },
+        { id: 3, name: "Racing" },
+        { id: 72, name: "Reincarnation" },
+        { id: 74, name: "Romantic Subtext" },
+        { id: 21, name: "Samurai" },
+        { id: 23, name: "School" },
+        { id: 75, name: "Showbiz" },
+        { id: 29, name: "Space" },
+        { id: 11, name: "Strategy Game" },
+        { id: 31, name: "Super Power" },
+        { id: 76, name: "Survival" },
+        { id: 77, name: "Team Sports" },
+        { id: 78, name: "Time Travel" },
+        { id: 32, name: "Vampire" },
+        { id: 79, name: "Video Game" },
+        { id: 80, name: "Visual Arts" },
+        { id: 48, name: "Workplace" },
+        { id: 43, name: "Josei" },
+        { id: 15, name: "Kids" },
+        { id: 42, name: "Seinen" },
+        { id: 25, name: "Shoujo" },
+        { id: 27, name: "Shounen" }
     ];
+
+    const studioSelect = [
+        { id: "1", name: "Pierrot" },
+        { id: "2", name: "Kyoto Animation" },
+        { id: "3", name: "Gonzo" },
+        { id: "4", name: "Bones" },
+        { id: "5", name: "Bee Train" },
+        { id: "6", name: "Gainax" },
+        { id: "7", name: "J.C.Staff" },
+        { id: "8", name: "Artland" },
+        { id: "10", name: "Production I.G" },
+        { id: "11", name: "Madhouse" },
+        { id: "13", name: "Studio 4°C" },
+        { id: "14", name: "Sunrise" },
+        { id: "15", name: "Sony Pictures Entertainment" },
+        { id: "16", name: "TV Tokyo" },
+        { id: "17", name: "Aniplex" },
+        { id: "18", name: "Toei Animation" },
+        { id: "21", name: "Studio Ghibli" }
+    ];
+
 
     const handleRemoveGenre = (genreId: number) => {
         setGenres(genres.filter(gen => gen !== genreId));
     };
+
+    const handleRemoveStudio = (studioID: number) => {
+        setStudios(studios.filter(st => st !== studioID))
+    }
+
     return (
         <>
             {
@@ -273,7 +303,7 @@ const AniList = () => {
                                             !inputValue && <button
                                                 onClick={() => { sort == "desc" ? setSort('asc') : setSort('desc') }}
                                                 className="px-4 py-2 bg-alpha rounded capitalize">
-                                                {sort}
+                                                <ArrowUpDown size={20} />
                                             </button>
                                         }
 
@@ -291,13 +321,38 @@ const AniList = () => {
                                                 </option>
                                             ))}
                                         </select>
+                                        <select
+                                            value=""
+                                            onChange={(e) =>
+                                                setStudios([parseInt(e.target.value)])
+                                            }
+                                            className="border rounded p-2 text-black capitalize"
+                                        >
+                                            <option disabled value="">Studio</option>
+                                            {studioSelect.map((option) => (
+                                                <option key={option.id} value={option.id}>
+                                                    {option.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        {
+                                            studioSelect
+                                                .filter(el => studios.includes(parseInt(el.id)))
+                                                .map(el => (
+                                                    <button key={el.id}
+                                                        className="bg-green-500 px-2 py-1 rounded-xl"
+                                                        onClick={() => handleRemoveStudio(parseInt(el.id))}>
+                                                        {el.name} X
+                                                    </button>
+                                                ))
+                                        }
                                         {
                                             genreSelect
-                                                .filter(el => genres.includes(parseInt(el.id)))
+                                                .filter(el => genres.includes(el.id))
                                                 .map(el => (
                                                     <button key={el.id}
                                                         className="bg-alpha px-2 py-1 rounded-xl"
-                                                        onClick={() => handleRemoveGenre(parseInt(el.id))}>
+                                                        onClick={() => handleRemoveGenre(el.id)}>
                                                         {el.name} X
                                                     </button>
                                                 ))

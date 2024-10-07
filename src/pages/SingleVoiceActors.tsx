@@ -41,12 +41,13 @@ const SingleVoiceActor = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                 {
                     actor?.anime.map((an: any, ind: number) => (
-                        <div key={ind} className="group z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative h-full">
-                            <Link to={`/anime/${an.anime.mal_id}`}>
-                                <div className="relative h-[350px]">
-                                    <img src={an.anime.images.webp.large_image_url} alt={an.anime.title} className="absolute inset-0 h-full w-full object-cover" />
-                                </div>
-                                <div className="p-4">
+                        <div key={ind} className="group z-1 overflow-hidden rounded-lg transition-all duration-200 bg-gray-900 text-white relative">
+                            <Link to={`/anime/${an.anime.mal_id}`} className="relative">
+                                <img src={an.anime.images.webp.large_image_url} alt={an.anime.title} className="w-full h-[350px] rounded-xl aspect-square object-cover" />
+
+                                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 " />
+
+                                <div className="absolute bottom-4 left-4">
                                     <h2 className="text-lg font-bold">Position: {an.position}</h2>
                                     <h2 className="text-lg font-bold">Anime: {an.anime.title}</h2>
                                 </div>
@@ -64,13 +65,12 @@ const SingleVoiceActor = () => {
                 {
                     actor?.manga.map((an: any, ind: number) => (
                         <div key={ind} className="group z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative h-full">
-                            <Link to={`/manga/${an.manga.mal_id}`}>
-                                <div className="relative h-[350px]">
-                                    <img src={an.manga.images.webp.large_image_url} alt={an.manga.title} className="absolute inset-0 h-full w-full object-cover" />
-                                </div>
-                                <div className="p-4">
-                                    <h2 className="text-lg font-bold">Position: {an.position}</h2>
-                                    <h2 className="text-lg font-bold">Manga: {an.manga.title}</h2>
+                            <Link to={`/manga/${an.manga.mal_id}`} className="relative">
+                                <img src={an.manga.images.webp.large_image_url} alt={an.manga.title} className="w-full h-[350px] rounded-xl aspect-square object-cover" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 " />
+                                <div className="absolute bottom-4 left-4">
+                                    <h2 className="text-lg">Position: {an.position}</h2>
+                                    <h2 className="text-lg">Manga: {an.manga.title}</h2>
                                 </div>
                             </Link>
                         </div>

@@ -7,7 +7,6 @@ import { Link, useNavigate } from "react-router-dom";
 import OAuthSignIn from "../components/OAuthSignIn";
 
 const Login = () => {
-    //* TODO: Password Reset
     const [signing, setSigning] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');

@@ -12,11 +12,7 @@ import ReadMore from "../components/ReadMore";
 import { Anime } from "../utils/types";
 // import { useColor } from "color-thief-react";
 
-// TODO*** Color-thief for palette
 const SingleAnime = () => {
-
-
-
 
     const { fetchSingle } = useInfo();
     const { id } = useParams();
@@ -88,57 +84,8 @@ const SingleAnime = () => {
     const iconColor = "#1d4ed8";
     return (
 
-        animeInfo ? <section className="px-6 text-lg tracking-wider relative"
-        // style={{
-        //     background: colors
-        //         ? `linear-gradient(to top, ${colors} 50%, transparent 100%)`
-        //         : 'transparent',
-        // }}
-        >
-
-            {/* new header */}
-            {/* <div
-                className="h-screen absolute inset-0 -z-10 opacity-35"
-                style={{
-                    backgroundImage: `url(${animeInfo?.images.jpg.large_image_url})`, // Fix: add `url()`
-                    backgroundSize: 'cover', // Optional: ensure the image covers the entire div
-                    backgroundPosition: 'center', // Optional: centers the background image
-                }}
-            >
-            </div> */}
-
-            {/* <div>
-                <h1 className="text-6xl">{animeInfo?.title_english ?? animeInfo?.title}</h1>
-                <p>2022 - Duration - Japanese - Movie</p>
-
-                <br />
-                <div className="flex items-center justify-around">
-                    <img
-                        src={animeInfo?.images.webp.large_image_url}
-                        className="w-[20vw]"
-                    />
-                    <div>
-                        <p>author name in here</p>
-                        <p>
-                            synopsis
-                        </p>
-                        <div className="flex items-center gap-2">
-                            <p>tags</p>
-                            <p>tags</p>
-                            <p>tags</p>
-                        </div>
-                    </div>
-
-                    <div>
-                        score
-                    </div>
-                </div>
-            </div> */}
-
-            <div className={`container mx-auto px-4 py-8`}
-
-
-            >
+        animeInfo ? <section className="px-6 text-lg tracking-wider relative">
+            <div className={`container mx-auto px-4 py-8`}>
                 <div className="flex flex-col md:flex-row gap-8">
                     <div className="md:w-1/3 flex  justify-center">
 
@@ -211,7 +158,10 @@ const SingleAnime = () => {
                             <ReadMore text={animeInfo?.synopsis} />
                         </article>
 
-                        <h2 className="text-4xl font-semibold mb-2">Related: </h2>
+                        {animeInfo?.relations && animeInfo.relations.length > 0 ?
+                            <h2 className="text-4xl font-semibold mb-2">Related: </h2>
+                            :
+                            null}
                         <ul className="list-disc">
 
                             {
@@ -271,29 +221,30 @@ const SingleAnime = () => {
                             {animeChara
                                 ?.sort((a: any, b: any) => b.favorites - a.favorites)
                                 .map((chara: any, index: number) => (
-                                    <SwiperSlide key={index}>
-                                        <div className="rounded-xl bg-alpha/30"
-                                        >
-                                            <Link to={`/characters/${chara.character.mal_id}`}>
-                                                <img src={chara.character.images.webp.image_url}
-                                                    className="w-full rounded-xl aspect-square object-cover"
-                                                    alt="" />
-                                                <div className="p-3">
-                                                    <p className="my-1">{formatName(chara.character.name)}</p>
-                                                    {/* <p className="my-1">Role: {chara.role}</p> */}
-                                                    <div className="my-1">{chara.voice_actors.map((human: any, ind: number) => (
-                                                        human.language === "Japanese" &&
-                                                        <p key={ind} className="flex items-center gap-1">
-                                                            <Mic size={16} color="#9ca3af" />
-                                                            <span> {human.person.name.replace(",", "")}</span>
-                                                        </p>
+                                    <SwiperSlide key={index} className="z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative">
 
-                                                    ))}
-                                                    </div>
-                                                    <p className="my-1 flex items-center gap-1"><Heart size={16} color="#9ca3af" /> {chara.favorites}</p>
+                                        <Link to={`/characters/${chara.character.mal_id}`} className="relative">
+                                            <img src={chara.character.images.webp.image_url}
+                                                className="w-full h-[350px] rounded-xl aspect-square object-cover"
+                                                alt="" />
+
+                                            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 " />
+                                            <div className="absolute bottom-4 left-4">
+                                                <p className="my-1">{formatName(chara.character.name)}</p>
+                                                {/* <p className="my-1">Role: {chara.role}</p> */}
+                                                <div className="my-1">{chara.voice_actors.map((human: any, ind: number) => (
+                                                    human.language === "Japanese" &&
+                                                    <p key={ind} className="flex items-center gap-1">
+                                                        <Mic size={16} color="#9ca3af" />
+                                                        <span> {human.person.name.replace(",", "")}</span>
+                                                    </p>
+
+                                                ))}
                                                 </div>
-                                            </Link>
-                                        </div>
+                                                <p className="my-1 flex items-center gap-1"><Heart size={16} color="#9ca3af" /> {chara.favorites}</p>
+                                            </div>
+                                        </Link>
+                                        
                                     </SwiperSlide>
                                 ))}
 

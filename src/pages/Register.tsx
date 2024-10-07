@@ -97,7 +97,6 @@ const Register = () => {
                     {isValid === false && <small className="text-red-500">Image does not exist!</small>}
                 </div>
 
-                {/* TODO: waaay later, email verification */}
                 <div>
                     <label htmlFor="email">Email: <span className="font-bold text-red-600 underline">*</span></label> <span className="text-xs">(you can use a fake email, but you won't be able to recover your account)</span>
                     <input className="w-full rounded px-4 py-3 text-black mt-2" placeholder="example@email.com" type="email" onChange={(e) => setEmail(e.target.value)} value={email} required />

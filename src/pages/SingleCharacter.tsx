@@ -26,7 +26,7 @@ const SingleCharacter = () => {
         <>
 
             {
-                character ? <section className="px-6 text-lg tracking-wider">
+                character ? <section className="p-6 text-lg tracking-wider">
 
                     <div className="container mx-auto px-4 py-8">
                         <div className="flex flex-col md:flex-row gap-8">
@@ -122,20 +122,19 @@ const SingleCharacter = () => {
 
                             {character?.anime.map((anime: any) => (
                                 <SwiperSlide
-                                    style={{ height: "500px" }}
+                                    className="z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative"
                                     key={anime.anime.mal_id}
                                 >
 
-                                    <div className="group z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative h-full">
-                                        <Link to={`/anime/${anime.anime.mal_id}`}>
-                                            <div className="relative h-[350px]">
-                                                <img src={anime.anime.images?.webp?.large_image_url} alt={anime.title} className="absolute inset-0 h-full w-full object-cover" />
-                                            </div>
-                                            <div className="p-4">
-                                                <h2 className="text-lg font-bold mb-2">{anime.anime.title}</h2>
-                                            </div>
-                                        </Link>
-                                    </div>
+                                    <Link to={`/anime/${anime.anime.mal_id}`} className="relative">
+                                        <img src={anime.anime.images?.webp?.large_image_url} alt={anime.title}
+                                            className="w-full h-[350px] rounded-xl aspect-square object-cover" />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 " />
+
+                                        <div className="absolute bottom-4 left-4">
+                                            <h2 className="text-lg  mb-2">{anime.anime.title}</h2>
+                                        </div>
+                                    </Link>
                                 </SwiperSlide>
                             ))}
                         </Swiper>
@@ -172,20 +171,18 @@ const SingleCharacter = () => {
 
                             {character?.manga.map((mng: any) => (
                                 <SwiperSlide
-                                    style={{ height: "450px" }}
-                                    key={mng.manga.mal_id}
+                                    className="z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative" key={mng.manga.mal_id}
                                 >
 
-                                    <div className="group z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative h-full">
-                                        <Link to={`/manga/${mng.manga.mal_id}`}>
-                                            <div className="relative h-[350px]">
-                                                <img src={mng.manga.images?.webp?.large_image_url} alt={mng.manga.title} className="absolute inset-0 h-full w-full object-cover" />
-                                            </div>
-                                            <div className="p-4">
-                                                <h2 className="text-lg font-bold mb-2">{mng.manga.title}</h2>
-                                            </div>
-                                        </Link>
-                                    </div>
+
+                                    <Link to={`/manga/${mng.manga.mal_id}`} className="relative">
+
+                                        <img src={mng.manga.images?.webp?.large_image_url} alt={mng.manga.title} className="w-full h-[350px] rounded-xl aspect-square object-cover" />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 " />
+                                        <div className="absolute bottom-4 left-4">
+                                            <h2 className="text-lg mb-2">{mng.manga.title}</h2>
+                                        </div>
+                                    </Link>
                                 </SwiperSlide>
                             ))}
                         </Swiper>
@@ -221,21 +218,23 @@ const SingleCharacter = () => {
 
                             {character?.voices.map((va: any) => (
                                 <SwiperSlide
-                                    style={{ height: "500px" }}
+                                    className="z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative"
                                     key={va.person.mal_id}
                                 >
 
-                                    <div className="group z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative h-full">
-                                        <Link to={`/va/${va.person.mal_id}`}>
-                                            <div className="relative h-[350px]">
-                                                <img src={va.person.images?.jpg?.image_url} alt={va.person.name} className="absolute inset-0 h-full w-full object-cover" />
-                                            </div>
-                                            <div className="p-4">
-                                                <h2 className="text-lg font-bold mb-2">{formatName(va.person.name)}</h2>
-                                                <h2 className="text-lg font-bold mb-2">Language: {va.language}</h2>
-                                            </div>
-                                        </Link>
-                                    </div>
+
+                                    <Link to={`/va/${va.person.mal_id}`} className="relative">
+
+                                        <img src={va.person.images?.jpg?.image_url} alt={va.person.name}
+                                            className="w-full h-[350px] rounded-xl aspect-square object-cover"
+                                        />
+
+                                        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 " />
+                                        <div className="absolute bottom-4 left-4">
+                                            <h2 className="text-lg font-bold mb-2">{formatName(va.person.name)}</h2>
+                                            <h2 className="text-lg font-bold mb-2">Language: {va.language}</h2>
+                                        </div>
+                                    </Link>
                                 </SwiperSlide>
                             ))}
                         </Swiper>
