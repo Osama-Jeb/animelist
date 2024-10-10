@@ -90,10 +90,11 @@ const BookmarkedAnime = () => {
                                         </span>
                                         <h2 className="text-lg font-bold mb-2">
                                             {
-                                                anime.titles.map((tit: any) => (
-                                                    tit.type == "English" && <span>{tit.title}</span>
-                                                ))
-                                            }</h2>
+                                                anime.titles.find((tit: any) => tit.type === "English")?.title ||
+                                                anime.titles.find((tit: any) => tit.type === "Default")?.title ||
+                                                "No title available"
+                                            }
+                                        </h2>
                                         <div className="space-y-2">
                                             <div className="flex items-center gap-2">
                                                 <PlayCircle size={16} color="#9ca3af" />

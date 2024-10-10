@@ -185,24 +185,33 @@ const AniList = () => {
     ];
 
     const studioSelect = [
-        { id: "1", name: "Pierrot" },
-        { id: "2", name: "Kyoto Animation" },
-        { id: "3", name: "Gonzo" },
-        { id: "4", name: "Bones" },
-        { id: "5", name: "Bee Train" },
-        { id: "6", name: "Gainax" },
-        { id: "7", name: "J.C.Staff" },
-        { id: "8", name: "Artland" },
-        { id: "10", name: "Production I.G" },
-        { id: "11", name: "Madhouse" },
-        { id: "13", name: "Studio 4°C" },
-        { id: "14", name: "Sunrise" },
-        { id: "15", name: "Sony Pictures Entertainment" },
-        { id: "16", name: "TV Tokyo" },
-        { id: "17", name: "Aniplex" },
-        { id: "18", name: "Toei Animation" },
-        { id: "21", name: "Studio Ghibli" }
+        { id: 2, name: "Kyoto Animation" },
+        { id: 569, name: "MAPPA" },
+        { id: 11, name: "Madhouse" },
+        { id: 43, name: "ufotable" },
+        { id: 858, name: "Wit Studio" },
+        { id: 21, name: "Studio Ghibli" },
+        { id: 4, name: "Bones" },
+        { id: 56, name: "A-1 Pictures" },
+        { id: 44, name: "Shaft" },
+        { id: 1835, name: "CloverWorks" },
+        { id: 803, name: "Trigger" },
+        { id: 10, name: "Production I.G" },
+        { id: 18, name: "Toei Animation" },
+        { id: 14, name: "Sunrise" },
+        { id: 287, name: "David Production" },
+        { id: 314, name: "White Fox" },
+        { id: 6, name: "Gainax" },
+        { id: 1, name: "Pierrot" },
+        { id: 7, name: "J.C.Staff" },
+        { id: 291, name: "CoMix Wave Films" },
+        { id: 1993, name: "Studio Bind" },
+        { id: 132, name: "PA Works" },
+        { id: 95, name: "Doga Kobo" },
+        { id: 17, name: "Aniplex" },
+        { id: 1591, name: "Science SARU" }
     ];
+
 
 
     const handleRemoveGenre = (genreId: number) => {
@@ -337,11 +346,11 @@ const AniList = () => {
                                         </select>
                                         {
                                             studioSelect
-                                                .filter(el => studios.includes(parseInt(el.id)))
+                                                .filter(el => studios.includes(el.id))
                                                 .map(el => (
                                                     <button key={el.id}
                                                         className="bg-green-500 px-2 py-1 rounded-xl"
-                                                        onClick={() => handleRemoveStudio(parseInt(el.id))}>
+                                                        onClick={() => handleRemoveStudio(el.id)}>
                                                         {el.name} X
                                                     </button>
                                                 ))

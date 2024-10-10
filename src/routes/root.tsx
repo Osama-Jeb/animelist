@@ -78,7 +78,7 @@ const Root = () => {
                                     },
                                 ].map((el, ind) => (
                                     <div className={`my-12 flex gap-5 ${ind % 2 == 0 ? 'flex-row' : 'flex-row-reverse'}`}>
-                                        <Link to={el.link} className="w-[80%] hover:w-[150%] transition-all duration-200">
+                                        <Link to={el.link} className="w-[50%]">
                                             <img src={el.image} className="h-[500px] object-cover graysale-[80%]" alt="" />
                                         </Link>
                                         <Link to={el.link} className="rounded-lg h-fit w-fit border border-alpha/50 sticky top-0">
@@ -99,12 +99,12 @@ const Root = () => {
 
 
                     {/* Statistics Section */}
-                    {/* <section className="py-12 md:py-24 lg:py-32 w-full">
+                    <section className="p-12 md:p-24 lg:p-32 w-full">
                         <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-12">
                             Read Amazing <span className="text-alpha">Statistics</span></h2>
+                        <p className="text-lg">Bookmark animes that you have watched and get some awesome statistics about them, such as you total number of episodes and watchtime as well as some incredible graphs that represent which genres you watch the most and what source material you favorite anime are made from.</p>
 
-
-                    </section> */}
+                    </section>
 
                 </>
             }
