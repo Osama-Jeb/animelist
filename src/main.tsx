@@ -44,7 +44,7 @@ const router = createBrowserRouter([
         element: <Login />
       },
       {
-        path: "/bookmarkedAnime",
+        path: "/watchedAnimes",
         element: <ProtectedRoute>
           <BookmarkedAnime />
         </ProtectedRoute>

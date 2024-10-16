@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useInfo } from "../context/InfoProviders";
-import { ArrowUpDown, Bookmark, Calendar, PlayCircle, Search } from "lucide-react";
+import { ArrowUpDown, Calendar, PlayCircle, Search } from "lucide-react";
 import Loading from "../components/Loading";
 import { useAuth } from "../context/AuthContext";
 import Pagination from "../components/Pagination";
 import { Anime } from "../utils/types";
+import BookmarkButton from "../components/BookmarkButton";
 
 
 const AniList = () => {
 
-    const { fetchInfo, bookmarkedAnimes, onBookmarkClick, onSearch, loading } = useInfo();
+    const { fetchInfo, onSearch, loading } = useInfo();
     const [type, setType] = useState('TV');
     const [status, setStatus] = useState('complete');
     const [order, setOrder] = useState('favorites');
@@ -40,11 +41,7 @@ const AniList = () => {
                 <div key={index} className="group z-1 overflow-hidden rounded-lg transition-all duration-200 bg-gray-900 text-white relative">
                     {
                         currentUser &&
-                        <button className="cursor-default absolute top-[5%] right-[5%] bg-alpha rounded-full p-2 z-10"
-                            onClick={() => { onBookmarkClick(anime) }}
-                        >
-                            <Bookmark fill={`${bookmarkedAnimes?.some((anm: any) => anm.mal_id === anime.mal_id) ? "white" : "#1d4ed8"}`} />
-                        </button>
+                        <BookmarkButton anime={anime} />
                     }
                     <Link to={`/anime/${anime.mal_id}`}>
                         <div className="relative h-[400px]">

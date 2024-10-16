@@ -93,7 +93,7 @@ const SingleVoiceActor = () => {
         <>
             {
                 actor &&
-                <section>
+                <section className="pb-4">
                     {/* Top Section With Image and Information */}
                     <div className="flex items-center justify-around mb-6">
                         <img src={actor.images.jpg.image_url} alt=""

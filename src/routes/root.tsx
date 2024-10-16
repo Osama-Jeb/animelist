@@ -1,4 +1,4 @@
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { Film, Mic, Users, Book } from "lucide-react"
 
@@ -6,6 +6,13 @@ import anilist from "../assets/images/homepage/animelist1-min.png"
 import mangalist from "../assets/images/homepage/animelist2-min.png"
 import charalist from "../assets/images/homepage/animelist3-min.png"
 import voicelist from "../assets/images/homepage/animelist4-min.png"
+
+import bar from "../assets/images/homepage/bar.png";
+import dognut from "../assets/images/homepage/dognut.png";
+import studio from "../assets/images/homepage/studio.png";
+import time from "../assets/images/homepage/time.png";
+import tot from "../assets/images/homepage/tot.png";
+import year from "../assets/images/homepage/year.png";
 
 const Root = () => {
     const location = useLocation();
@@ -77,11 +84,11 @@ const Root = () => {
                                         description: "Explore profiles of voice actors who bring anime characters to life."
                                     },
                                 ].map((el, ind) => (
-                                    <div className={`my-12 flex gap-5 ${ind % 2 == 0 ? 'flex-row' : 'flex-row-reverse'}`}>
-                                        <Link to={el.link} className="w-[50%]">
+                                    <div className={`my-12 flex gap-5 ${ind % 2 == 0 ? 'flex-col-reverse lg:flex-row' : 'flex-col-reverse lg:flex-row-reverse'}`}>
+                                        <Link to={el.link} className="w-full lg:w-[50%]">
                                             <img src={el.image} className="h-[500px] object-cover graysale-[80%]" alt="" />
                                         </Link>
-                                        <Link to={el.link} className="rounded-lg h-fit w-fit border border-alpha/50 sticky top-0">
+                                        <Link to={el.link} className="rounded-lg h-fit w-fit bg-black border border-alpha/50 sticky top-0">
                                             <div className="p-6">
                                                 <div className="flex items-center mb-4">
                                                     <el.icon size={24} color="#1d4ed8" className="mr-3" />
@@ -101,9 +108,22 @@ const Root = () => {
                     {/* Statistics Section */}
                     <section className="p-12 md:p-24 lg:p-32 w-full">
                         <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-12">
-                            Read Amazing <span className="text-alpha">Statistics</span></h2>
-                        <p className="text-lg">Bookmark animes that you have watched and get some awesome statistics about them, such as you total number of episodes and watchtime as well as some incredible graphs that represent which genres you watch the most and what source material you favorite anime are made from.</p>
+                            Read Amazing <span className="text-alpha/90">Statistics</span></h2>
+                        <p className="text-lg text-center">
+                            <NavLink to={"/register"} className="text-alpha text-xl font-semibold underline hover:scale-115 duration-200 transition-all">
+                                Create an Account
+                            </NavLink> to Unlock Your Anime Journey!
+                            <br /> <br />
+                            Sign up today to start tracking your anime adventures! By creating an account, you'll be able to bookmark every anime you watch, creating a personalized library that's all yours.
+                            <br /> <br />
+                            But that's not all—our system will give you detailed insights into your anime habits. See how many anime you've watched, track your total watch time, and discover which genres and types you love the most.
+                            <br /> <br />
+                            Stay organized, dive deeper into your anime world, and let us help you discover new favorites based on your watching patterns!
+                        </p>
 
+                        <div>
+
+                        </div>
                     </section>
 
                 </>

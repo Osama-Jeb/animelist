@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useInfo } from "../context/InfoProviders"
-import { Bookmark, Calendar, PlayCircle } from "lucide-react";
+import { Calendar, PlayCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Anime } from "../utils/types";
+import BookmarkButton from "../components/BookmarkButton";
 
 
 const BookmarkedAnime = () => {
-    const { bookmarkedAnimes, onBookmarkClick } = useInfo();
+    const { bookmarkedAnimes } = useInfo();
 
     const [searchTerm, setSearchTerm] = useState('')
     const [sortCriteria, setSortCriteria] = useState<keyof Anime>('score')
@@ -36,7 +37,7 @@ const BookmarkedAnime = () => {
     return (
         <>
             <section>
-                <h1 className="text-3xl font-bold mb-4">My Bookedmarked Animes</h1>
+                <h1 className="text-3xl font-bold mb-4">All My Watched Animes:</h1>
                 <div className="mb-4 flex flex-col sm:flex-row justify-between gap-2">
                     <input
                         type="text"
@@ -72,12 +73,8 @@ const BookmarkedAnime = () => {
 
                             {
                                 currentUser &&
-                                <button className="cursor-default absolute top-[5%] right-[5%] bg-alpha rounded-full p-2 z-10"
-                                    onClick={() => { onBookmarkClick(anime) }}
-                                >
 
-                                    <Bookmark fill={`${bookmarkedAnimes?.some((anm: any) => anm.mal_id === anime.mal_id) ? "white" : "#1d4ed8"}`} />
-                                </button>
+                                <BookmarkButton anime={anime} />
                             }
                             <Link to={`/anime/${anime.mal_id}`}>
                                 <div className="relative h-[300px] lg:h-[400px]">

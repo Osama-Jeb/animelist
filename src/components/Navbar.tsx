@@ -1,4 +1,4 @@
-import { Bookmark, ChartPie, Menu, UserCog, X, Film, Mic, Users, Book } from "lucide-react";
+import { Bookmark, ChartPie, Menu, UserCog, X, Film, Mic, Users, Book, Eye } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -141,8 +141,8 @@ const Navbar = () => {
                                         </button>
                                         {
                                             profileMenu && <div className="absolute top-[120%] -left-[100px] w-[200px] z-20 bg-black">
-                                                <Link to={"/bookmarkedAnime"} onClick={() => { setProfileMenu(false) }} className="px-3 py-2 flex gap-2 items-center">
-                                                    <Bookmark /> <p>Bookmarked Anime</p>
+                                                <Link to={"/watchedAnimes"} onClick={() => { setProfileMenu(false) }} className="px-3 py-2 flex gap-2 items-center">
+                                                    <Eye /> <p>Watched Anime</p>
                                                 </Link>
                                                 <Link to={"/statistics"} onClick={() => { setProfileMenu(false) }} className="px-3 py-2 flex gap-2 items-center my-4">
                                                     <ChartPie /> <p>Statistics</p>
@@ -203,7 +203,7 @@ const Navbar = () => {
 
                         {
                             currentUser ? <div>
-                                <Link to={"/bookmarkedAnime"} onClick={() => { setIsMenuOpen(false) }} className="px-3 py-2 flex gap-3 items-center">
+                                <Link to={"/watchedAnimes"} onClick={() => { setIsMenuOpen(false) }} className="px-3 py-2 flex gap-3 items-center">
                                     <Bookmark /> <p>Bookmarked Anime</p>
                                 </Link>
                                 <Link to={"/statistics"} onClick={() => { setIsMenuOpen(false) }} className="px-3 py-2 flex gap-3 items-center my-4">
