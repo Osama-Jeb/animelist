@@ -7,7 +7,6 @@ import mangalist from "../assets/images/homepage/animelist2-min.png"
 import charalist from "../assets/images/homepage/animelist3-min.png"
 import voicelist from "../assets/images/homepage/animelist4-min.png"
 
-import bar from "../assets/images/homepage/bar.png";
 import dognut from "../assets/images/homepage/dognut.png";
 import studio from "../assets/images/homepage/studio.png";
 import time from "../assets/images/homepage/time.png";
@@ -45,7 +44,7 @@ const Root = () => {
                     </section>
 
                     {/* About Section */}
-                    <section className="container text-center  flex items-center justify-center py-12 md:py-24 lg:py-32 text-xl">
+                    <section className="container text-center mx-auto flex items-center justify-center py-12 md:py-24 lg:py-32 text-xl">
                         <div className="w-[80%]">
                             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">About <span className="text-alpha">Anime Repo</span></h2>
                             <p>
@@ -121,8 +120,14 @@ const Root = () => {
                             Stay organized, dive deeper into your anime world, and let us help you discover new favorites based on your watching patterns!
                         </p>
 
-                        <div>
-
+                        <div className="flex items-center flex-wrap justify-around">
+                            {
+                                [tot, time, year, studio, dognut].map((stat, index) => (
+                                    <img key={index} src={stat}
+                                        className={`w-[350px] m-2 object-cover transition-all duration-500 hover:scale-110`}
+                                        alt={stat} />
+                                ))
+                            }
                         </div>
                     </section>
 

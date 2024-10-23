@@ -99,3 +99,21 @@ input::-webkit-inner-spin-button {
 /* input[type=number] {
   -moz-appearance: textfield;
 } */
+
+
+@keyframes pop-up {
+    0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 0;
+    }
+    
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+.pop-up {
+    opacity: 0;
+    animation: pop-up 1s forwards;
+}
