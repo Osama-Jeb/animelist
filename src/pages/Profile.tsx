@@ -5,7 +5,7 @@ import { useInfo } from "../context/InfoProviders";
 
 const Profile = () => {
     const { currentUser } = useAuth();
-    const { validatePassword, checkImageUrl } = useInfo();
+    const { checkImageUrl } = useInfo();
 
     const [username, setUsername] = useState<any>('')
     const [photo, setPhoto] = useState<any>('');
@@ -53,16 +53,19 @@ const Profile = () => {
 
     }
 
-    const updateUserPassword = async () => {
-        if (!validatePassword(pass)) {
-            alert('Please Meet the requirements!!');
-            return;
-        }
+    const updateUserPassword = async (e : any) => {
+        e.preventDefault()
+        // if (!validatePassword(pass)) {
+        //     alert('Please Meet the requirements!!');
+        //     return;
+        // }
 
         await updatePassword(currentUser, pass).then(() => {
             alert('Password Updated!!');
+            setPass('');
         }).catch((err) => {
             console.log(err)
+            alert(err)
         })
     }
 
@@ -119,7 +122,7 @@ const Profile = () => {
                                 onChange={(e) => setPass(e.target.value)}
                                 required
                             />
-                            <small>requirements: at least 8 charcaters including uppercase, lowercase and special characters</small>
+                            {/* <small>requirements: at least 8 charcaters including uppercase, lowercase and special characters</small> */}
                         </div>
                         <button className="w-full bg-alpha text-white px-4 py-2 rounded">
                             Update Password

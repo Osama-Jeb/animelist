@@ -29,7 +29,7 @@ const OAuthSignIn = () => {
 
                 await updateProfile(user, {
                     displayName: user.displayName,
-                    photoURL: user.photoURL ? user.photoURL : "https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png"
+                    photoURL: user.photoURL ? user.photoURL : "https://i.pinimg.com/originals/90/05/ef/9005ef6f70bb2a49db4c7c60e0185d3e.jpg"
                 });
 
                 await setDoc(userRef, newUser);
@@ -60,7 +60,7 @@ const OAuthSignIn = () => {
 
                 await updateProfile(user, {
                     displayName: user.displayName,
-                    photoURL: user.photoURL ? user.photoURL : "https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png"
+                    photoURL: user.photoURL ? user.photoURL : "https://i.pinimg.com/originals/90/05/ef/9005ef6f70bb2a49db4c7c60e0185d3e.jpg"
                 });
 
                 await setDoc(userRef, newUser);
