@@ -13,6 +13,8 @@ import time from "../assets/images/homepage/time.png";
 import tot from "../assets/images/homepage/tot.png";
 import year from "../assets/images/homepage/year.png";
 import { useEffect } from "react";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 const Root = () => {
     const location = useLocation();
@@ -20,6 +22,25 @@ const Root = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
+
+        if (location.pathname === '/') {
+            const trackVisitor = async () => {
+                const visitorDoc = doc(db, 'visitors', 'count');
+
+                const docSnap = await getDoc(visitorDoc);
+
+                if (docSnap.exists()) {
+                    // If the document exists, increment the count
+                    const newCount = docSnap.data().count + 1;
+                    await setDoc(visitorDoc, { count: newCount });
+                } else {
+                    // If the document doesn't exist, create it with a count of 1
+                    await setDoc(visitorDoc, { count: 1 });
+                }
+            };
+
+            trackVisitor();
+        }
     }, [location])
 
     return (
