@@ -189,8 +189,8 @@ const SingleAnime = () => {
 
             <div>
 
-                <div>
-                    <p className="text-4xl my-2">Characters: </p>
+                <div className="h-fit">
+                    <p className="text-4xl">Characters: </p>
                     <div className="overflow-x-auto my-4 h-full">
                         {
                             animeChara &&
@@ -254,22 +254,19 @@ const SingleAnime = () => {
                         }
 
                     </div>
-
-
                 </div>
-
 
                 {
                     animeInfo?.theme.openings && animeInfo?.theme.endings && (animeInfo?.theme.openings.length > 0 || animeInfo?.theme.endings.length > 0) && <div>
-                        {/* <h1 className="text-4xl my-2">Theme Songs: </h1> */}
+                        <h1 className="text-4xl my-2">Listen on Youtube: </h1>
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-0">
 
                             <div>
-                                <p className="text-4xl my-2">Openings: </p>
+                                <p className="text-3xl my-2">Openings: </p>
                                 <ul className="list-disc px-3">
                                     {
                                         animeInfo?.theme.openings.map((op, ind) => (
-                                            <li className="my-2" key={ind}>
+                                            <li className="my-2 underline" key={ind}>
                                                 {
                                                     createYouTubeLink(op)
                                                 }
@@ -280,11 +277,11 @@ const SingleAnime = () => {
                             </div>
 
                             <div>
-                                <p className="text-4xl my-2">Endings: </p>
+                                <p className="text-3xl my-2">Endings: </p>
                                 <ul className="list-disc px-3">
                                     {
                                         animeInfo?.theme.endings.map((ed, ind) => (
-                                            <li className="my-2" key={ind}>
+                                            <li className="my-2 underline" key={ind}>
                                                 {
                                                     createYouTubeLink(ed)
                                                 }

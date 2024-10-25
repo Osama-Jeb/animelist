@@ -44,7 +44,7 @@ const AniList = () => {
                             currentUser &&
                             <BookmarkButton anime={anime} />
                         }
-                        <Link to={`/anime/${anime.mal_id}`}>
+                        <Link to={`/anime/${anime.mal_id}`} className="cursor-help">
                             <div className="relative h-[400px]">
                                 <img src={anime.images?.webp?.large_image_url} alt={anime.title} className="absolute inset-0 h-full w-full object-cover" />
 

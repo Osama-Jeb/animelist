@@ -160,10 +160,15 @@ const Navbar = () => {
                                     </div>
 
                                     :
-
-                                    <Link to={"/login"}>
-                                        Register/Login
-                                    </Link>
+                                    <>
+                                        <Link className="underline" to={"/register"}>
+                                            Register
+                                        </Link>
+                                        
+                                        <Link className="underline" to={"/login"}>
+                                            Login
+                                        </Link>
+                                    </>
 
                             }
 

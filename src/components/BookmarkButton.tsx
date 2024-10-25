@@ -11,7 +11,7 @@ const BookmarkButton = ({ anime }: ButtonProps) => {
     return (
         <>
             <button
-                className={`cursor-default absolute top-[5%] right-[5%] rounded-full p-2 z-10 ${bookmarkedAnimes?.some((anm: any) => anm.mal_id === anime.mal_id) ? "bg-green-500" : "bg-white/90"}`}
+                className={`absolute top-[5%] right-[5%] rounded-full p-2 z-10 ${bookmarkedAnimes?.some((anm: any) => anm.mal_id === anime.mal_id) ? "bg-green-500" : "bg-white/90"}`}
                 onClick={() => { onBookmarkClick(anime) }}
             >
                 {

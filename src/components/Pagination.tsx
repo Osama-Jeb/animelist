@@ -10,6 +10,7 @@ const Pagination = ({ currentPage, setCurrentPage, max }: PaginationProps) => {
     const { setLoading } = useInfo();
 
     const handlePageChange = (newPage: number, max: number, setCurrentPage: (arg: any) => void) => {
+        window.scrollTo(0, 0);
         setLoading(true)
         if (newPage > 0 && newPage <= max) {
             setCurrentPage(newPage);
