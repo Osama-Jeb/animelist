@@ -192,63 +192,67 @@ const SingleAnime = () => {
                 <div>
                     <p className="text-4xl my-2">Characters: </p>
                     <div className="overflow-x-auto my-4 h-full">
+                        {
+                            animeChara &&
+                            <Swiper
+                                slidesPerGroup={2}
+                                spaceBetween={50}
+                                modules={[Navigation]}
+                                navigation
+                                loop={true}
+                                breakpoints={{
+                                    0: {
+                                        slidesPerView: 1,
+                                        spaceBetween: 0,
+                                    },
+                                    640: {
+                                        slidesPerView: 2,
+                                        spaceBetween: 20,
+                                    },
+                                    768: {
+                                        slidesPerView: 4,
+                                        spaceBetween: 40,
+                                    },
+                                    1024: {
+                                        slidesPerView: 5,
+                                        spaceBetween: 50,
+                                    },
+                                }}
 
-                        <Swiper
-                            slidesPerGroup={2}
-                            spaceBetween={50}
-                            modules={[Navigation]}
-                            navigation
-                            loop={true}
-                            breakpoints={{
-                                0: {
-                                    slidesPerView: 1,
-                                    spaceBetween: 0,
-                                },
-                                640: {
-                                    slidesPerView: 2,
-                                    spaceBetween: 20,
-                                },
-                                768: {
-                                    slidesPerView: 4,
-                                    spaceBetween: 40,
-                                },
-                                1024: {
-                                    slidesPerView: 5,
-                                    spaceBetween: 50,
-                                },
-                            }}
-                        >
-                            {animeChara
-                                ?.sort((a: any, b: any) => b.favorites - a.favorites)
-                                .map((chara: any, index: number) => (
-                                    <SwiperSlide key={index} className="z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative">
+                            >
+                                {animeChara
+                                    ?.sort((a: any, b: any) => b.favorites - a.favorites)
+                                    .map((chara: any, index: number) => (
+                                        <SwiperSlide key={index} className="z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative">
 
-                                        <Link to={`/characters/${chara.character.mal_id}`} className="relative">
-                                            <img src={chara.character.images.webp.image_url}
-                                                className="w-full h-[350px] rounded-xl aspect-square object-cover"
-                                                alt="" />
+                                            <Link to={`/characters/${chara.character.mal_id}`} className="relative">
+                                                <img src={chara.character.images.webp.image_url}
+                                                    className="w-full h-[350px] rounded-xl aspect-square object-cover"
+                                                    alt="" />
 
-                                            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 " />
-                                            <div className="absolute bottom-4 left-4">
-                                                <p className="my-1">{formatName(chara.character.name)}</p>
-                                                {/* <p className="my-1">Role: {chara.role}</p> */}
-                                                <div className="my-1">{chara.voice_actors.map((human: any, ind: number) => (
-                                                    human.language === "Japanese" &&
-                                                    <p key={ind} className="flex items-center gap-1">
-                                                        <Mic size={16} color="#9ca3af" />
-                                                        <span> {human.person.name.replace(",", "")}</span>
-                                                    </p>
+                                                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 " />
+                                                <div className="absolute bottom-4 left-4">
+                                                    <p className="my-1">{formatName(chara.character.name)}</p>
+                                                    {/* <p className="my-1">Role: {chara.role}</p> */}
+                                                    <div className="my-1">{chara.voice_actors.map((human: any, ind: number) => (
+                                                        human.language === "Japanese" &&
+                                                        <p key={ind} className="flex items-center gap-1">
+                                                            <Mic size={16} color="#9ca3af" />
+                                                            <span> {human.person.name.replace(",", "")}</span>
+                                                        </p>
 
-                                                ))}
+                                                    ))}
+                                                    </div>
+                                                    <p className="my-1 flex items-center gap-1"><Heart size={16} color="#9ca3af" /> {chara.favorites}</p>
                                                 </div>
-                                                <p className="my-1 flex items-center gap-1"><Heart size={16} color="#9ca3af" /> {chara.favorites}</p>
-                                            </div>
-                                        </Link>
-                                        
-                                    </SwiperSlide>
-                                ))}
+                                            </Link>
 
-                        </Swiper>
+                                        </SwiperSlide>
+                                    ))}
+
+                            </Swiper>
+                        }
+
                     </div>
 
 

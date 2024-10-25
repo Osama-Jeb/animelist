@@ -12,10 +12,15 @@ import studio from "../assets/images/homepage/studio.png";
 import time from "../assets/images/homepage/time.png";
 import tot from "../assets/images/homepage/tot.png";
 import year from "../assets/images/homepage/year.png";
+import { useEffect } from "react";
 
 const Root = () => {
     const location = useLocation();
     const isRootPath = location.pathname === '/';
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [location])
 
     return (
         <>
@@ -120,14 +125,18 @@ const Root = () => {
                             Stay organized, dive deeper into your anime world, and let us help you discover new favorites based on your watching patterns!
                         </p>
 
-                        <div className="flex items-center flex-wrap justify-around">
+                        <div className="flex items-center flex-wrap justify-around mt-6">
                             {
                                 [tot, time, year, studio, dognut].map((stat, index) => (
-                                    <img key={index} src={stat}
-                                        className={`w-[350px] m-2 object-cover transition-all duration-500 hover:scale-110`}
-                                        alt={stat} />
+                                    <img
+                                        key={index}
+                                        src={stat}
+                                        className={`w-[350px] m-2 object-cover transition-all duration-500 hover:scale-110 ${[tot, year, time].includes(stat) ? 'hidden lg:block' : ''}`}
+                                        alt={stat}
+                                    />
                                 ))
                             }
+
                         </div>
                     </section>
 

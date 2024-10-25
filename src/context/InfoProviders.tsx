@@ -43,7 +43,7 @@ export default function InfoProvider({ children }: PropsWithChildren) {
         try {
             let response;
             if (genres || studios) {
-                response = await fetch(`https://api.jikan.moe/v4/${what}?page=${page}&type=${type}&status=${status}&order_by=${order_by}&sort=${sort}&genres=${genres}&producers=${studios}`);
+                response = await fetch(`https://api.jikan.moe/v4/${what}?page=${page}&type=${type}&status=${status}&order_by=${order_by}&sort=${sort}&genres=${genres}&producers=${studios}&swf=1`);
             } else {
                 response = await fetch(`https://api.jikan.moe/v4/${what}?page=${page}&type=${type}&status=${status}&order_by=${order_by}&sort=${sort}`);
             }

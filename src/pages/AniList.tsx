@@ -34,51 +34,52 @@ const AniList = () => {
         }
     }, [currPage, type, status, order, sort, genres, studios])
 
-    // const [title, setTitle] = useState(true);
     const renderAnime = (animes: Anime[] | null) => (
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-2 md:gap-6">
-            {animes?.map((anime, index) => (
-                <div key={index} className="group z-1 overflow-hidden rounded-lg transition-all duration-200 bg-gray-900 text-white relative">
-                    {
-                        currentUser &&
-                        <BookmarkButton anime={anime} />
-                    }
-                    <Link to={`/anime/${anime.mal_id}`}>
-                        <div className="relative h-[400px]">
-                            <img src={anime.images?.webp?.large_image_url} alt={anime.title} className="absolute inset-0 h-full w-full object-cover" />
+            {animes
+                ?.filter(anime => !anime.genres.some(genre => genre.name === 'Hentai'))
+                .map((anime, index) => (
+                    <div key={index} className="group z-1 overflow-hidden rounded-lg transition-all duration-200 bg-gray-900 text-white relative">
+                        {
+                            currentUser &&
+                            <BookmarkButton anime={anime} />
+                        }
+                        <Link to={`/anime/${anime.mal_id}`}>
+                            <div className="relative h-[400px]">
+                                <img src={anime.images?.webp?.large_image_url} alt={anime.title} className="absolute inset-0 h-full w-full object-cover" />
 
-                            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent  transition-all duration-300" />
-                            <div className="absolute bottom-4 left-4">
-                                <p className="rounded-full bg-alpha text-white px-2 py-1 text-sm font-bold w-fit mb-2">
-                                    {anime.score}
-                                </p>
-                                <h2 className="text-lg font-bold mb-2">{anime.title_english ?? anime.title}</h2>
-                                {/* <h2 className="text-lg font-bold mb-2">{title ? anime.title_english : anime.title}</h2> */}
-                                <div className="space-y-2">
-                                    <div className="flex items-center gap-2">
-                                        <PlayCircle size={16} className="text-yellow-400" />
-                                        <span className="text-sm text-gray-200">{anime.episodes ?? 'Still Airing'}</span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <Calendar size={16} className="text-green-400" />
-                                        <span className="text-sm text-gray-200">{anime.aired.prop.from.year}</span>
-                                    </div>
-                                    <div className="flex flex-wrap gap-2 mt-2">
-                                        {anime.genres.map((genre, index) => (
-                                            index < 3 && <span
-                                                key={index}
-                                                className="px-2 py-1 text-xs font-semibold rounded-full bg-alpha/30 text-gray-200"
-                                            >
-                                                {genre.name}
-                                            </span>
-                                        ))}
+                                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent transition-all duration-300" />
+                                <div className="absolute bottom-4 left-4">
+                                    <p className="rounded-full bg-alpha text-white px-2 py-1 text-sm font-bold w-fit mb-2">
+                                        {anime.score}
+                                    </p>
+                                    <h2 className="text-lg font-bold mb-2">{anime.title_english ?? anime.title}</h2>
+                                    <div className="space-y-2">
+                                        <div className="flex items-center gap-2">
+                                            <PlayCircle size={16} className="text-yellow-400" />
+                                            <span className="text-sm text-gray-200">{anime.episodes ?? 'Still Airing'}</span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <Calendar size={16} className="text-green-400" />
+                                            <span className="text-sm text-gray-200">{anime.aired.prop.from.year}</span>
+                                        </div>
+                                        <div className="flex flex-wrap gap-2 mt-2">
+                                            {anime.genres.map((genre, index) => (
+                                                index < 3 && <span
+                                                    key={index}
+                                                    className="px-2 py-1 text-xs font-semibold rounded-full bg-alpha/30 text-gray-200"
+                                                >
+                                                    {genre.name}
+                                                </span>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </Link>
-                </div>
-            ))}
+                        </Link>
+                    </div>
+                ))}
+
         </div>
     )
 
@@ -117,7 +118,6 @@ const AniList = () => {
         { id: 4, name: "Comedy" },
         { id: 8, name: "Drama" },
         { id: 10, name: "Fantasy" },
-        { id: 26, name: "Girls Love" },
         { id: 47, name: "Gourmet" },
         { id: 14, name: "Horror" },
         { id: 7, name: "Mystery" },
@@ -139,8 +139,6 @@ const AniList = () => {
         { id: 58, name: "Gore" },
         { id: 59, name: "High Stakes Game" },
         { id: 13, name: "Historical" },
-        { id: 60, name: "Idols (Female)" },
-        { id: 61, name: "Idols (Male)" },
         { id: 62, name: "Isekai" },
         { id: 63, name: "Iyashikei" },
         { id: 64, name: "Love Polygon" },
