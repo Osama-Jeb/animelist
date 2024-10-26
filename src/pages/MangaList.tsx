@@ -4,6 +4,7 @@ import { useInfo } from "../context/InfoProviders";
 import Pagination from "../components/Pagination";
 import { BookOpen, Calendar, Search, Star } from "lucide-react";
 import Loading from "../components/Loading";
+import { Genre } from "../utils/types";
 
 const MangaList = () => {
     const { fetchInfo, onSearch, loading } = useInfo();
@@ -61,7 +62,9 @@ const MangaList = () => {
         return (
             <div className="grid grid-cols-2 lg:grid-cols-5 gap-2 md:gap-6">
                 {
-                    arr?.map((mng: any, index: number) => (
+                    arr
+                    ?.filter((mng:any) => !mng.genres.some((genre: Genre) => genre.name === 'Hentai'))
+                    .map((mng: any, index: number) => (
                         <Link to={`/manga/${mng.mal_id}`} key={index} className="group z-1 overflow-hidden rounded-lg bg-gray-900 text-white relative">
                             <div className="relative h-[400px]">
                                 <img
@@ -106,17 +109,16 @@ const MangaList = () => {
 
     const handleRemoveGenre = (genreId: number) => {
         setGenres(genres.filter(gen => gen !== genreId));
+        setCurrPage(1)
     };
     const genreSelect = [
         { id: 1, name: "Action" },
         { id: 2, name: "Adventure" },
         { id: 5, name: "Avant Garde" },
         { id: 46, name: "Award Winning" },
-        { id: 28, name: "Boys Love" },
         { id: 4, name: "Comedy" },
         { id: 8, name: "Drama" },
         { id: 10, name: "Fantasy" },
-        { id: 26, name: "Girls Love" },
         { id: 47, name: "Gourmet" },
         { id: 14, name: "Horror" },
         { id: 7, name: "Mystery" },

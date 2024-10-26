@@ -114,7 +114,6 @@ const AniList = () => {
         { id: 2, name: "Adventure" },
         { id: 5, name: "Avant Garde" },
         { id: 46, name: "Award Winning" },
-        { id: 28, name: "Boys Love" },
         { id: 4, name: "Comedy" },
         { id: 8, name: "Drama" },
         { id: 10, name: "Fantasy" },
@@ -211,10 +210,12 @@ const AniList = () => {
 
     const handleRemoveGenre = (genreId: number) => {
         setGenres(genres.filter(gen => gen !== genreId));
+        setCurrPage(1)
     };
 
     const handleRemoveStudio = (studioID: number) => {
         setStudios(studios.filter(st => st !== studioID))
+        setCurrPage(1)
     }
 
     return (
