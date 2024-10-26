@@ -8,7 +8,6 @@ import Loading from "../components/Loading";
 const VoiceActors = () => {
     const { onSearch, loading } = useInfo();
     const [voiceActors, setVoiceActors] = useState<any>();
-    // const [order, setOrder] = useState<string>('favorites');
     const [currPage, setCurrPage] = useState(1);
 
     const [input, setInput] = useState('');
@@ -36,19 +35,11 @@ const VoiceActors = () => {
         }
     }, [currPage])
 
-
-    // const orderSelect = [
-    //     { id: "favorites", label: "Popularity" },
-    //     { id: "name", label: "Name" },
-    //     { id: "birthday", label: "Birthday" },
-    // ];
-
-
     const rendeerVA = (actors: any | null) => {
         return (
             <div className="grid grid-cols-2 lg:grid-cols-5 gap-6">
                 {actors?.map((chara: any, index: number) => (
-                    <Link to={`/va/${chara?.mal_id}`} key={index} className="cursor-default">
+                    <Link to={`/va/${chara?.mal_id}`} key={index}>
                         <div className="relative h-[400px]">
                             <img src={chara?.images?.jpg?.image_url} alt={chara?.title} className="absolute inset-0 h-full w-full object-cover" />
                             <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent  transition-all duration-300" />
@@ -65,13 +56,6 @@ const VoiceActors = () => {
                                         day: 'numeric'
                                     })}
                                 </p>
-                                {/* <p className="my-1">
-                                    {chara?.alternate_names?.map((nickname: string, index: number) => (
-                                        <span key={index} className="inline-block bg-alpha/40 rounded-full px-2 py-1 m-1 text-sm">
-                                            {nickname}
-                                        </span>
-                                    ))}
-                                </p> */}
                             </div>
                         </div>
                     </Link>
@@ -112,22 +96,6 @@ const VoiceActors = () => {
                     >
                         <Search size={20} />
                     </button>
-
-
-                    {/* {
-                        !input &&
-                        <select
-                            value={order}
-                            onChange={(e) => setOrder(e.target.value)}
-                            className="border rounded p-2 text-black capitalize"
-                        >
-                            {orderSelect?.map((option) => (
-                                <option key={option.id} value={option.id}>
-                                    {option.label}
-                                </option>
-                            ))}
-                        </select>
-                    } */}
                 </div>
 
                 <div className="mt-4">

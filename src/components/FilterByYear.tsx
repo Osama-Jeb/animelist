@@ -38,11 +38,6 @@ const FilterByYear = () => {
                     <div key={range} className="flex items-center">
                         <div className="w-36">{range}</div>
                         <div className="flex-1 bg-gray-700 h-4 rounded-full overflow-hidden">
-                            {/* <div
-                                className="bg-green-500 h-full rounded-full"
-                                style={{ width: `${count * 10}%` }}
-                            ></div> */}
-
                             <div
                                 className={`bg-green-500 h-full rounded-full transition-all duration-700 ease-in-out`}
                                 style={{ width: `${bookmarkedAnimes && (count / bookmarkedAnimes.length) * 150}%` }}

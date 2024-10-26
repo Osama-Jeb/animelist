@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useInfo } from "../context/InfoProviders"
 import { Clock, Film, Play } from "lucide-react";
-// import ChartSeasons from "../components/ChartSeasons";
 import FilterByStudio from "../components/FilterByStudio";
 import ChartComponent from "../components/ChartComponent";
 import ChartSeasons from "../components/ChartSeasons";

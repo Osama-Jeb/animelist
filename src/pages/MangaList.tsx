@@ -201,8 +201,8 @@ const MangaList = () => {
                             }}
                             onKeyDown={(e) => {
                                 if (e.key == "Enter") {
-                                    setCurrPage(1)
                                     onSearch("manga", input, setSearchedManga, currPage)
+                                    setCurrPage(1)
                                 }
                             }}
 
@@ -224,7 +224,10 @@ const MangaList = () => {
                             !input && <div className="flex items-center gap-3 md:gap-2 flex-wrap mt-4 md:m-0">
                                 <select
                                     value={type}
-                                    onChange={(e) => setType(e.target.value)}
+                                    onChange={(e) => {
+                                        setType(e.target.value)
+                                        setCurrPage(1);
+                                    }}
                                     className="border rounded p-1 md:p-2 text-black capitalize"
                                 >
                                     <option disabled value="">Type</option>
@@ -237,7 +240,10 @@ const MangaList = () => {
 
                                 <select
                                     value={status}
-                                    onChange={(e) => setStatus(e.target.value)}
+                                    onChange={(e) => {
+                                        setStatus(e.target.value)
+                                        setCurrPage(1)
+                                    }}
                                     className="border rounded p-1 md:p-2 text-black capitalize"
                                 >
                                     <option disabled value="">Status</option>
@@ -250,7 +256,10 @@ const MangaList = () => {
 
                                 <select
                                     value={order}
-                                    onChange={(e) => setOrder(e.target.value)}
+                                    onChange={(e) => {
+                                        setOrder(e.target.value)
+                                        setCurrPage(1)
+                                    }}
                                     className="border rounded p-1 md:p-2 text-black capitalize"
                                 >
                                     <option disabled value="">Order By</option>
@@ -270,8 +279,10 @@ const MangaList = () => {
                                 <select
                                     value=""
                                     onChange={(e) =>
+                                    {
                                         setGenres([...genres, parseInt(e.target.value)])
-                                    }
+                                        setCurrPage(1)
+                                    }}
                                     className="border rounded p-1 md:p-2 text-black capitalize"
                                 >
                                     <option disabled value="">Add Genres</option>

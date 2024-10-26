@@ -243,13 +243,6 @@ const AniList = () => {
                                     }}
 
                                 />
-                                {/* <button
-                                className="bg-alpha rounded p-1"
-                                    onClick={() => { setTitle(!title) }}
-                                >
-                                    Title Version
-                                </button> */}
-
                                 {
                                     inputValue && <button
                                         className="px-3 py-2 bg-alpha rounded"
@@ -266,7 +259,10 @@ const AniList = () => {
                                     !inputValue && <div className="flex items-center gap-3 flex-wrap">
                                         <select
                                             value={type}
-                                            onChange={(e) => setType(e.target.value)}
+                                            onChange={(e) => {
+                                                setType(e.target.value)
+                                                setCurrPage(1)
+                                            }}
                                             className="border rounded p-2 text-black capitalize"
                                         >
                                             <option disabled value="">Type</option>
@@ -280,7 +276,10 @@ const AniList = () => {
 
                                         <select
                                             value={status}
-                                            onChange={(e) => setStatus(e.target.value)}
+                                            onChange={(e) => {
+                                                setStatus(e.target.value)
+                                                setCurrPage(1)
+                                            }}
                                             className="border rounded p-2 text-black capitalize"
                                         >
                                             <option disabled value="">Status</option>
@@ -293,7 +292,10 @@ const AniList = () => {
 
                                         <select
                                             value={order}
-                                            onChange={(e) => setOrder(e.target.value)}
+                                            onChange={(e) => {
+                                                setOrder(e.target.value);
+                                                setCurrPage(1);
+                                            }}
                                             className="border rounded p-2 text-black capitalize"
                                         >
                                             <option disabled value="">Order By</option>
@@ -314,9 +316,10 @@ const AniList = () => {
 
                                         <select
                                             value=""
-                                            onChange={(e) =>
+                                            onChange={(e) => {
                                                 setGenres([...genres, parseInt(e.target.value)])
-                                            }
+                                                setCurrPage(1)
+                                            }}
                                             className="border rounded p-2 text-black capitalize"
                                         >
                                             <option disabled value="">Add Genres</option>
@@ -328,9 +331,10 @@ const AniList = () => {
                                         </select>
                                         <select
                                             value=""
-                                            onChange={(e) =>
+                                            onChange={(e) =>{
                                                 setStudios([parseInt(e.target.value)])
-                                            }
+                                                setCurrPage(1)
+                                            }}
                                             className="border rounded p-2 text-black capitalize"
                                         >
                                             <option disabled value="">Studio</option>

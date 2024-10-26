@@ -13,6 +13,8 @@ interface Anime {
   my_score: number
 }
 
+//!!!! THIS WAS THE BETA VERSION. 
+//!!!! I DONT WANT TO DELETE IT TO REMEMBER HOW FAR I'VE COME.
 const App = () => {
   const collectionsRef = collection(db, 'animes');
   const [animes, setAnimes] = useState<Anime[]>([]);

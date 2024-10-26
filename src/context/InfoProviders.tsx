@@ -15,7 +15,6 @@ interface InfoContextType {
     loading: boolean,
     setLoading: (arg: boolean) => void,
     formatName: (name: string) => string,
-    validatePassword: (password: string) => boolean,
     checkImageUrl: (url: any, set: (arg: any) => void) => void,
 }
 
@@ -29,7 +28,6 @@ const InfoContext = createContext<InfoContextType>({
     loading: false,
     setLoading: () => { },
     formatName: () => '',
-    validatePassword: () => true || false,
     checkImageUrl: () => { },
 });
 
@@ -40,6 +38,7 @@ export default function InfoProvider({ children }: PropsWithChildren) {
 
 
     const fetchInfo = async (what: string, page: number, type: string, setInfo: (arg: any) => void, status: string, order_by: string, sort: string, genres?: number[], studios?: number[]) => {
+        setLoading(true)
         try {
             let response;
             if (genres || studios) {
@@ -68,6 +67,8 @@ export default function InfoProvider({ children }: PropsWithChildren) {
             const data = await response.json();
 
             setInfo(data.data);
+            setLoading(false)
+
         } catch (error) {
             console.error('err brr:', error);
         }
@@ -208,25 +209,9 @@ export default function InfoProvider({ children }: PropsWithChildren) {
         };
     };
 
-    // Password Validation
-    const validatePassword = (password: string) => {
-        const minLength = 8;
-        const hasUpperCase = /[A-Z]/.test(password);
-        const hasLowerCase = /[a-z]/.test(password);
-        const hasNumbers = /\d/.test(password);
-        const hasSpecialChars = /[!@#$%^&*]/.test(password);
-        return (
-            password.length >= minLength &&
-            hasUpperCase &&
-            hasLowerCase &&
-            hasNumbers &&
-            hasSpecialChars
-        );
-    };
-
 
     return <InfoContext.Provider
-        value={{ fetchInfo, bookmarkedAnimes, onBookmarkClick, loading, setLoading, fetchSingle, formatName, onSearch, validatePassword, checkImageUrl }}>
+        value={{ fetchInfo, bookmarkedAnimes, onBookmarkClick, loading, setLoading, fetchSingle, formatName, onSearch, checkImageUrl }}>
         {children}
     </InfoContext.Provider >
 }

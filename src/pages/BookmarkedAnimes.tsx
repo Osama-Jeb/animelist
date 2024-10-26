@@ -114,8 +114,6 @@ const BookmarkedAnime = () => {
                                         </div>
                                     </div>
                                 </div>
-                                {/* <div className="p-4 ">
-                                </div> */}
                             </Link>
                         </div>
                     ))}

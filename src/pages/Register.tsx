@@ -35,12 +35,6 @@ const Register = () => {
         e.preventDefault();
         setRegistering(true);
 
-       /*  if (!validatePassword(password)) {
-            alert("Password must meet complexity requirements.");
-            setRegistering(false);
-            return;
-        } */
-
         if (userImage) {
             if (!isValid) {
                 alert("Please set an image adress");
@@ -105,7 +99,6 @@ const Register = () => {
                 <div>
                     <label htmlFor="password">Password: <span className="font-bold text-red-600 underline">*</span></label>
                     <input className="w-full rounded px-4 py-3 text-black mt-2" placeholder="Password" type="password" onChange={(e) => setPassword(e.target.value)} value={password} required />
-                    {/* <small>requirements: at least 8 charcaters including uppercase, lowercase and special characters</small> */}
                 </div>
 
                 <button className="w-full bg-alpha text-white px-4 py-2 rounded"

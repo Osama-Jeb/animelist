@@ -4,9 +4,6 @@ import { useEffect, useState } from "react";
 import { Anime } from "../utils/types";
 
 const ChartSeasons = () => {
-
-    // const { user } = useInfo();
-    // const bookmarkedAnimes = user?.bookmarkedAnimes || [];
     const { bookmarkedAnimes } = useInfo();
 
 

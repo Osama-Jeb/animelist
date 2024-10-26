@@ -10,7 +10,6 @@ import Loading from "../components/Loading";
 import { Building2, Calendar, Heart, Mic, PlayCircle, Star, SunSnow, Tag } from "lucide-react";
 import ReadMore from "../components/ReadMore";
 import { Anime } from "../utils/types";
-// import { useColor } from "color-thief-react";
 
 const SingleAnime = () => {
 
@@ -19,11 +18,6 @@ const SingleAnime = () => {
     const [animeInfo, setAnimeInfo] = useState<Anime>();
     const [animeImages, setAnimeImages] = useState<any>();
     const [animeChara, setAnimeChara] = useState<any>();
-
-    // Call useColor only when you have the image URL
-    // const imageUrl = animeInfo && animeInfo?.images?.jpg?.large_image_url;
-    // const { data: colors } = useColor(imageUrl as string, 'hex', { quality: 2, crossOrigin: 'anonymous' });
-
     const fetchCharacters = async () => {
         try {
             const response = await fetch(`https://api.jikan.moe/v4/anime/${id}/characters`)
@@ -233,7 +227,6 @@ const SingleAnime = () => {
                                                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 " />
                                                 <div className="absolute bottom-4 left-4">
                                                     <p className="my-1">{formatName(chara.character.name)}</p>
-                                                    {/* <p className="my-1">Role: {chara.role}</p> */}
                                                     <div className="my-1">{chara.voice_actors.map((human: any, ind: number) => (
                                                         human.language === "Japanese" &&
                                                         <p key={ind} className="flex items-center gap-1">

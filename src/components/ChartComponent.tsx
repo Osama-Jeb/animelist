@@ -39,14 +39,14 @@ const ChartComponent = () => {
                 case 'genre':
                     genreCount[anime.genres[0].name] = (genreCount[anime.genres[0].name] || 0) + 1;
                     break;
-                
+
                 case 'source':
                     genreCount[anime.source] = (genreCount[anime.source] || 0) + 1;
                     break;
                 case 'type':
                     genreCount[anime.type] = (genreCount[anime.type] || 0) + 1;
                     break;
-              
+
             }
         });
 
@@ -59,24 +59,11 @@ const ChartComponent = () => {
         const data: number[] = [];
         const backgroundColor: string[] = [];
 
-        // let otherCount = 0;
-
         for (const [genre, count] of sortedEntries) {
-            // if (count <= 2) {
-            //     otherCount += count;
-            // } else {
-            // }
             labels.push(genre);
             data.push(count);
             backgroundColor.push(getRandomHexColor());
         }
-
-        // if (otherCount > 0) {
-        //     labels.push('Other');
-        //     data.push(otherCount);
-        //     backgroundColor.push(getRandomHexColor());
-        // }
-
         setChartData({
             labels,
             datasets: [
@@ -133,11 +120,6 @@ const ChartComponent = () => {
                                 display: true,
                                 position: "right",
                             },
-                            // title: {
-                            //     display: true,
-                            //     text: "Anime Genre Chart",
-                            // },
-
                         },
                     }}
                 />

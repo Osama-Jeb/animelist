@@ -39,7 +39,7 @@ const Root = () => {
                 }
             };
 
-            trackVisitor();
+            // trackVisitor();
         }
     }, [location])
 
@@ -64,7 +64,7 @@ const Root = () => {
                                 <Link to={`/anime`}>
                                     <button className="px-8 font-bold py-3 bg-alpha rounded-lg hover:scale-105 duration-150 transition-all">Explore Now</button>
                                 </Link>
-                                {/* <button className="px-8 font-bold py-3 bg-white text-black rounded-xl">Learn More</button> */}
+
                             </div>
                         </div>
                     </section>

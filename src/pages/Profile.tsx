@@ -9,7 +9,6 @@ const Profile = () => {
 
     const [username, setUsername] = useState<any>('')
     const [photo, setPhoto] = useState<any>('');
-    // const [newEmail, setNewEmail] = useState<any>('');
 
     const [pass, setPass] = useState<any>('');
 
@@ -55,10 +54,6 @@ const Profile = () => {
 
     const updateUserPassword = async (e : any) => {
         e.preventDefault()
-        // if (!validatePassword(pass)) {
-        //     alert('Please Meet the requirements!!');
-        //     return;
-        // }
 
         await updatePassword(currentUser, pass).then(() => {
             alert('Password Updated!!');
@@ -122,7 +117,6 @@ const Profile = () => {
                                 onChange={(e) => setPass(e.target.value)}
                                 required
                             />
-                            {/* <small>requirements: at least 8 charcaters including uppercase, lowercase and special characters</small> */}
                         </div>
                         <button className="w-full bg-alpha text-white px-4 py-2 rounded">
                             Update Password
