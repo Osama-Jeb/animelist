@@ -39,7 +39,7 @@ const Root = () => {
                 }
             };
 
-            // trackVisitor();
+            trackVisitor();
         }
     }, [location])
 
